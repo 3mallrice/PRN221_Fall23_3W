@@ -42,19 +42,19 @@ VALUES
 (2, 2, '2023-02-15', null, 1),
 (3, 3, '2023-03-15', null, 1);
 
---- Bảng StockOutDetail ---
-INSERT INTO StockOutDetail (ProductId, StockOutId, Quantity)
-VALUES
-(1, 1, 10),
-(2, 1, 5),
-(3, 2, 8);
-
 --- Bảng Product ---
 INSERT INTO Product (CategoryId, AreaId, ProductCode, Name, Quantity, Status)
 VALUES
 (1, 1, 'PROD001', N'Tivi LED Samsung 50 inch', 20, 1),
 (2, 2, 'PROD002', N'Điện thoại iPhone 12', 15, 1),
 (3, 3, 'PROD003', N'Máy giặt Electrolux', 30, 1);
+
+--- Bảng StockOutDetail ---
+INSERT INTO StockOutDetail (ProductId, StockOutId, Quantity)
+VALUES
+(1, 1, 10),
+(2, 1, 5),
+(3, 2, 8);
 
 --- Bảng LotDetail ---
 INSERT INTO LotDetail (LotId, ProductId, PartnerId, Quantity, Status)
