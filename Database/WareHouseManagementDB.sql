@@ -5,7 +5,7 @@ USE PRN221_Fall23_3W_WareHouseManagement
 CREATE TABLE Category (
     CategoryId INT PRIMARY KEY IDENTITY(1,1) NOT NULL,
     CategoryCode VARCHAR(20) NOT NULL,
-    Name NVARCHAR(50) NOT NULL,
+    Name NVARCHAR(100) NOT NULL,
     Status INT NOT NULL
 );
 
@@ -13,7 +13,7 @@ CREATE TABLE Category (
 CREATE TABLE StorageArea (
     AreaId INT PRIMARY KEY IDENTITY(1,1) NOT NULL,
     AreaCode VARCHAR(20) NOT NULL,
-    AreaName NVARCHAR(50) NOT NULL,
+    AreaName NVARCHAR(100) NOT NULL,
     Status INT NOT NULL
 );
 
@@ -21,8 +21,8 @@ CREATE TABLE StorageArea (
 CREATE TABLE Account (
     AccountId INT PRIMARY KEY IDENTITY(1,1) NOT NULL,
     AccountCode VARCHAR(20) NOT NULL,
-    Email VARCHAR(50) NOT NULL,
-    Name NVARCHAR(50) NOT NULL,
+    Email VARCHAR(100) NOT NULL,
+    Name NVARCHAR(100) NOT NULL,
     Password VARCHAR(50) NOT NULL,
     Role INT NOT NULL,
     Phone VARCHAR(50),
@@ -33,7 +33,7 @@ CREATE TABLE Account (
 CREATE TABLE Partner (
     PartnerId INT PRIMARY KEY IDENTITY(1,1) NOT NULL,
     PartnerCode VARCHAR(20) NOT NULL,
-    Name NVARCHAR(50) NOT NULL,
+    Name NVARCHAR(100) NOT NULL,
     Status INT NOT NULL
 );
 
@@ -68,7 +68,7 @@ CREATE TABLE Product (
     CategoryId INT NOT NULL,
     AreaId INT NOT NULL,
     ProductCode VARCHAR(20) NOT NULL,
-    Name NVARCHAR(50),
+    Name NVARCHAR(100),
     Quantity INT NOT NULL,
     Status INT NOT NULL,
     FOREIGN KEY (CategoryId) REFERENCES Category(CategoryId),
