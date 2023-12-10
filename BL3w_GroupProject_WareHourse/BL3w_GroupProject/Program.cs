@@ -1,3 +1,4 @@
+using DAO;
 using Repositories;
 using Service;
 
@@ -5,6 +6,9 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddScoped<ILotRepo, LotRepo>();
 builder.Services.AddScoped<ILotService, LotService>();
+
+builder.Services.AddScoped<IPartnerRepository, PartnerRepository>();
+builder.Services.AddScoped<IPartnerService, PartnerService>();
 
 // Add services to the container.
 builder.Services.AddRazorPages();
