@@ -1,0 +1,17 @@
+Phân chức năng các role:
+- StoreKeeper:
+     - View Search all trừ account
+     - View, Create, Search Lot
+     - View, Create, Search StockOut
+- Manager:
+     - View Search all trừ account
+     - CRUD product: thêm product không thêm quantity = 0
+     - CRUD Category
+     - CRUD Storage Area
+     - CRUD Partner
+     - View, Create, Search Lot: nhập hàng
+     - View, Create, Search StockOut: xuất hàng
+- Admin:
+     - Dashboard
+     - View all: user, product, category, lot, ... all bảng
+     - create user, ban user
