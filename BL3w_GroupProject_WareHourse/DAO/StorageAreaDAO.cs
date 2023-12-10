@@ -116,5 +116,34 @@ namespace DAO
                 return false;
             }
         }
+
+        public bool ToggleStorageAreaStatus(int areaId)
+        {
+            try
+            {
+                using (var db = new PRN221_Fall23_3W_WareHouseManagementContext())
+                {
+                    var existing = db.Products.SingleOrDefault(x => x.AreaId == areaId);
+
+                    if (existing != null)
+                    {
+                        existing.Status = (existing.Status == 1) ? 0 : 1;
+
+                        db.SaveChanges();
+                        return true;
+                    }
+                    else
+                    {
+                        Console.WriteLine("StorageArea not found for toggling status.");
+                        return false;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error in ToggleStorageAreaStatus: {ex.Message}", ex);
+                return false;
+            }
+        }
     }
 }
