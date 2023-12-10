@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Service
 {
-    public class StorageService
+    public class StorageService : IStorageService
     {
         private readonly IStorageRepo _storageRepository;
 
@@ -26,5 +26,7 @@ namespace Service
         public bool UpdateStorageArea(StorageArea storage) => _storageRepository.UpdateStorageArea(storage);
 
         public bool ToggleStorageAreaStatus(int areaId) => _storageRepository.ToggleStorageAreaStatus(areaId);
+
+        public List<StorageArea> LoadArea() => _storageRepository.LoadArea();
     }
 }

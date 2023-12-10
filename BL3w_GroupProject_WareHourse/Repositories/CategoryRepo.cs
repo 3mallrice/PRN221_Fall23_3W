@@ -41,5 +41,10 @@ namespace Repositories
         {
             return categoryDAO.ToggleCategoryStatus(categoryId);
         }
+
+        public List<Category> LoadCategories()
+        {
+            return categoryDAO.LoadCategories();
+        }
     }
 }

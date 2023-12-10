@@ -145,5 +145,28 @@ namespace DAO
                 return false;
             }
         }
+
+        public List<StorageArea> LoadArea()
+        {
+            List<StorageArea> loadArea;
+            try
+            {
+                var myStoreDB = new PRN221_Fall23_3W_WareHouseManagementContext();
+                loadArea = myStoreDB.StorageAreas
+               .Where(area => area.AreaId != null)
+               .Select(area => new StorageArea
+               {
+                   AreaId = area.AreaId,
+                   AreaName = area.AreaName
+               })
+               .Distinct()
+               .ToList();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+            return loadArea;
+        }
     }
 }

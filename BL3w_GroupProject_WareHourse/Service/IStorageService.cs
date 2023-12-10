@@ -14,5 +14,6 @@ namespace Service
         bool AddStorageArea(StorageArea storage);
         bool UpdateStorageArea(StorageArea storage);
         bool ToggleStorageAreaStatus(int areaId);
+        public List<StorageArea> LoadArea();
     }
 }

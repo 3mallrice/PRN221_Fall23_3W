@@ -41,5 +41,10 @@ namespace Service
         {
             return categoryRepository.ToggleCategoryStatus(categoryId);
         }
+
+        public List<Category> LoadCategories()
+        {
+            return categoryRepository.LoadCategories();
+        }
     }
 }
