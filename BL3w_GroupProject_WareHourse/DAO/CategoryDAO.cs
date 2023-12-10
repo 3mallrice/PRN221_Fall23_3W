@@ -113,5 +113,33 @@ namespace DAO
                 return false;
             }
         }
+
+        public bool ToggleCategoryStatus(int categoryId)
+        {
+            try
+            {
+                using (var db = new PRN221_Fall23_3W_WareHouseManagementContext())
+                {
+                    var existing = db.Products.SingleOrDefault(x => x.CategoryId == categoryId);
+                    if (existing != null)
+                    {
+                        existing.Status = (existing.Status == 1) ? 0 : 1;
+
+                        db.SaveChanges();
+                        return true;
+                    }
+                    else
+                    {
+                        Console.WriteLine("Category not found for status toggling.");
+                        return false;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error in ToggleCategoryStatus: {ex.Message}", ex);
+                return false;
+            }
+        }
     }
 }
