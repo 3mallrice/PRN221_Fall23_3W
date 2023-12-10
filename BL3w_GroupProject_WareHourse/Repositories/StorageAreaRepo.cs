@@ -27,5 +27,6 @@ namespace Repositories
         public bool UpdateStorageArea(StorageArea storage) => _storageAreaDAO.UpdateStorageArea(storage);
 
         public bool ToggleStorageAreaStatus(int areaId) => _storageAreaDAO.ToggleStorageAreaStatus(areaId);
+        public List<StorageArea> LoadArea() => _storageAreaDAO.LoadArea();
     }
 }

@@ -14,5 +14,6 @@ namespace Repositories
         bool AddStorageArea(StorageArea storage);
         bool UpdateStorageArea(StorageArea storage);
         bool ToggleStorageAreaStatus(int areaId);
+        List<StorageArea> LoadArea();
     }
 }

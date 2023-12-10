@@ -5,6 +5,12 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddScoped<ILotRepo, LotRepo>();
 builder.Services.AddScoped<ILotService, LotService>();
+builder.Services.AddScoped<IAccountService, AccountService>();
+builder.Services.AddScoped<ICategoryService, CategoryService>();
+builder.Services.AddScoped<IPartnerService, PartnerService>();
+builder.Services.AddScoped<IProductService, ProductService>();
+builder.Services.AddScoped<IStockOutService, StockOutService>();
+builder.Services.AddScoped<IStorageService, StorageService>();
 
 // Add services to the container.
 builder.Services.AddRazorPages();
