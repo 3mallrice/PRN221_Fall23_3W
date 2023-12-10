@@ -1,3 +1,4 @@
+using DAO;
 using Repositories;
 using Service;
 
@@ -11,6 +12,9 @@ builder.Services.AddScoped<IPartnerService, PartnerService>();
 builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<IStockOutService, StockOutService>();
 builder.Services.AddScoped<IStorageService, StorageService>();
+
+builder.Services.AddScoped<IPartnerRepository, PartnerRepository>();
+builder.Services.AddScoped<IPartnerService, PartnerService>();
 
 // Add services to the container.
 builder.Services.AddRazorPages();

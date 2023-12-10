@@ -64,7 +64,7 @@ namespace DAO
                 bool existingPartner = GetPartners()
                     .Any(a => a.PartnerCode.ToLower().Equals(partner.PartnerCode.ToLower()));
 
-                if (existingPartner == true)
+                if (existingPartner == false)
                 {
                     partner.Status = 1;
 
