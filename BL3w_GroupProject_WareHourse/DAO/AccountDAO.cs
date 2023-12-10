@@ -118,35 +118,34 @@ namespace DAO
             }
         }
 
-        public void BanAccount(int id)
+        public bool BanAccount(int id)
         {
             try
             {
-                Account u = GetAccountByID(id);
-                if (u != null)
+                using (var db = new PRN221_Fall23_3W_WareHouseManagementContext())
                 {
-                    if (u.Status == 0)
+                    Account u = db.Accounts.SingleOrDefault(a => a.AccountId == id);
+
+                    if (u != null)
                     {
-                        u.Status = 1;
+                        u.Status = (u.Status == 0) ? 1 : 0;
+
+                        db.Entry(u).State = EntityState.Modified;
+                        db.SaveChanges();
+                        Console.WriteLine("Account status updated successfully!");
+                        return true;
                     }
                     else
                     {
-                        u.Status = 0;
+                        Console.WriteLine("Account does not exist!");
+                        return false;
                     }
-                    using (var db = new PRN221_Fall23_3W_WareHouseManagementContext())
-                    {
-                        db.Entry(u).State = EntityState.Modified;
-                        db.SaveChanges();
-                    }
-                }
-                else
-                {
-                    throw new Exception("Account does not exist!");
                 }
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                Console.WriteLine($"Error in BanAccount: {ex.Message}");
+                return false;
             }
         }
     }

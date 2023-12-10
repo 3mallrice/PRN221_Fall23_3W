@@ -115,36 +115,35 @@ namespace DAO
             }
         }
 
-        public void BanPartner(int id)
+        public bool BanPartner(int id)
         {
             try
             {
-                Partner u = GetPartnerByID(id);
-                if (u != null)
+                using (var db = new PRN221_Fall23_3W_WareHouseManagementContext())
                 {
-                    if (u.Status == 0)
+                    Partner partner = db.Partners.SingleOrDefault(p => p.PartnerId == id);
+
+                    if (partner != null)
                     {
-                        u.Status = 1;
+                        partner.Status = (partner.Status == 0) ? 1 : 0;
+
+                        db.Entry(partner).State = EntityState.Modified;
+                        db.SaveChanges();
+                        Console.WriteLine("Partner status updated successfully!");
+                        return true;
                     }
                     else
                     {
-                        u.Status = 0;
+                        Console.WriteLine("Partner does not exist!");
+                        return false;
                     }
-                    using (var db = new PRN221_Fall23_3W_WareHouseManagementContext())
-                    {
-                        db.Entry(u).State = EntityState.Modified;
-                        db.SaveChanges();
-                    }
-                }
-                else
-                {
-                    throw new Exception("Partner does not exist!");
                 }
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                Console.WriteLine($"Error in BanPartner: {ex.Message}");
+                return false;
             }
         }
-    }   
+    }
 }
