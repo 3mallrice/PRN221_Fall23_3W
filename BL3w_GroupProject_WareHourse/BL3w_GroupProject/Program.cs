@@ -1,4 +1,10 @@
+using Repositories;
+using Service;
+
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddScoped<ILotRepo, LotRepo>();
+builder.Services.AddScoped<ILotService, LotService>();
 
 // Add services to the container.
 builder.Services.AddRazorPages();
