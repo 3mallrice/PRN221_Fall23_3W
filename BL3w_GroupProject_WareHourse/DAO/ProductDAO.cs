@@ -51,7 +51,8 @@ namespace DAO
             try
             {
                 var myStoreDB = new PRN221_Fall23_3W_WareHouseManagementContext();
-                Product old = myStoreDB.Products.SingleOrDefault(p => p.ProductCode.ToLower().Equals(product.ProductCode.ToLower()));
+                Product old = myStoreDB.Products
+                    .SingleOrDefault(p => p.ProductCode.ToLower().Equals(product.ProductCode.ToLower()));
 
                 if(old == null)
                 {
