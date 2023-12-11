@@ -1,8 +1,12 @@
 ﻿@page
 @model BL3w_GroupProject.Pages.StoreKeeper.ProductCreateModel
+<head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
 
 @{
     ViewData["Title"] = "ProductCreate";
+    Layout = "_StoreKeeper";
 }
 
 <h4>Create Product</h4>
@@ -29,15 +33,13 @@
                 <label asp-for="Product.CategoryId" class="control-label"></label>
                 <select asp-for="Product.CategoryId" class="form-control" asp-items="ViewBag.CategoryId"></select>
             </div>
+            <br />
             <div class="form-group">
+                <a asp-page="ProductList" class="btn text-white" style="background-color: #F37021"><i class="fa-solid fa-right-from-bracket"></i></a>
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>
         </form>
     </div>
-</div>
-
-<div>
-    <a asp-page="ProductList" style="background-color: #F37021; color: white"><i class="fa-solid fa-backward"></i></a>
 </div>
 
 @section Scripts {

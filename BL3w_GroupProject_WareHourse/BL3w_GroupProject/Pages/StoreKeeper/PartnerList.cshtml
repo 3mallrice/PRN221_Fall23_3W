@@ -1,34 +1,29 @@
 ﻿@page
-@model BL3w_GroupProject.Pages.StoreKeeper.ProductListModel
+@model BL3w_GroupProject.Pages.StoreKeeper.PartnerListModel
 
 @{
-    ViewData["Title"] = "ProductList";
+    ViewData["Title"] = "PartnerList";
     Layout = "_StoreKeeper";
 
     int x = 0;
 }
+
 <head>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
-
 
 <div class="container">
     <div class="row">
         <div class="col-lg-12">
             <div class="row justify-content-lg-start">
                 <div class="col-3">
-                    <h3>Products management</h3>
+                    <h3>Partners management</h3>
                 </div>
                 <div class="col-3">
                     <form class="d-md-inline-flex" role="search" method="get">
                         <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" asp-for="SearchText">
                         <button class="btn btn-primary" style="color: #fff" type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
                     </form>
-                </div>
-                <div class="col-2">
-                    <p>
-                        <a asp-page="./ProductCreate" class="btn btn-primary"><i class="fa-solid fa-plus"></i></a>
-                    </p>
                 </div>
             </div>
         </div>
@@ -40,38 +35,26 @@
         <tr>
             <th>No.</th>
             <th>
-                Product Code
+                @Html.DisplayNameFor(model => model.Partner[0].PartnerCode)
             </th>
             <th>
-                Product Name
+                @Html.DisplayNameFor(model => model.Partner[0].Name)
             </th>
             <th>
-                Quantity
-            </th>
-            <th>
-                Status
-            </th>
-            <th>
-                Area Name
-            </th>
-            <th>
-                Category Name
+                @Html.DisplayNameFor(model => model.Partner[0].Status)
             </th>
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model.Product)
+        @foreach (var item in Model.Partner)
         {
             <tr>
-                <td>@(++x)</td>
+                <td class="text-center">@(++x)</td>
                 <td class="text-center">
-                    @Html.DisplayFor(modelItem => item.ProductCode)
+                    @Html.DisplayFor(modelItem => item.PartnerCode)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Name)
-                </td>
-                <td class="text-center">
-                    @Html.DisplayFor(modelItem => item.Quantity)
                 </td>
                 <td style="text-align: center">
                     @switch (item.Status)
@@ -87,12 +70,6 @@
                             }
                             break;
                     }
-                </td>
-                <td class="text-center">
-                    @Html.DisplayFor(modelItem => item.Area.AreaName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Category.Name)
                 </td>
             </tr>
         }
