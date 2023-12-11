@@ -23,7 +23,38 @@
                             <a class="nav-link text-dark" asp-area="" asp-page="/Index">Home</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/Privacy">Privacy</a>
+                            <a class="nav-link text-dark" asp-area="" asp-page="/Admin/ManageAccount/ListAccount">Account</a>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <button class="btn btn-link dropdown-toggle" type="button" id="lotDropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Product
+                            </button>
+                            <div class="dropdown-menu" aria-labelledby="lotDropdown">
+                                <a class="dropdown-item" asp-area="" asp-page="/Admin/ManageProduct/ListProduct">Product</a>
+                                <a class="dropdown-item" asp-area="" asp-page="/Admin/ManageCategory/ListCategory">Category</a>
+                                <a class="dropdown-item" asp-area="" asp-page="/Admin/ManageStorage/ListStorage">Storage Area</a>
+                            </div>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <button class="btn btn-link dropdown-toggle" type="button" id="lotDropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Lot
+                            </button>
+                            <div class="dropdown-menu" aria-labelledby="lotDropdown">
+                                <a class="dropdown-item" asp-area="" asp-page="/Admin/ManageLot/ListLot">Lot</a>
+                                <a class="dropdown-item" asp-area="" asp-page="/Admin/ManageLotDetail/ListLotDetail">Lot Detail</a>
+                            </div>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-page="/Admin/ManagePartner/ListPartner">Partner</a>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <button class="btn btn-link dropdown-toggle" type="button" id="lotDropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Stock
+                            </button>
+                            <div class="dropdown-menu" aria-labelledby="lotDropdown">
+                                <a class="dropdown-item" asp-area="" asp-page="/Admin/ManageStockOut/ListStockOut">Stock Out</a>
+                                <a class="dropdown-item" asp-area="" asp-page="/Admin/ManageStockOutDetail/ListStockOutDetail">Stock Out Detail</a>
+                            </div>
                         </li>
                     </ul>
                 </div>

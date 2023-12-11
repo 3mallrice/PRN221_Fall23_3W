@@ -43,6 +43,23 @@ namespace DAO
             }
 
             return stockOuts;
+        } 
+        public List<StockOutDetail> GetStockOutsDetail()
+        {
+            List<StockOutDetail> stockOutsDetail = null;
+            try
+            {
+                stockOutsDetail = dbContext.StockOutDetails
+                    .Include(x => x.Product)
+                    .Include(x => x.StockOut)
+                    .ToList();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+
+            return stockOutsDetail;
         }
 
         public StockOut GetStockOutById(int id)

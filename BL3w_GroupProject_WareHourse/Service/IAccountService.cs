@@ -11,7 +11,7 @@ namespace Service
     {
         List<Account> GetAccounts();
         Account GetAccountByID(int id);
-        void AddAccount(Account account);
+        bool AddAccount(Account account);
         bool UpdateAccount(Account account);
         bool BanAccount(int id);
     }

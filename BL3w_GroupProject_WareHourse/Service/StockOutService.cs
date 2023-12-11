@@ -21,5 +21,7 @@ namespace Service
         public StockOut GetStockOutById(int id) => stockOutRepo.GetStockOutById(id);
 
         public List<StockOut> GetStockOuts() => stockOutRepo.GetStockOuts();
+
+        public List<StockOutDetail> GetStockOutsDetail() => stockOutRepo.GetStockOutsDetail();
     }
 }

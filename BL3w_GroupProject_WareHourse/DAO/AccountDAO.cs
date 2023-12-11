@@ -57,14 +57,14 @@ namespace DAO
             return account;
         }
 
-        public void AddAccount(Account account)
+        public bool AddAccount(Account account)
         {
             try
             {
                 bool existingAccount = GetAccounts()
-                    .Any(a => a.AccountCode.ToLower().Equals(account.AccountCode.ToLower()));
+                    .Any(a => a.AccountCode.ToLower().Equals(account.AccountCode.ToLower()) || a.Email.ToLower().Equals(account.Email.ToLower()));
                 
-                if (existingAccount == true)
+                if (existingAccount != true)
                 {
                     account.Status = 1;
 
@@ -73,11 +73,9 @@ namespace DAO
                         db.Accounts.Add(account);
                         db.SaveChanges();
                     }
+                    return true;
                 }
-                else
-                {
-                    throw new Exception("Account already exists!");
-                }
+                return false;
             }
             catch (Exception ex)
             {
