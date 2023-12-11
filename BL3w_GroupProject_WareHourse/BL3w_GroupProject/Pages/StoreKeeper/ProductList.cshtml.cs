@@ -6,28 +6,37 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using BusinessObject.Models;
+using Service;
 
 namespace BL3w_GroupProject.Pages.StoreKeeper
 {
     public class ProductListModel : PageModel
     {
-        private readonly BusinessObject.Models.PRN221_Fall23_3W_WareHouseManagementContext _context;
+        private readonly IProductService productService;
 
-        public ProductListModel(BusinessObject.Models.PRN221_Fall23_3W_WareHouseManagementContext context)
+        public ProductListModel()
         {
-            _context = context;
+            productService = new ProductService();
         }
 
         public IList<Product> Product { get;set; } = default!;
 
-        public async Task OnGetAsync()
+        public IActionResult OnGetAsync()
         {
-            if (_context.Products != null)
+            if (HttpContext.Session.GetString("account") is null)
             {
-                Product = await _context.Products
-                .Include(p => p.Area)
-                .Include(p => p.Category).ToListAsync();
+                return RedirectToPage("/Index");
             }
+
+            var role = HttpContext.Session.GetString("account");
+
+            if (role != "storekeeper")
+            {
+                return RedirectToPage("/Index");
+            }
+            
+            Product = productService.GetProducts();
+            return Page();
         }
     }
 }
