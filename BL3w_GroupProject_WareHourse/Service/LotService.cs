@@ -12,9 +12,9 @@ namespace Service
     {
         private readonly ILotRepo _lotRepo;
 
-        public LotService(ILotRepo lotRepo)
+        public LotService()
         {
-            _lotRepo = lotRepo;
+            _lotRepo = new LotRepo();
         }
 
         public void AddLot(Lot lot)
