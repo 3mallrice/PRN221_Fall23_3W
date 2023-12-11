@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using BusinessObject.Models;
 using Service;
 
-namespace BL3w_GroupProject.Pages.PartnerPage
+namespace BL3w_GroupProject.Pages.Manager.PartnerPage
 {
     public class EditModel : PageModel
     {
@@ -25,6 +25,17 @@ namespace BL3w_GroupProject.Pages.PartnerPage
 
         public async Task<IActionResult> OnGetAsync(int id)
         {
+            if (HttpContext.Session.GetString("account") is null)
+            {
+                return RedirectToPage("/Login");
+            }
+
+            var role = HttpContext.Session.GetString("account");
+
+            if (role != "manager")
+            {
+                return RedirectToPage("/Login");
+            }
             if (id == null)
             {
                 return NotFound();
@@ -41,13 +52,20 @@ namespace BL3w_GroupProject.Pages.PartnerPage
 
         public async Task<IActionResult> OnPostAsync()
         {
-            if (!ModelState.IsValid)
+            if (HttpContext.Session.GetString("account") is null)
             {
-                return Page();
+                return RedirectToPage("/Login");
             }
 
+            var role = HttpContext.Session.GetString("account");
+
+            if (role != "manager")
+            {
+                return RedirectToPage("/Login");
+            }
             try
             {
+                Partner.PartnerCode = Partner.PartnerCode.ToUpper();
                 _context.UpdatePartner(Partner);
             }
             catch (DbUpdateConcurrencyException)
@@ -60,8 +78,11 @@ namespace BL3w_GroupProject.Pages.PartnerPage
                 {
                     throw;
                 }
+            }catch
+            {
+                ViewData["Error"] = "Partner code already exists!";
+                return Page();
             }
-
             return RedirectToPage("./Index");
         }
 

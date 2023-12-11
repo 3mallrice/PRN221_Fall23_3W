@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using BusinessObject.Models;
 using Service;
 
-namespace BL3w_GroupProject.Pages.PartnerPage
+namespace BL3w_GroupProject.Pages.Manager.PartnerPage
 {
     public class CreateModel : PageModel
     {
@@ -21,6 +21,17 @@ namespace BL3w_GroupProject.Pages.PartnerPage
 
         public IActionResult OnGet()
         {
+            if (HttpContext.Session.GetString("account") is null)
+            {
+                return RedirectToPage("/Login");
+            }
+
+            var role = HttpContext.Session.GetString("account");
+
+            if (role != "manager")
+            {
+                return RedirectToPage("/Login");
+            }
             return Page();
         }
 
@@ -31,9 +42,16 @@ namespace BL3w_GroupProject.Pages.PartnerPage
         // To protect from overposting attacks, see https://aka.ms/RazorPagesCRUD
         public async Task<IActionResult> OnPostAsync()
         {
-          if (!ModelState.IsValid || Partner == null)
+            if (HttpContext.Session.GetString("account") is null)
             {
-                return Page();
+                return RedirectToPage("/Login");
+            }
+
+            var role = HttpContext.Session.GetString("account");
+
+            if (role != "manager")
+            {
+                return RedirectToPage("/Login");
             }
             try
             {
@@ -42,7 +60,8 @@ namespace BL3w_GroupProject.Pages.PartnerPage
             }
             catch
             {
-                return RedirectToPage("/Error");
+                ViewData["Error"] = "Product code already exists!";
+                return Page();
             }
 
             return RedirectToPage("./Index");

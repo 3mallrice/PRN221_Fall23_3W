@@ -98,8 +98,19 @@ namespace DAO
             try
             {
                 var myStoreDB = new PRN221_Fall23_3W_WareHouseManagementContext();
-                myStoreDB.Products.Update(product);
-                myStoreDB.SaveChanges();
+                bool existingPartner = GetProducts()
+                        .Where(p => p.ProductId != product.ProductId)
+                        .Any(p => p.ProductCode.ToLower().Equals(product.ProductCode.ToLower()));
+
+                if (!existingPartner)
+                {
+                    myStoreDB.Products.Update(product);
+                    myStoreDB.SaveChanges();
+                }
+                else
+                {
+                    throw new Exception("Partner code already exists in another partner!");
+                }
             }
             catch (Exception ex)
             {

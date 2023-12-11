@@ -6,28 +6,35 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using BusinessObject.Models;
+using Service;
 
 namespace BL3w_GroupProject.Pages.Manager
 {
     public class ManagerProductListModel : PageModel
     {
-        private readonly BusinessObject.Models.PRN221_Fall23_3W_WareHouseManagementContext _context;
+        private readonly IAccountService _context;
 
-        public ManagerProductListModel(BusinessObject.Models.PRN221_Fall23_3W_WareHouseManagementContext context)
+        public ManagerProductListModel(IAccountService context)
         {
             _context = context;
         }
 
-        public IList<Product> Product { get;set; } = default!;
-
-        public async Task OnGetAsync()
+        public async Task<IActionResult> OnGetAsync()
         {
-            if (_context.Products != null)
+            // Check if the user is a manager based on the session
+            if (HttpContext.Session.GetString("account") is null)
             {
-                Product = await _context.Products
-                .Include(p => p.Area)
-                .Include(p => p.Category).ToListAsync();
+                return RedirectToPage("/Login");
             }
+
+            var role = HttpContext.Session.GetString("account");
+
+            if (role != "manager")
+            {
+                return RedirectToPage("/Login");
+            }
+
+            return Page();
         }
     }
 }
