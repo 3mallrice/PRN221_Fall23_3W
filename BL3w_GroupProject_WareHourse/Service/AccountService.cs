@@ -17,7 +17,7 @@ namespace Service
             _accountRepository = new AccountRepository();
         }
 
-        void IAccountService.AddAccount(Account account) => _accountRepository.AddAccount(account);
+        bool IAccountService.AddAccount(Account account) => _accountRepository.AddAccount(account);
 
         bool IAccountService.BanAccount(int id) => _accountRepository.BanAccount(id);
 

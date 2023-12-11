@@ -45,7 +45,7 @@ namespace BL3w_GroupProject.Pages
             else if (account.Role == 0 && account.Status == 1)
             {
                 HttpContext.Session.SetString("account", "admin");
-                return RedirectToPage("#");
+                return RedirectToPage("/Admin/Dashboard");
             }
             else if (account.Role == 2 && account.Status == 1)
             {
@@ -57,7 +57,7 @@ namespace BL3w_GroupProject.Pages
                 HttpContext.Session.SetString("account", "storekeeper");
                 return RedirectToPage("/StoreKeeper/ProductList");
             }
-            return Page();
+                return Page();
         }
     }
 }

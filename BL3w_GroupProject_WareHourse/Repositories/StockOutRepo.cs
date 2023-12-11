@@ -22,5 +22,7 @@ namespace Repositories
         public StockOut GetStockOutById(int id) => stockOutDAO.GetStockOutById(id);
 
         public List<StockOut> GetStockOuts() => stockOutDAO.GetStockOuts();
+
+        public List<StockOutDetail> GetStockOutsDetail() => stockOutDAO.GetStockOutsDetail();
     }
 }
