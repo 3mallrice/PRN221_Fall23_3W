@@ -1,8 +1,8 @@
 ﻿@page
-@model BL3w_GroupProject.Pages.StoreKeeper.ProductListModel
+@model BL3w_GroupProject.Pages.StoreKeeper.StockOutListModel
 
 @{
-    ViewData["Title"] = "ProductList";
+    ViewData["Title"] = "StockOutList";
     Layout = "_StoreKeeper";
 
     int x = 0;
@@ -17,7 +17,7 @@
         <div class="col-lg-12">
             <div class="row justify-content-lg-start">
                 <div class="col-3">
-                    <h3>Products management</h3>
+                    <h3>StockOuts management</h3>
                 </div>
                 <div class="col-3">
                     <form class="d-md-inline-flex" role="search" method="get">
@@ -27,7 +27,7 @@
                 </div>
                 <div class="col-2">
                     <p>
-                        <a asp-page="./ProductCreate" class="btn btn-primary"><i class="fa-solid fa-plus"></i></a>
+                        <a asp-page="./#" class="btn btn-primary"><i class="fa-solid fa-truck"></i></a>
                     </p>
                 </div>
             </div>
@@ -40,38 +40,33 @@
         <tr>
             <th>No.</th>
             <th>
-                Product Code
+                @Html.DisplayNameFor(model => model.StockOut[0].DateOut)
             </th>
             <th>
-                Product Name
+                @Html.DisplayNameFor(model => model.StockOut[0].Note)
             </th>
             <th>
-                Quantity
+                @Html.DisplayNameFor(model => model.StockOut[0].Status)
             </th>
             <th>
-                Status
+                @Html.DisplayNameFor(model => model.StockOut[0].Account)
             </th>
             <th>
-                Area Name
+                @Html.DisplayNameFor(model => model.StockOut[0].Partner)
             </th>
-            <th>
-                Category Name
-            </th>
+            <th></th>
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model.Product)
+        @foreach (var item in Model.StockOut)
         {
             <tr>
-                <td>@(++x)</td>
+                <td class="text-center">@(++x)</td>
                 <td class="text-center">
-                    @Html.DisplayFor(modelItem => item.ProductCode)
+                    @Html.DisplayFor(modelItem => item.DateOut)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Name)
-                </td>
-                <td class="text-center">
-                    @Html.DisplayFor(modelItem => item.Quantity)
+                    @Html.DisplayFor(modelItem => item.Note)
                 </td>
                 <td style="text-align: center">
                     @switch (item.Status)
@@ -88,11 +83,14 @@
                             break;
                     }
                 </td>
-                <td class="text-center">
-                    @Html.DisplayFor(modelItem => item.Area.AreaName)
+                <td>
+                    @Html.DisplayFor(modelItem => item.Account.Name)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Category.Name)
+                    @Html.DisplayFor(modelItem => item.Partner.Name)
+                </td>
+                <td>
+                    <a asp-page="./Details" asp-route-id="@item.StockOutId"><i class="fa-solid fa-circle-info"></i></a>
                 </td>
             </tr>
         }
