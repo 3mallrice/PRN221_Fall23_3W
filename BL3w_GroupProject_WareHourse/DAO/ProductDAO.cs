@@ -45,16 +45,24 @@ namespace DAO
             }
             return listProduct;
         }
-
-
-
+        
         public Product AddProduct(Product product)
         {
             try
             {
                 var myStoreDB = new PRN221_Fall23_3W_WareHouseManagementContext();
-                myStoreDB.Products.Add(product);
-                myStoreDB.SaveChanges();
+                Product old = myStoreDB.Products.SingleOrDefault(p => p.ProductCode.ToLower().Equals(product.ProductCode.ToLower()));
+
+                if(old == null)
+                {
+                    product.Quantity = 0;
+                    product.Status = 1;
+                    myStoreDB.Products.Add(product);
+                    myStoreDB.SaveChanges();
+                } else
+                {
+                    throw new Exception();
+                }
             }
             catch (Exception ex)
             {
