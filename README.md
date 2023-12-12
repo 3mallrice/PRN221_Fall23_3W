@@ -8,6 +8,7 @@
 
 <details>
   <summary>WMS Contents</summary>
+
 1. [Overview](#overview)
 2. [Technologies Used](#technologies-used)
 3. [Features](#features)
@@ -83,13 +84,13 @@ This project is part of the PRN221 course, "Advanced Cross-Platform Application 
 1. **Clone the Repository**
 
 ```bash
-git clone https://github.com/your-username/warehouse-management.git
+git clone https://github.com/maotou-spy/PRN221_Fall23_3W.git
 ```
 
 2. **Install Dependencies**
 
 ```bash
-cd warehouse-management
+cd PRN221_Fall23_3W
 dotnet restore
 ```
 
@@ -122,6 +123,6 @@ Meet the Team:
 - [Nguyễn Văn Tiến](https://github.com/nvtiendev)
 - [Trương Lê Hiếu Trọng](https://github.com/Code-dudu)
 
-## License
+## License [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE)
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE) This project is licensed under the MIT License.
+This project is licensed under the MIT License.
