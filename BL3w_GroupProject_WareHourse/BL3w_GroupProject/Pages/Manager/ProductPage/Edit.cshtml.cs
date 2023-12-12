@@ -87,6 +87,7 @@ namespace BL3w_GroupProject.Pages.Manager.ProductPage
             }
             try
             {
+                Product.Status = 1;
                 Product.ProductCode = Product.ProductCode.ToUpper();
                 Product = productService.UpdateProduct(Product);
             }
