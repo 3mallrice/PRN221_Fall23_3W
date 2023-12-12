@@ -63,7 +63,7 @@ namespace DAO
                 bool existingCategory = GetCategories()
                     .Any(a => a.CategoryCode.ToLower().Equals(category.CategoryCode.ToLower()));
 
-                if (existingCategory == true)
+                if (existingCategory == false)
                 {
                     category.Status = 1;
 
