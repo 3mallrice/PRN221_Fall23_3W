@@ -16,7 +16,7 @@ namespace Repositories
             accountDAO = new AccountDAO();
         }
 
-        public void AddAccount(Account account) => accountDAO.AddAccount(account);
+        public bool AddAccount(Account account) => accountDAO.AddAccount(account);
 
         public bool BanAccount(int id) => accountDAO.BanAccount(id);
 

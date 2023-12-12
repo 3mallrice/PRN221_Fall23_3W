@@ -91,27 +91,26 @@ namespace DAO
             {
                 using (var db = new PRN221_Fall23_3W_WareHouseManagementContext())
                 {
-                    var existing = db.Partners.SingleOrDefault(x => x.PartnerId == partner.PartnerId);
-                    if (existing != null)
-                    {
-                        existing.PartnerCode = partner.PartnerCode;
-                        existing.Name = partner.Name;
-                        existing.Status = partner.Status;
 
+                    bool existingPartner = GetPartners()
+                        .Where(p => p.PartnerId != partner.PartnerId)
+                        .Any(p => p.PartnerCode.ToLower().Equals(partner.PartnerCode.ToLower()));
+
+                    if (!existingPartner)
+                    {
+                        db.Partners.Update(partner);
                         db.SaveChanges();
                         return true;
                     }
                     else
                     {
-                        Console.WriteLine("Partner not found for updating.");
-                        return false;
+                        throw new Exception("Partner code already exists in another partner!");
                     }
                 }
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Error in UpdatePartner: {ex.Message}", ex);
-                return false;
+                throw new Exception(ex.Message);
             }
         }
 

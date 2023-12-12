@@ -12,5 +12,6 @@ namespace Service
         List<StockOut> GetStockOuts();
         StockOut GetStockOutById(int id);
         bool AddStockOut(StockOut stockOut);
+        List<StockOutDetail> GetStockOutsDetail();
     }
 }

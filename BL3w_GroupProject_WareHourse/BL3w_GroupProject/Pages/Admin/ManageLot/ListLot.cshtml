@@ -1,0 +1,105 @@
+﻿@page
+@model BL3w_GroupProject.Pages.Admin.ManageLot.ListLotModel
+
+@{
+    ViewData["Title"] = "ListLot";
+    Layout = "/Pages/Shared/_LayoutAdmin.cshtml";
+
+}
+
+<h1>List Lot</h1>
+
+<p>
+    <a asp-page="Create">Create New</a>
+</p>
+<form method="post">
+    <select name="SearchBy">
+        <option value="LotCode">Search by LotCode</option>
+    </select>
+    <input type="text" asp-for="Keyword" />
+    <button type="submit" class="btn-primary">Search</button>
+</form>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Lot[0].LotCode)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Lot[0].DateIn)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Lot[0].Note)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Lot[0].Status)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Lot[0].Account)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Lot[0].Partner)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.Lot) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.LotCode)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DateIn)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Note)
+            </td>
+            <td>
+                    @if (item.Status == 1)
+                    {
+                        <span class="text-success">Active</span>
+                    }
+                    else if (item.Status == 0)
+                    {
+                        <span class="text-danger">Inactive</span>
+                    }
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Account.AccountCode)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Partner.Name)
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+<style>
+    .horizontal-pagination {
+        display: flex;
+        justify-content: center;
+    }
+
+        .horizontal-pagination ul {
+            list-style: none;
+            display: flex;
+            padding: 0;
+            margin: 0;
+        }
+
+        .horizontal-pagination li {
+            margin-right: 5px;
+        }
+</style>
+
+<div class="horizontal-pagination">
+    <ul>
+        @for (var i = 1; i <= Model.TotalPages; i++)
+        {
+            <li class="@(i == Model.PageIndex ? "active" : "")">
+                <a asp-page="./ListAccount" asp-route-pageIndex="@i">@i</a>
+            </li>
+        }
+    </ul>
+</div>

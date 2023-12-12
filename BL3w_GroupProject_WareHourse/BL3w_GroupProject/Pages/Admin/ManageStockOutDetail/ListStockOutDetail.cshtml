@@ -1,0 +1,85 @@
+﻿@page
+@model BL3w_GroupProject.Pages.Admin.ManageStockOutDetail.ListStockOutDetailModel
+
+@{
+    ViewData["Title"] = "ListStockOutDetail";
+    Layout = "/Pages/Shared/_LayoutAdmin.cshtml";
+}
+
+<h1>ListStockOutDetail</h1>
+
+<p>
+    <a asp-page="Create">Create New</a>
+</p>
+<form method="post">
+    <select name="SearchBy">
+        <option value="ProductId">Search by ProductId</option>
+        <option value="StockOutId">Search by StockOutId</option>
+    </select>
+    <input type="text" asp-for="Keyword" />
+    <button type="submit" class="btn-primary">Search</button>
+</form>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.StockOutDetail[0].Quantity)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.StockOutDetail[0].Product.ProductCode)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.StockOutDetail[0].StockOutId)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.StockOutDetail) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Quantity)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Product.ProductCode)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.StockOut.StockOutId)
+            </td>
+            <td>
+                <a asp-page="./Edit" asp-route-id="@item.StockOutDetailId">Edit</a> |
+                <a asp-page="./Details" asp-route-id="@item.StockOutDetailId">Details</a> |
+                <a asp-page="./Delete" asp-route-id="@item.StockOutDetailId">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+<style>
+    .horizontal-pagination {
+        display: flex;
+        justify-content: center;
+    }
+
+        .horizontal-pagination ul {
+            list-style: none;
+            display: flex;
+            padding: 0;
+            margin: 0;
+        }
+
+        .horizontal-pagination li {
+            margin-right: 5px;
+        }
+</style>
+
+<div class="horizontal-pagination">
+    <ul>
+        @for (var i = 1; i <= Model.TotalPages; i++)
+        {
+            <li class="@(i == Model.PageIndex ? "active" : "")">
+                <a asp-page="./ListAccount" asp-route-pageIndex="@i">@i</a>
+            </li>
+        }
+    </ul>
+</div>

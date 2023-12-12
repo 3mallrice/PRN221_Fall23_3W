@@ -3,15 +3,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.8.34322.80
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BL3w_GroupProject", "BL3w_GroupProject\BL3w_GroupProject.csproj", "{AFF4BD22-0B2B-4332-9311-B38B4BBAC6EF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BL3w_GroupProject", "BL3w_GroupProject\BL3w_GroupProject.csproj", "{AFF4BD22-0B2B-4332-9311-B38B4BBAC6EF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DAO", "DAO\DAO.csproj", "{E8D020C5-626D-4977-A259-BB9C7ECB05D9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DAO", "DAO\DAO.csproj", "{E8D020C5-626D-4977-A259-BB9C7ECB05D9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BusinessObject", "BusinessObject\BusinessObject.csproj", "{B2846A6B-0153-4BF7-8220-6C3138721E2E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BusinessObject", "BusinessObject\BusinessObject.csproj", "{B2846A6B-0153-4BF7-8220-6C3138721E2E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Repositories", "Repositories\Repositories.csproj", "{D71C2D86-F9C1-4940-A1BA-2A8F5F39E559}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Repositories", "Repositories\Repositories.csproj", "{D71C2D86-F9C1-4940-A1BA-2A8F5F39E559}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Service", "Service\Service.csproj", "{7F10A4A4-85C3-4162-9B6B-33150C6980B4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Service", "Service\Service.csproj", "{7F10A4A4-85C3-4162-9B6B-33150C6980B4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

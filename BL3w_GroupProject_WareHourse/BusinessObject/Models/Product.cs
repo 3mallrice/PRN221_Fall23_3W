@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace BusinessObject.Models
 {
@@ -15,7 +16,10 @@ namespace BusinessObject.Models
         public int CategoryId { get; set; }
         public int AreaId { get; set; }
         public string ProductCode { get; set; } = null!;
+        [Required]
         public string? Name { get; set; }
+
+        [Range(0, int.MaxValue, ErrorMessage = "Quantity must be greater than or equal to 0")]
         public int Quantity { get; set; }
         public int Status { get; set; }
 

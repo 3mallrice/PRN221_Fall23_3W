@@ -1,0 +1,120 @@
+﻿@page
+@model BL3w_GroupProject.Pages.Manager.LotPage.DetailsModel
+
+@{
+    ViewData["Title"] = "Details";
+    Layout = "_LayoutManager";
+}
+
+<div>
+    <h4>Lot</h4>
+    <hr />
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    Lot Code
+                </th>
+                <th>
+                    Date In
+                </th>
+                <th>
+                    Note
+                </th>
+                <th>
+                    Status
+                </th>
+                <th>
+                    Account Name
+                </th>
+                <th>
+                    Partner Name
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>
+                    @Html.DisplayFor(model => model.Lot.LotCode)
+                </td>
+                <td>
+                    @Model.Lot.DateIn.ToString("d")
+                </td>
+                <td>
+                    @Html.DisplayFor(model => model.Lot.Note)
+                </td>
+                <td>
+                    @if (@Model.Lot.Status == 1)
+                    {
+                        <span class="text-success">Active</span>
+                    }
+                    else
+                    {
+                        <span class="text-danger">Inactive</span>
+                    }
+                </td>
+                <td>
+                    @Html.DisplayFor(model => model.Lot.Account.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(model => model.Lot.Partner.Name)
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<div>
+    <h4>Details</h4>
+    <hr />
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    Product Name
+                </th>
+                <th>
+                    Partner Name
+                </th>
+                <th>
+                    Quantity
+                </th>
+                <th>
+                    Status
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var detail in Model.LotDetails)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => detail.Product.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => detail.Partner.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => detail.Quantity)
+                    </td>
+                    <td>
+                        @if (detail.Status == 1)
+                        {
+                            <span class="text-success">Active</span>
+                        }
+                        else
+                        {
+                            <span class="text-danger">Inactive</span>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+
+<div>
+    <a asp-page="./Edit" asp-route-id="@Model.Lot?.LotId">Edit</a> |
+    <a asp-page="./Index">Back to List</a>
+</div>
