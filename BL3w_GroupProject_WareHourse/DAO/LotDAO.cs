@@ -101,6 +101,7 @@ namespace DAO
             var eLot = GetLotById(lot.LotId);
             if (eLot == null)
             {
+                lot.DateIn = DateTime.Now;
                 _dbContext.Lots.Add(lot);
                 _dbContext.SaveChanges();
             }

@@ -37,10 +37,11 @@ namespace BL3w_GroupProject.Pages.StoreKeeper
             }
             else
             {
-                var lotDetail = _context.GetLotDetailByLotId(id);
-                if (lotDetail != null)
+                var lotDetails = _context.GetListLotDetailByLotID(id);
+
+                if (lotDetails != null)
                 {
-                    LotDetails.Add(lotDetail);
+                    LotDetails.AddRange(lotDetails);
                 }
             }
             return Page();
