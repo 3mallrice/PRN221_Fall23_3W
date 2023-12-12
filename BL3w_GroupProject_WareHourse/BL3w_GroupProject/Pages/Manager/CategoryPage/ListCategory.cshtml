@@ -1,8 +1,8 @@
 ﻿@page
-@model BL3w_GroupProject.Pages.Manager.ListStorageModel
+@model ListCategoryModel
 
 @{
-    ViewData["Title"] = "ListStorage";
+    ViewData["Title"] = "ListCategory";
     Layout = "_LayoutManager";
 }
 
@@ -10,12 +10,13 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
 
+
 <div class="container">
     <div class="row">
         <div class="col-lg-12">
             <div class="row justify-content-lg-start">
                 <div class="col-4">
-                    <h3>StorageAreas</h3>
+                    <h3>Categories management</h3>
                 </div>
                 <div class="col-3">
                     <form class="d-md-inline-flex" role="search" method="get">
@@ -25,7 +26,7 @@
                 </div>
                 <div class="col-2">
                     <p>
-                        <a asp-page="./CreateStorageArea" class="btn btn-primary"><i class="fa-solid fa-plus"></i></a>
+                        <a asp-page="./CreateCategory" class="btn btn-primary"><i class="fa-solid fa-plus"></i></a>
                     </p>
                 </div>
             </div>
@@ -37,25 +38,25 @@
     <thead style="background-color: #51B848; vertical-align:middle" class="text-white">
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.StorageArea[0].AreaCode)
+                @Html.DisplayNameFor(model => model.Category[0].CategoryCode)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.StorageArea[0].AreaName)
+                @Html.DisplayNameFor(model => model.Category[0].Name)
             </th>
             <th style="text-align:center">
-                @Html.DisplayNameFor(model => model.StorageArea[0].Status)
+                @Html.DisplayNameFor(model => model.Category[0].Status)
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model.StorageArea) {
+@foreach (var item in Model.Category) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.AreaCode)
+                @Html.DisplayFor(modelItem => item.CategoryCode)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.AreaName)
+                @Html.DisplayFor(modelItem => item.Name)
             </td>
                 <td style="text-align: center">
                     @switch (item.Status)
@@ -73,7 +74,7 @@
                     }
                 </td>
                 <td>
-                    <a asp-page="./StockOutDetail" asp-route-id="@item.AreaId" class="btn btn-primary"><i class="fa-solid fa-pen"></i></a>
+                    <a asp-page="./EditCategory" asp-route-id="@item.CategoryId" class="btn btn-primary"><i class="fa-solid fa-pen"></i></a>
                 </td>
         </tr>
 }
@@ -85,7 +86,7 @@
         @for (int b = 1; b <= Model.totalPages; b++)
         {
             <li class="page-item @(b == Model.curentPage ? "active" : "")">
-                <a asp-page="./ProductList" asp-route-curentPage="@b" class="page-link">@b</a>
+                <a asp-page="./" asp-route-curentPage="@b" class="page-link">@b</a>
             </li>
         }
     </ul>

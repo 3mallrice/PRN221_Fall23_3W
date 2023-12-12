@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using BusinessObject.Models;
 using Service;
 
-namespace BL3w_GroupProject.Pages.Manager
+namespace BL3w_GroupProject.Pages.Manager.StoragePage
 {
     public class ListStorageModel : PageModel
     {
@@ -19,7 +19,7 @@ namespace BL3w_GroupProject.Pages.Manager
             _storageService = storageService;
         }
 
-        public IList<StorageArea> StorageArea { get;set; } = default!;
+        public IList<StorageArea> StorageArea { get; set; } = default!;
 
         [BindProperty(SupportsGet = true)]
         public string SearchText { get; set; }
@@ -28,7 +28,7 @@ namespace BL3w_GroupProject.Pages.Manager
         public int curentPage { get; set; } = 1;
         public int pageSize { get; set; } = 5;
         public int count { get; set; }
-        public int totalPages => (int)Math.Ceiling(Decimal.Divide(count, pageSize));
+        public int totalPages => (int)Math.Ceiling(decimal.Divide(count, pageSize));
 
 
         public IActionResult OnGetAsync()

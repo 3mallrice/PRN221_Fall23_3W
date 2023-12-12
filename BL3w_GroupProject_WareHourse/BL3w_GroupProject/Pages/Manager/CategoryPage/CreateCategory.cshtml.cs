@@ -9,11 +9,11 @@ using BusinessObject.Models;
 using Service;
 using Microsoft.Identity.Client.Extensions.Msal;
 
-namespace BL3w_GroupProject.Pages.Manager
+namespace BL3w_GroupProject.Pages.Manager.CategoryPage
 {
     public class CreateCategoryModel : PageModel
     {
-        private readonly ICategoryService  _categoryService;
+        private readonly ICategoryService _categoryService;
 
         public CreateCategoryModel(ICategoryService categoryService)
         {
