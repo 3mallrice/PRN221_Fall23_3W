@@ -8,8 +8,10 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using BusinessObject.Models;
 using Service;
+using Microsoft.Identity.Client.Extensions.Msal;
+using Microsoft.AspNetCore.Mvc.TagHelpers;
 
-namespace BL3w_GroupProject.Pages.ProductPage
+namespace BL3w_GroupProject.Pages.Manager.ProductPage
 {
     public class EditModel : PageModel
     {
@@ -29,12 +31,23 @@ namespace BL3w_GroupProject.Pages.ProductPage
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
+            if (HttpContext.Session.GetString("account") is null)
+            {
+                return RedirectToPage("/Login");
+            }
+
+            var role = HttpContext.Session.GetString("account");
+
+            if (role != "manager")
+            {
+                return RedirectToPage("/Login");
+            }
             if (id == null)
             {
                 return NotFound();
             }
 
-            var product =  productService.GetProductByID(id);
+            var product = productService.GetProductByID(id);
             if (product == null)
             {
                 return NotFound();
@@ -61,9 +74,20 @@ namespace BL3w_GroupProject.Pages.ProductPage
         // For more details, see https://aka.ms/RazorPagesCRUD.
         public async Task<IActionResult> OnPostAsync()
         {
+            if (HttpContext.Session.GetString("account") is null)
+            {
+                return RedirectToPage("/Login");
+            }
 
+            var role = HttpContext.Session.GetString("account");
+
+            if (role != "manager")
+            {
+                return RedirectToPage("/Login");
+            }
             try
             {
+                Product.ProductCode = Product.ProductCode.ToUpper();
                 Product = productService.UpdateProduct(Product);
             }
             catch (DbUpdateConcurrencyException)
@@ -77,13 +101,23 @@ namespace BL3w_GroupProject.Pages.ProductPage
                     throw;
                 }
             }
-
+            catch
+            {
+                ViewData["Error"] = "Product code already exists!";
+                InitializeSelectLists();
+                return Page();
+            }
             return RedirectToPage("./Index");
         }
 
         private bool ProductExists(int? id)
         {
-          return productService.GetProductByID(id) != null;
+            return productService.GetProductByID(id) != null;
+        }
+        private void InitializeSelectLists()
+        {
+            ViewData["AreaId"] = new SelectList(storageService.GetStorageAreas(), "AreaId", "AreaName");
+            ViewData["CategoryId"] = new SelectList(categoryService.GetCategories(), "CategoryId", "Name");
         }
     }
 }

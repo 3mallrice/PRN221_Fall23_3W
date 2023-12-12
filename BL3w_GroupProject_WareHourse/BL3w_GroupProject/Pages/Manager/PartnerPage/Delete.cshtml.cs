@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using BusinessObject.Models;
 using Service;
 
-namespace BL3w_GroupProject.Pages.PartnerPage
+namespace BL3w_GroupProject.Pages.Manager.PartnerPage
 {
     public class DeleteModel : PageModel
     {

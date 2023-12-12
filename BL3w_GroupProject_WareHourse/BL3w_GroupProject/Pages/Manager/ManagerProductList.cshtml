@@ -4,63 +4,12 @@
 @{
     ViewData["Title"] = "ManagerProductList";
 }
-
-<h1>ManagerProductList</h1>
-
-<p>
-    <a asp-page="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Product[0].ProductCode)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Product[0].Name)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Product[0].Quantity)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Product[0].Status)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Product[0].Area)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Product[0].Category)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model.Product) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.ProductCode)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Quantity)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Status)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Area.AreaCode)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Category.CategoryCode)
-            </td>
-            <td>
-                <a asp-page="./Edit" asp-route-id="@item.ProductId">Edit</a> |
-                <a asp-page="./Details" asp-route-id="@item.ProductId">Details</a> |
-                <a asp-page="./Delete" asp-route-id="@item.ProductId">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+<div class="text-center">
+    <h1>ManagerProductList</h1>
+    <a class="btn btn-primary mr-2" asp-page="./PartnerPage/Index">Partner</a>
+    <a class="btn btn-primary mr-2" asp-page="./ProductPage/Index">Product</a>
+    <a class="btn btn-primary mr-2" asp-page="./CategoryPage/Index">Category</a>
+    <a class="btn btn-primary mr-2" asp-page="./StroragePage/Index">Storage Area</a>
+    <a class="btn btn-primary mr-2" asp-page="./StockPage/Index">Stock Out</a>
+    <a class="btn btn-primary" asp-page="./LotPage/Index">Lot</a>
+</div>
