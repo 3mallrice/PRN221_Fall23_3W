@@ -1,7 +1,7 @@
 # Warehouse Management System (WMS) - PRN221 Project
 
-<div align="center" style="boder-radious:8px">
-    <img src="https://github.com/maotou-spy/PRN221_Fall23_3W/tree/main/Database/img/wms-logo.png" alt="Warehouse Management System LOGO"/>
+<div align="center">
+    <img src="https://github.com/maotou-spy/PRN221_Fall23_3W/blob/main/Database/img/wms-logo.png" alt="Warehouse Management System LOGO" />
 </div>
 
 ## Table of Contents
@@ -14,13 +14,13 @@
 4. [Setup Instructions](#setup-instructions)
 5. [Contributing](#contributing)
 6. [License](#license)
-</detail>
+</details>
 
 ## Overview
 
-This project is part of the PRN221 course, "Advanced Cross-Platform Application Programming With .NET," Block 3W, during the Fall semester of 2023. The Warehouse Management System (WMS) is designed to efficiently manage various aspects of warehouse operations, including products, categories, inventory movements, storage areas, partners, and user accounts with different roles (admin, manager, store keeper).
+This project is part of the PRN221 course, "Advanced Cross-Platform Application Programming With .NET," Block 3W, during the Fall semester of 2023. The Warehouse Management System (WMS) is designed to efficiently manage various aspects of warehouse operations, including products, categories, inventory movements, storage areas, partners, and user accounts with different roles (admin, manager, storekeeper).
 
-- JS, Razor Page, Boostrap to build up the front-end
+- JS, Razor Page, Bootstrap to build up the front-end
 - C# .Net 6, ASP.NET Core, Entity Framework (EF) to build up the back-end
 - MS SQL Server to store data
 
