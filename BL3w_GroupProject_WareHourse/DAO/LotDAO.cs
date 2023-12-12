@@ -65,7 +65,7 @@ namespace DAO
             return _dbContext.Lots
                 .Include(c => c.Account)
                 .Include(c => c.Partner)
-                .Include(c => c.Partner)
+                .Include(c => c.LotDetails)
                 .SingleOrDefault(c => c.LotId == id);
         }
         public Lot GetLotByAccountId(int id)
@@ -115,6 +115,9 @@ namespace DAO
             var eLot = GetLotById(lot.LotId);
             if (eLot != null)
             {
+                 lot.LotCode = eLot.LotCode;
+                 lot.DateIn = DateTime.Now;
+                 lot.Status = 1;
                 _dbContext.Lots.Update(lot);
                 _dbContext.SaveChanges();
             }
@@ -143,6 +146,10 @@ namespace DAO
             var eLot = GetLotById(lot.LotId);
             if (eLot != null)
             {
+                LotDetail lotDetail = new LotDetail();
+                lotDetail.PartnerId = lot.PartnerId;
+                UpdateLotDetail(lotDetail);
+
                 lot.Status = 0;
                 _dbContext.Lots.Update(lot);
                 _dbContext.SaveChanges();
@@ -200,6 +207,7 @@ namespace DAO
                 .Include(c => c.Product)
                 .Include(c => c.Partner)
                 .Include(c => c.Lot)
+                .AsNoTracking()
                 .SingleOrDefault(c => c.LotDetailId == id);
         }
         public LotDetail GetLotDetailByProductId(int pid)
@@ -240,7 +248,7 @@ namespace DAO
             }
             else
             {
-                throw new Exception("LotDeail is already existed. (LotDetailID duplicated)");
+                throw new Exception("LotDetail is already existed. (LotDetailID duplicated)");
             }
         }
         public void UpdateLotDetail(LotDetail detail)
@@ -249,12 +257,14 @@ namespace DAO
             var edetailLot = GetLotDetailById(detail.LotDetailId);
             if (edetailLot != null)
             {
-                _dbContext.LotDetails.Update(detail);
+                 edetailLot.Quantity = detail.Quantity;
+                 edetailLot.PartnerId = detail.PartnerId;
+                _dbContext.Entry(edetailLot).State = EntityState.Modified;
                 _dbContext.SaveChanges();
             }
             else
             {
-                throw new Exception("LotDeail is not existed. (LotDetailID does not exist)");
+                throw new Exception("LotDetail is not existed. (LotDetailID does not exist)");
             }
         }
         public void DeleteLotDetailPermanently(LotDetail detail)

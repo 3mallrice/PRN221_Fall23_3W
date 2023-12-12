@@ -19,7 +19,6 @@ namespace BusinessObject.Models
         public string AccountCode { get; set; } = null!;
 
         [Required(ErrorMessage = "Email is required")]
-        [EmailAddress]
         public string Email { get; set; } = null!;
 
         [Required(ErrorMessage = "Name is required")]
