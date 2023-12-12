@@ -47,11 +47,11 @@ namespace BL3w_GroupProject.Pages.StoreKeeper
             if (SearchText != null)
             {
                 count = _productService.GetProducts()
-                    .Where(P => P.Name.Contains(SearchText) || P.ProductCode.Contains(SearchText))
+                    .Where(P => P.Name.ToLower().Contains(SearchText.ToLower()) || P.ProductCode.ToLower().Contains(SearchText.ToLower()))
                     .Count();
 
                 Product = _productService.GetProducts()
-                    .Where(P => P.Name.Contains(SearchText) || P.ProductCode.Contains(SearchText))
+                    .Where(P => P.Name.ToLower().Contains(SearchText.ToLower()) || P.ProductCode.ToLower().Contains(SearchText.ToLower()))
                     .Skip((curentPage - 1) * pageSize).Take(pageSize)
                     .ToList();
             } else

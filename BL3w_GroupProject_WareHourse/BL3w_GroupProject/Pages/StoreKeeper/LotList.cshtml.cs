@@ -47,11 +47,11 @@ namespace BL3w_GroupProject.Pages.StoreKeeper
             if (SearchText != null)
             {
                 count = _lotService.GetAllLots()
-                    .Where(P => P.Account.Name.Contains(SearchText) || P.LotCode.Contains(SearchText) || P.Partner.Name.Contains(SearchText))
+                    .Where(P => P.Account.Name.ToLower().Contains(SearchText.ToLower()) || P.LotCode.ToLower().Contains(SearchText.ToLower()) || P.Partner.Name.ToLower().Contains(SearchText.ToLower()))
                     .Count();
 
                 Lot = _lotService.GetAllLots()
-                    .Where(P => P.Account.Name.Contains(SearchText) || P.LotCode.Contains(SearchText) || P.Partner.Name.Contains(SearchText))
+                    .Where(P => P.Account.Name.ToLower().Contains(SearchText.ToLower()) || P.LotCode.ToLower().Contains(SearchText.ToLower()) || P.Partner.Name.ToLower().Contains(SearchText.ToLower()))
                     .Skip((curentPage - 1) * pageSize).Take(pageSize)
                     .ToList();
             }

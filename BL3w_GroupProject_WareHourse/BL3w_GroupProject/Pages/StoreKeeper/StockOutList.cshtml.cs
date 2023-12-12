@@ -46,11 +46,11 @@ namespace BL3w_GroupProject.Pages.StoreKeeper
             if (SearchText != null)
             {
                 count = _stockOutService.GetStockOuts()
-                    .Where(P => P.Partner.Name.Contains(SearchText) || P.Account.Name.Contains(SearchText))
+                    .Where(P => P.Partner.Name.ToLower().Contains(SearchText.ToLower()) || P.Account.Name.ToLower().Contains(SearchText.ToLower()))
                     .Count();
 
                 StockOut = _stockOutService.GetStockOuts()
-                    .Where(P => P.Partner.Name.Contains(SearchText) || P.Account.Name.Contains(SearchText))
+                    .Where(P => P.Partner.Name.ToLower().Contains(SearchText.ToLower()) || P.Account.Name.ToLower().Contains(SearchText.ToLower()))
                     .Skip((curentPage - 1) * pageSize).Take(pageSize)
                     .ToList();
             } else
