@@ -27,6 +27,18 @@ namespace BL3w_GroupProject.Pages.Manager.LotPage
 
         public IActionResult OnGet(string searchText, int currentPage = 1)
         {
+            if (HttpContext.Session.GetString("account") is null)
+            {
+                return RedirectToPage("/Login");
+            }
+
+            var role = HttpContext.Session.GetString("account");
+
+            if (role != "manager")
+            {
+                return RedirectToPage("/Login");
+            }
+
             SearchText = searchText;
             var lots = _context.GetAllLots();
 
