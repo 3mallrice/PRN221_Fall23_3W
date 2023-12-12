@@ -4,26 +4,36 @@
 @{
     ViewData["Title"] = "ListLot";
     Layout = "/Pages/Shared/_LayoutAdmin.cshtml";
-
+    int x = 0;
 }
+<head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
 
-<h1>List Lot</h1>
+<div class="container">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="row justify-content-lg-start">
+                <div class="col-3">
+                    <h3>Lots List</h3>
+                </div>
+                <div class="col-3">
+                    <form class="d-md-inline-flex" role="search" method="get">
+                        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" asp-for="SearchText">
+                        <button class="btn btn-primary" style="color: #fff" type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
-<p>
-    <a asp-page="Create">Create New</a>
-</p>
-<form method="post">
-    <select name="SearchBy">
-        <option value="LotCode">Search by LotCode</option>
-    </select>
-    <input type="text" asp-for="Keyword" />
-    <button type="submit" class="btn-primary">Search</button>
-</form>
-<table class="table">
-    <thead>
+<table class="table table-hover">
+    <thead style="background-color: #51B848; text-align: center" class="text-white">
         <tr>
+            <th>No.</th>
             <th>
-                @Html.DisplayNameFor(model => model.Lot[0].LotCode)
+                Code
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Lot[0].DateIn)
@@ -32,30 +42,37 @@
                 @Html.DisplayNameFor(model => model.Lot[0].Note)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Lot[0].Status)
-            </th>
-            <th>
                 @Html.DisplayNameFor(model => model.Lot[0].Account)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Lot[0].Partner)
             </th>
-            <th></th>
+            <th>
+                @Html.DisplayNameFor(model => model.Lot[0].Status)
+            </th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model.Lot) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.LotCode)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DateIn)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Note)
-            </td>
-            <td>
+        @foreach (var item in Model.Lot)
+        {
+            <tr>
+                <td>@(++x)</td>
+                <td class="text-center">
+                    @Html.DisplayFor(modelItem => item.LotCode)
+                </td>
+                <td class="text-center">
+                    @Html.DisplayFor(modelItem => item.DateIn)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Note)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Account.AccountCode) - @Html.DisplayFor(modelItem => item.Account.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Partner.Name)
+                </td>
+                <td class="text-center">
                     @if (item.Status == 1)
                     {
                         <span class="text-success">Active</span>
@@ -64,15 +81,9 @@
                     {
                         <span class="text-danger">Inactive</span>
                     }
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Account.AccountCode)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Partner.Name)
-            </td>
-        </tr>
-}
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
 <style>
@@ -93,12 +104,12 @@
         }
 </style>
 
-<div class="horizontal-pagination">
-    <ul>
-        @for (var i = 1; i <= Model.TotalPages; i++)
+<div>
+    <ul class="pagination">
+        @for (int b = 1; b <= Model.totalPages; b++)
         {
-            <li class="@(i == Model.PageIndex ? "active" : "")">
-                <a asp-page="./ListAccount" asp-route-pageIndex="@i">@i</a>
+            <li class="page-item @(b == Model.curentPage ? "active" : "")">
+                <a asp-page="./ListProduct" asp-route-curentPage="@b" class="page-link">@b</a>
             </li>
         }
     </ul>

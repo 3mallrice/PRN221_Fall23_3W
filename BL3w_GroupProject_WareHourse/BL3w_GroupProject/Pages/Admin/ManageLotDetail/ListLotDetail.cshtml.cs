@@ -19,10 +19,19 @@ namespace BL3w_GroupProject.Pages.Admin.ManageLotDetail
         {
             lotService = new LotService();
         }
-        public int PageIndex { get; set; }
-        public int TotalPages { get; set; }
-        [BindProperty] public string? SearchBy { get; set; }
-        [BindProperty] public string? Keyword { get; set; }
+
+
+        [BindProperty(SupportsGet = true)]
+        public int curentPage { get; set; } = 1;
+        public int pageSize { get; set; } = 5;
+        public int count { get; set; }
+        public int totalPages => (int)Math.Ceiling(Decimal.Divide(count, pageSize));
+
+
+        [BindProperty(SupportsGet = true)]
+        public string SearchText { get; set; }
+
+
         public IList<LotDetail> LotDetail { get;set; } = default!;
 
         public IActionResult OnGet(int? pageIndex)
@@ -38,34 +47,26 @@ namespace BL3w_GroupProject.Pages.Admin.ManageLotDetail
             {
                 return RedirectToPage("/Login");
             }
-            var LotDetailList = lotService.GetAllLotDetail().ToList();
-            PageIndex = pageIndex ?? 1;
-            var count = LotDetailList.Count();
-            TotalPages = (int)Math.Ceiling(count / (double)PageSize);
-            var items = LotDetailList.Skip((PageIndex - 1) * PageSize).Take(PageSize).ToList();
-            LotDetail = items;
-            return Page();
-        }
 
-        public async Task OnPost(int? pageIndex)
-        {
-            if (Keyword == null)
+            if(SearchText != null)
             {
-                OnGet(pageIndex);
+                count = lotService.GetAllLotDetail()
+                    .Where(a => a.Lot.LotCode.ToUpper().Equals(SearchText.ToUpper().Trim()) || a.Product.ProductCode.ToUpper().Equals(SearchText.ToUpper().Trim()))
+                    .Skip((curentPage - 1) * pageSize).Take(pageSize)
+                    .Count();
+                LotDetail = lotService.GetAllLotDetail()
+                    .Where(a => a.Lot.LotCode.ToUpper().Equals(SearchText.ToUpper().Trim()) || a.Product.ProductCode.ToUpper().Equals(SearchText.ToUpper().Trim()))
+                    .Skip((curentPage - 1) * pageSize).Take(pageSize)
+                    .ToList();
             }
             else
             {
-                if (SearchBy.Equals("LotCode"))
-                {
-                    LotDetail = lotService.GetAllLotDetail().Where(a => a.Lot.LotCode.ToUpper().Equals(Keyword.ToUpper().Trim())).ToList();
-                } 
-                else if (SearchBy.Equals("ProductCode"))
-                {
-                    LotDetail = lotService.GetAllLotDetail().Where(a => a.Product.ProductCode.ToUpper().Equals(Keyword.ToUpper().Trim())).ToList();
-                }
-                PageIndex = 1;
-                TotalPages = 1;
+                count = lotService.GetAllLotDetail().Count();
+                LotDetail = lotService.GetAllLotDetail()
+                    .Skip((curentPage - 1) * pageSize).Take(pageSize)
+                    .ToList();
             }
+            return Page();
         }
     }
 }

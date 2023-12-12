@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using BusinessObject.Models;
 using Service;
 using System.Drawing.Printing;
+using static Microsoft.Extensions.Logging.EventSource.LoggingEventSource;
 
 namespace BL3w_GroupProject.Pages.Admin.ManagePartner
 {
@@ -21,10 +22,16 @@ namespace BL3w_GroupProject.Pages.Admin.ManagePartner
         }
 
         public IList<Partner> Partner { get;set; } = default!;
-        public int PageIndex { get; set; }
-        public int TotalPages { get; set; }
-        [BindProperty] public string? SearchBy { get; set; }
-        [BindProperty] public string? Keyword { get; set; }
+
+        [BindProperty(SupportsGet = true)]
+        public int curentPage { get; set; } = 1;
+        public int pageSize { get; set; } = 5;
+        public int count { get; set; }
+        public int totalPages => (int)Math.Ceiling(Decimal.Divide(count, pageSize));
+
+
+        [BindProperty(SupportsGet = true)]
+        public string SearchText { get; set; }
 
         public IActionResult OnGet(int? pageIndex)
         {
@@ -39,34 +46,25 @@ namespace BL3w_GroupProject.Pages.Admin.ManagePartner
             {
                 return RedirectToPage("/Login");
             }
-            var PartnerList = partnerService.GetPartners();
-            PageIndex = pageIndex ?? 1;
-            var count = PartnerList.Count();
-            TotalPages = (int)Math.Ceiling(count / (double)PageSize);
-            var items = PartnerList.Skip((PageIndex - 1) * PageSize).Take(PageSize).ToList();
-            Partner = items;
-            return Page();
-        }
 
-        public async Task OnPost(int? pageIndex)
-        {
-            if (Keyword == null)
+            if(SearchText != null)
             {
-                OnGet(pageIndex);
-            }
-            else
+                count = partnerService.GetPartners()
+                    .Where(a => a.PartnerCode.ToUpper().Equals(SearchText.ToUpper().Trim()) || a.Name.ToLower().Contains(SearchText.ToLower().Trim()))
+                    .Count();
+                Partner = partnerService.GetPartners()
+                    .Where(a => a.PartnerCode.ToUpper().Equals(SearchText.ToUpper().Trim()) || a.Name.ToLower().Contains(SearchText.ToLower().Trim()))
+                    .Skip((curentPage - 1) * pageSize).Take(pageSize)
+                    .ToList();
+            } else
             {
-                if (SearchBy.Equals("PartnerCode"))
-                {
-                    Partner = partnerService.GetPartners().Where(a => a.PartnerCode.ToUpper().Equals(Keyword.ToUpper().Trim())).ToList();
-                }
-                else if (SearchBy.Equals("PartnerName"))
-                {
-                    Partner = partnerService.GetPartners().Where(a => a.Name.ToLower().Contains(Keyword.ToLower().Trim())).ToList();
-                }
-                PageIndex = 1;
-                TotalPages = 1;
+                count = partnerService.GetPartners().Count();
+                Partner = partnerService.GetPartners()
+                    .Skip((curentPage - 1) * pageSize).Take(pageSize)
+                    .ToList();
             }
+
+            return Page();
         }
     }
 }

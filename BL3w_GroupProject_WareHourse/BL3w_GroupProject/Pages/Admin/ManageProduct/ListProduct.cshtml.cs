@@ -14,17 +14,24 @@ namespace BL3w_GroupProject.Pages.Admin.ManageProduct
     public class ListProductModel : PageModel
     {
         private readonly IProductService productService;
-        private const int PageSize = 5;
         public ListProductModel()
         {
             productService = new ProductService();
         }
 
         public IList<Product> Product { get;set; } = default!;
-        public int PageIndex { get; set; }
-        public int TotalPages { get; set; }
-        [BindProperty] public string? SearchBy { get; set; }
-        [BindProperty] public string? Keyword { get; set; }
+
+
+        [BindProperty(SupportsGet = true)]
+        public int curentPage { get; set; } = 1;
+        public int pageSize { get; set; } = 5;
+        public int count { get; set; }
+        public int totalPages => (int)Math.Ceiling(Decimal.Divide(count, pageSize));
+
+
+        [BindProperty(SupportsGet = true)]
+        public string SearchText { get; set; }
+
         public IActionResult OnGet(int? pageIndex)
         {
             if (HttpContext.Session.GetString("account") is null)
@@ -38,34 +45,24 @@ namespace BL3w_GroupProject.Pages.Admin.ManageProduct
             {
                 return RedirectToPage("/Login");
             }
-            var productList = productService.GetProducts();
-            PageIndex = pageIndex ?? 1;
-            var count = productList.Count();
-            TotalPages = (int)Math.Ceiling(count / (double)PageSize);
-            var items = productList.Skip((PageIndex - 1) * PageSize).Take(PageSize).ToList();
-            Product = items;
-            return Page();
-        }
 
-        public async Task OnPost(int? pageIndex)
-        {
-            if (Keyword == null)
+            if(SearchText != null)
             {
-                OnGet(pageIndex);
-            }
-            else
+                count = productService.GetProducts()
+                        .Where(a => a.ProductCode.ToUpper().Contains(SearchText.Trim().ToUpper()))
+                        .Count();
+                Product = productService
+                    .GetProducts().Where(a => a.ProductCode.ToUpper().Contains(SearchText.Trim().ToUpper()) || a.Name.ToLower().Contains(SearchText.Trim().ToLower()))
+                    .Skip((curentPage - 1) * pageSize).Take(pageSize)
+                    .ToList();
+            } else
             {
-                if (SearchBy.Equals("ProductCode"))
-                {
-                    Product = productService.GetProducts().Where(a => a.ProductCode.ToUpper().Contains(Keyword.Trim().ToUpper())).ToList();
-                }
-                else if (SearchBy.Equals("Name"))
-                {
-                    Product = productService.GetProducts().Where(a => a.Name.ToLower().Contains(Keyword.Trim().ToLower())).ToList();
-                }
-                PageIndex = 1;
-                TotalPages = 1;
+                count = productService.GetProducts().Count();
+                Product = productService.GetProducts()
+                        .Skip((curentPage - 1) * pageSize).Take(pageSize)
+                        .ToList();
             }
+            return Page();
         }
     }
 }
