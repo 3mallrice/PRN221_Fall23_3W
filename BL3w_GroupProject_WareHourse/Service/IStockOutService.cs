@@ -13,5 +13,8 @@ namespace Service
         StockOut GetStockOutById(int id);
         bool AddStockOut(StockOut stockOut);
         List<StockOutDetail> GetStockOutsDetail();
+        List<StockOutDetail> GetStockOutDetailById(int id);
+        void UpdateStockOuts(StockOut stockOut);
+        void UpdateStockOutsDetail(List<StockOutDetail> stockOutDetails, int stockOutId);
     }
 }
