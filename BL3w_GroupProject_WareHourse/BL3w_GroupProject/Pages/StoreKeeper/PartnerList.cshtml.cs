@@ -47,11 +47,11 @@ namespace BL3w_GroupProject.Pages.StoreKeeper
             if (SearchText != null)
             {
                 count = _partnerService.GetPartners()
-                    .Where(P => P.Name.Contains(SearchText) || P.PartnerCode.Contains(SearchText))
+                    .Where(P => P.Name.ToLower().Contains(SearchText.ToLower()) || P.PartnerCode.ToLower().Contains(SearchText.ToLower()))
                     .Count();
 
                 Partner = _partnerService.GetPartners()
-                    .Where(P => P.Name.Contains(SearchText) || P.PartnerCode.Contains(SearchText))
+                    .Where(P => P.Name.ToLower().Contains(SearchText.ToLower()) || P.PartnerCode.ToLower().Contains(SearchText.ToLower()))
                     .Skip((curentPage - 1) * pageSize).Take(pageSize)
                     .ToList();
             }

@@ -7,13 +7,13 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using BusinessObject.Models;
 using Service;
+using static Microsoft.Extensions.Logging.EventSource.LoggingEventSource;
 
 namespace BL3w_GroupProject.Pages.Admin.ManageCategory
 {
     public class ListCategoryModel : PageModel
     {
         private readonly ICategoryService categoryService;
-        private const int PageSize = 5;
 
         public ListCategoryModel()
         {
@@ -21,10 +21,17 @@ namespace BL3w_GroupProject.Pages.Admin.ManageCategory
         }
 
         public IList<Category> Category { get;set; } = default!;
-        public int PageIndex { get; set; }
-        public int TotalPages { get; set; }
-        [BindProperty] public string? SearchBy { get; set; }
-        [BindProperty] public string? Keyword { get; set; }
+
+
+        [BindProperty(SupportsGet = true)]
+        public int curentPage { get; set; } = 1;
+        public int pageSize { get; set; } = 5;
+        public int count { get; set; }
+        public int totalPages => (int)Math.Ceiling(Decimal.Divide(count, pageSize));
+
+
+        [BindProperty(SupportsGet = true)]
+        public string SearchText { get; set; }
 
         public IActionResult OnGet(int? pageIndex)
         {
@@ -39,37 +46,22 @@ namespace BL3w_GroupProject.Pages.Admin.ManageCategory
             {
                 return RedirectToPage("/Login");
             }
-            var categoryList = categoryService.GetCategories();
-            PageIndex = pageIndex ?? 1;
 
-            // Paginate the list
-            var count = categoryList.Count();
-            TotalPages = (int)Math.Ceiling(count / (double)PageSize);
-            var items = categoryList.Skip((PageIndex - 1) * PageSize).Take(PageSize).ToList();
-
-            Category = items;
-            return Page();
-        }
-
-        public async Task OnPost(int? pageIndex)
-        {
-            if (Keyword == null)
+            if(SearchText != null)
             {
-                OnGet(pageIndex);
+                Category = categoryService.GetCategories()
+                    .Where(a => a.CategoryCode.ToUpper().Contains(SearchText.Trim().ToUpper()) || a.Name.ToLower().Contains(SearchText.Trim().ToLower()))
+                    .Skip((curentPage - 1) * pageSize).Take(pageSize)
+                    .ToList();
             }
             else
             {
-                if (SearchBy.Equals("CategoryCode"))
-                {
-                    Category = categoryService.GetCategories().Where(a => a.CategoryCode.ToUpper().Contains(Keyword.Trim().ToUpper())).ToList();
-                }
-                else if (SearchBy.Equals("CategoryName"))
-                {
-                    Category = categoryService.GetCategories().Where(a => a.Name.ToLower().Contains(Keyword.Trim().ToLower())).ToList();
-                }
-                PageIndex = 1;
-                TotalPages = 1;
+                count = categoryService.GetCategories().Count();
+                Category = categoryService.GetCategories()
+                            .Skip((curentPage - 1) * pageSize).Take(pageSize)
+                            .ToList();
             }
+            return Page();
         }
     }
 }

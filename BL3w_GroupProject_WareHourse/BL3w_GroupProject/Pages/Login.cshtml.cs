@@ -50,7 +50,7 @@ namespace BL3w_GroupProject.Pages
             else if (account.Role == 2 && account.Status == 1)
             {
                 HttpContext.Session.SetString("account", "manager");
-                return RedirectToPage("/Manager/ManagerProductList");
+                return RedirectToPage("/Manager/ProductPage/Index");
             }
             else if (account.Role == 1 && account.Status == 1)
             {

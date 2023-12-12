@@ -32,7 +32,7 @@ namespace BL3w_GroupProject.Pages.Manager.ProductPage
         public int TotalPages { get; set; }
         public int TotalRecords { get; set; }
 
-        public IActionResult OnGetAsync(string searchText, int currentPage = 1)
+        public IActionResult OnGetAsync(string searchText)
         {
             if (HttpContext.Session.GetString("account") is null)
             {
@@ -58,12 +58,12 @@ namespace BL3w_GroupProject.Pages.Manager.ProductPage
 
             TotalRecords = products.Count();
 
-            Product = products.Skip((currentPage - 1) * pageSize)
+            Product = products.Skip((curentPage - 1) * pageSize)
                               .Take(pageSize)
             .ToList();
 
             TotalPages = (int)System.Math.Ceiling((double)TotalRecords / pageSize);
-            curentPage = currentPage;
+            curentPage = curentPage;
             return Page();
         }
     }

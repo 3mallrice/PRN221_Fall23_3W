@@ -20,11 +20,19 @@ namespace BL3w_GroupProject.Pages.Admin.ManageStockOutDetail
             stockOutService = new StockOutService();
         }
 
-        public IList<StockOutDetail> StockOutDetail { get;set; } = default!;
-        public int PageIndex { get; set; }
-        public int TotalPages { get; set; }
-        [BindProperty] public string? SearchBy { get; set; }
-        [BindProperty] public int? Keyword { get; set; }
+        public IList<StockOutDetail> StockOutDetail { get; set; } = default!;
+
+
+        [BindProperty(SupportsGet = true)]
+        public int curentPage { get; set; } = 1;
+        public int pageSize { get; set; } = 5;
+        public int count { get; set; }
+        public int totalPages => (int)Math.Ceiling(Decimal.Divide(count, pageSize));
+
+
+        [BindProperty(SupportsGet = true)]
+        public string SearchText { get; set; }
+
 
         public IActionResult OnGet(int? pageIndex)
         {
@@ -39,33 +47,27 @@ namespace BL3w_GroupProject.Pages.Admin.ManageStockOutDetail
             {
                 return RedirectToPage("/Login");
             }
-            var stockOutList = stockOutService.GetStockOutsDetail();
-            PageIndex = pageIndex ?? 1;
-            var count = stockOutList.Count();
-            TotalPages = (int)Math.Ceiling(count / (double)PageSize);
-            var items = stockOutList.Skip((PageIndex - 1) * PageSize).Take(PageSize).ToList();
-            StockOutDetail = items;
-            return Page();
-        }
-        public async Task OnPost(int? pageIndex)
-        {
-            if (Keyword == null)
+
+
+            if (StockOutDetail == null)
             {
-                OnGet(pageIndex);
+                count = stockOutService.GetStockOutsDetail().Count();
+                StockOutDetail = stockOutService.GetStockOutsDetail()
+                    .Skip((curentPage - 1) * pageSize).Take(pageSize)
+                    .ToList();
             }
             else
             {
-                if (SearchBy.Equals("ProductId"))
-                {
-                    StockOutDetail = stockOutService.GetStockOutsDetail().Where(a => a.ProductId == Keyword).ToList();
-                }
-                else if (SearchBy.Equals("StockOutId"))
-                {
-                    StockOutDetail = stockOutService.GetStockOutsDetail().Where(a => a.StockOutId == Keyword).ToList();
-                }
-                PageIndex = 1;
-                TotalPages = 1;
+                count = stockOutService.GetStockOutsDetail()
+                    .Where(a => a.Product.ProductCode.Equals(SearchText))
+                    .Count();
+                StockOutDetail = stockOutService.GetStockOutsDetail()
+                    .Where(a => a.Product.ProductCode.Equals(SearchText))
+                    .Skip((curentPage - 1) * pageSize).Take(pageSize)
+                    .ToList();
             }
+
+            return Page();
         }
     }
 }
