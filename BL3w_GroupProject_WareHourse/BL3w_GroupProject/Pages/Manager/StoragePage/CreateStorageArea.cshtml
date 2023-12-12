@@ -1,20 +1,23 @@
 ﻿@page
-@model BL3w_GroupProject.Pages.Manager.StoragePage.CreateModel
+@model CreateStorageAreaModel
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "CreateStorageArea";
+    Layout = "_LayoutManager";
 }
 
-<h1>Create</h1>
+<head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
 
-<h4>StorageArea</h4>
+<h4>Create StorageArea</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
         <form method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="StorageArea.AreaCode" class="control-label"></label>
+                StorageArea Code
                 <input asp-for="StorageArea.AreaCode" class="form-control" />
                 <span asp-validation-for="StorageArea.AreaCode" class="text-danger"></span>
             </div>
@@ -24,19 +27,11 @@
                 <span asp-validation-for="StorageArea.AreaName" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="StorageArea.Status" class="control-label"></label>
-                <input asp-for="StorageArea.Status" class="form-control" />
-                <span asp-validation-for="StorageArea.Status" class="text-danger"></span>
-            </div>
-            <div class="form-group">
+                <a asp-page="ListCategory" class="btn text-white" style="background-color: #F37021"><i class="fa-solid fa-right-from-bracket"></i></a>
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>
         </form>
     </div>
-</div>
-
-<div>
-    <a asp-page="Index">Back to List</a>
 </div>
 
 @section Scripts {
