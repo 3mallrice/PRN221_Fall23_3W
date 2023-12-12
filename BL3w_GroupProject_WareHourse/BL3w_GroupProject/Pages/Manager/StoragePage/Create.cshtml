@@ -1,0 +1,44 @@
+﻿@page
+@model BL3w_GroupProject.Pages.Manager.StoragePage.CreateModel
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<h4>StorageArea</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="StorageArea.AreaCode" class="control-label"></label>
+                <input asp-for="StorageArea.AreaCode" class="form-control" />
+                <span asp-validation-for="StorageArea.AreaCode" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="StorageArea.AreaName" class="control-label"></label>
+                <input asp-for="StorageArea.AreaName" class="form-control" />
+                <span asp-validation-for="StorageArea.AreaName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="StorageArea.Status" class="control-label"></label>
+                <input asp-for="StorageArea.Status" class="form-control" />
+                <span asp-validation-for="StorageArea.Status" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-page="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

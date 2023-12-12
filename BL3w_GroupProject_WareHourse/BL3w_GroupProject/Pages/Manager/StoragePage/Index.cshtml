@@ -1,0 +1,48 @@
+﻿@page
+@model BL3w_GroupProject.Pages.Manager.StoragePage.IndexModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-page="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.StorageArea[0].AreaCode)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.StorageArea[0].AreaName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.StorageArea[0].Status)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.StorageArea) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.AreaCode)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AreaName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Status)
+            </td>
+            <td>
+                <a asp-page="./Edit" asp-route-id="@item.AreaId">Edit</a> |
+                <a asp-page="./Details" asp-route-id="@item.AreaId">Details</a> |
+                <a asp-page="./Delete" asp-route-id="@item.AreaId">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
