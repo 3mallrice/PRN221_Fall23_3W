@@ -65,6 +65,7 @@ namespace BL3w_GroupProject.Pages.Manager.PartnerPage
             }
             try
             {
+                Partner.Status = 1;
                 Partner.PartnerCode = Partner.PartnerCode.ToUpper();
                 _context.UpdatePartner(Partner);
             }
