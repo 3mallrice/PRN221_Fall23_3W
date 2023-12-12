@@ -6,15 +6,17 @@
     Layout = "/Pages/Shared/_LayoutAdmin.cshtml";
 }
 
-<h1>Update Status Account</h1>
+<head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
 
-<h3>Are you sure you want to delete this?</h3>
+<h4>Are you sure you want to update @Model.Account.Name?</h4>
 <div>
-    <h4>Account</h4>
+    <h4>Account: @Model.Account.AccountCode</h4>
     <hr />
     <dl class="row">
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Account.AccountCode)
+            Code
         </dt>
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Account.AccountCode)
@@ -32,16 +34,18 @@
             @Html.DisplayFor(model => model.Account.Name)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Account.Password)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Account.Password)
-        </dd>
-        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Account.Role)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Account.Role)
+            @if (Model.Account.Role == 1)
+            {
+                <span>StoreKeeper</span>
+            }
+            else
+            {
+                <span>Manager</span>
+            }
+
         </dd>
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Account.Phone)
@@ -53,24 +57,35 @@
             @Html.DisplayNameFor(model => model.Account.Status)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Account.Status)
+            @switch (Model.Account.Status)
+            {
+                case 0:
+                    {
+                        <span class="text-danger">In-active</span>
+                    }
+                    break;
+                case 1:
+                    {
+                        <span class="text-success">Active</span>
+                    }
+                    break;
+            }
         </dd>
     </dl>
-    
+
     <form method="post">
         <input type="hidden" asp-for="Account.AccountId" />
 
         @if (Model.Account.Status == 1)
         {
             <input type="hidden" asp-for="Account.Status" value="1" />
-            <input type="submit" value="Ban" class="btn btn-danger" />
+            <button type="submit" class="btn btn-danger"><i class="fa-solid fa-ban"></i></button>
         }
         else if (Model.Account.Status == 0)
         {
             <input type="hidden" asp-for="Account.Status" value="0" />
-            <input type="submit" value="Activate" class="btn btn-success" />
+            <button type="submit" style="background-color: #51b848" class="btn text-white"><i class="fa-solid fa-circle-check"></i></button>
         }
-        |
-        <a asp-page="./ListAccount">Back to List</a>
+        <a asp-page="./ListAccount" class="btn text-white" style="background-color: #F37021"><i class="fa-solid fa-right-from-bracket"></i></a>
     </form>
 </div>

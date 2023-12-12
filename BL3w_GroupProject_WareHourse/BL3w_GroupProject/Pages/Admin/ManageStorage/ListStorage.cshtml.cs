@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using BusinessObject.Models;
 using Service;
+using static Microsoft.Extensions.Logging.EventSource.LoggingEventSource;
 
 namespace BL3w_GroupProject.Pages.Admin.ManageStorage
 {
@@ -20,10 +21,16 @@ namespace BL3w_GroupProject.Pages.Admin.ManageStorage
         }
 
         public IList<StorageArea> StorageArea { get;set; } = default!;
-        public int PageIndex { get; set; }
-        public int TotalPages { get; set; }
-        [BindProperty] public string? SearchBy { get; set; }
-        [BindProperty] public string? Keyword { get; set; }
+
+        [BindProperty(SupportsGet = true)]
+        public int curentPage { get; set; } = 1;
+        public int pageSize { get; set; } = 5;
+        public int count { get; set; }
+        public int totalPages => (int)Math.Ceiling(Decimal.Divide(count, pageSize));
+
+        [BindProperty(SupportsGet = true)]
+        public string SearchText { get; set; }
+
         public IActionResult OnGet(int? pageIndex)
         {
             if (HttpContext.Session.GetString("account") is null)
@@ -37,34 +44,26 @@ namespace BL3w_GroupProject.Pages.Admin.ManageStorage
             {
                 return RedirectToPage("/Login");
             }
-            var storageAreasList = storageService.GetStorageAreas();
-            PageIndex = pageIndex ?? 1;
-            var count = storageAreasList.Count();
-            TotalPages = (int)Math.Ceiling(count / (double)PageSize);
-            var items = storageAreasList.Skip((PageIndex - 1) * PageSize).Take(PageSize).ToList();
-            StorageArea = items;
-            return Page();
-        }
 
-        public async Task OnPost(int? pageIndex)
-        {
-            if (Keyword == null)
+            if(SearchText == null)
             {
-                OnGet(pageIndex);
+                count = storageService.GetStorageAreas().Count();
+                StorageArea = storageService.GetStorageAreas()
+                    .Skip((curentPage - 1) * pageSize).Take(pageSize)
+                    .ToList();
             }
             else
             {
-                if (SearchBy.Equals("AreaCode"))
-                {
-                    StorageArea = storageService.GetStorageAreas().Where(a => a.AreaCode.ToUpper().Contains(Keyword.Trim().ToUpper())).ToList();
-                }
-                else if (SearchBy.Equals("AreaName"))
-                {
-                    StorageArea = storageService.GetStorageAreas().Where(a => a.AreaName.ToLower().Contains(Keyword.Trim().ToLower())).ToList();
-                }
-                PageIndex = 1;
-                TotalPages = 1;
+                count = storageService.GetStorageAreas()
+                    .Skip((curentPage - 1) * pageSize).Take(pageSize)
+                    .Count();
+                StorageArea = storageService.GetStorageAreas()
+                    .Where(a => a.AreaCode.ToUpper().Contains(SearchText.Trim().ToUpper()) || a.AreaName.ToLower().Contains(SearchText.Trim().ToLower()))
+                    .Skip((curentPage - 1) * pageSize).Take(pageSize)
+                    .ToList();
             }
+
+            return Page();
         }
     }
 }

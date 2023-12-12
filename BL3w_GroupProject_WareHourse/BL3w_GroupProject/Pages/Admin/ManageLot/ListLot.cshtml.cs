@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using BusinessObject.Models;
 using Service;
+using static Microsoft.Extensions.Logging.EventSource.LoggingEventSource;
 
 namespace BL3w_GroupProject.Pages.Admin.ManageLot
 {
@@ -21,10 +22,16 @@ namespace BL3w_GroupProject.Pages.Admin.ManageLot
         }
 
         public IList<Lot> Lot { get;set; } = default!;
-        public int PageIndex { get; set; }
-        public int TotalPages { get; set; }
-        [BindProperty] public string? SearchBy { get; set; }
-        [BindProperty] public string? Keyword { get; set; }
+
+        [BindProperty(SupportsGet = true)]
+        public int curentPage { get; set; } = 1;
+        public int pageSize { get; set; } = 5;
+        public int count { get; set; }
+        public int totalPages => (int)Math.Ceiling(Decimal.Divide(count, pageSize));
+
+
+        [BindProperty(SupportsGet = true)]
+        public string SearchText { get; set; }
 
         public IActionResult OnGet(int? pageIndex)
         {
@@ -39,31 +46,26 @@ namespace BL3w_GroupProject.Pages.Admin.ManageLot
             {
                 return RedirectToPage("/Login");
             }
-            var LotList = lotService.GetAllLots().ToList();
-            PageIndex = pageIndex ?? 1;
-            var count = LotList.Count();
-            TotalPages = (int)Math.Ceiling(count / (double)PageSize);
-            var items = LotList.Skip((PageIndex - 1) * PageSize).Take(PageSize).ToList();
 
-            Lot = items;
+
+            if(SearchText != null)
+            {
+                count = lotService.GetAllLots()
+                    .Skip((curentPage - 1) * pageSize).Take(pageSize)
+                .Count();
+                Lot = lotService.GetAllLots()
+                    .Where(a => a.LotCode.ToUpper().Contains(SearchText.Trim().ToUpper()))
+                    .Skip((curentPage - 1) * pageSize).Take(pageSize)
+                    .ToList();
+            } else
+            {
+                count = lotService.GetAllLots().Count();
+                Lot = lotService.GetAllLots()
+                    .Skip((curentPage - 1) * pageSize).Take(pageSize)
+                    .ToList();
+            }
+
             return Page();
-        }
-
-        public async Task OnPost(int? pageIndex)
-        {
-            if (Keyword == null)
-            {
-                OnGet(pageIndex);
-            }
-            else
-            {
-                if (SearchBy.Equals("LotCode"))
-                {
-                    Lot = lotService.GetAllLots().Where(a => a.LotCode.ToUpper().Contains(Keyword.Trim().ToUpper())).ToList();
-                }
-                PageIndex = 1;
-                TotalPages = 1;
-            }
         }
     }
 }
