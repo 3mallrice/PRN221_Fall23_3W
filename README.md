@@ -38,8 +38,8 @@ This project is part of the PRN221 course, "Advanced Cross-Platform Application 
 <!-- Back-end -->
 <div align="center">
   <a href="https://java.com" target="blank" rel="noreferrer"><img src="https://img.shields.io/badge/Java-19-red.svg?style=for-the-badge&logo=java&logoColor=white&labelColor=2C2D72"/></a>
-  <a href="https://learn.microsoft.com/en-us/dotnet/core/whats-new/dotnet-6" target="blank" rel="noreferrer"><img src="https://img.shields.io/badge/dotnet- -red?style=for-the-badge&logo=java&logoColor=white&labelColor=2C2D72"/></a>
-  <a href="https://learn.microsoft.com/en-us/aspnet/entity-framework" target="blank" rel="noreferrer"><img src="https://img.shields.io/badge/Entity_Framework_(EF)- -red?style=for-the-badge"/></a>
+  <a href="https://learn.microsoft.com/en-us/dotnet/core/whats-new/dotnet-6" target="blank" rel="noreferrer"><img src="https://img.shields.io/badge/dotnet- 6 -red?style=for-the-badge&logo=java&logoColor=white&labelColor=2C2D72"/></a>
+  <a href="https://learn.microsoft.com/en-us/aspnet/entity-framework" target="blank" rel="noreferrer"><img src="https://img.shields.io/badge/Entity_Framework_(EF)- 6 -red?style=for-the-badge"/></a>
   <a href="https://learn.microsoft.com/en-us/aspnet/core/introduction-to-aspnet-core?view=aspnetcore-8.0" target="blank" rel="noreferrer"><img src="https://img.shields.io/badge/ASP_.Net_Core- -green?style=for-the-badge"/></a>
 </div>
 <!-- Database -->
