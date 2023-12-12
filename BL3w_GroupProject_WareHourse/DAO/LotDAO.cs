@@ -65,7 +65,7 @@ namespace DAO
             return _dbContext.Lots
                 .Include(c => c.Account)
                 .Include(c => c.Partner)
-                .Include(c => c.Partner)
+                .Include(c => c.LotDetails)
                 .SingleOrDefault(c => c.LotId == id);
         }
         public Lot GetLotByAccountId(int id)
@@ -115,6 +115,9 @@ namespace DAO
             var eLot = GetLotById(lot.LotId);
             if (eLot != null)
             {
+                 lot.LotCode = eLot.LotCode;
+                 lot.DateIn = DateTime.Now;
+                 lot.Status = 1;
                 _dbContext.Lots.Update(lot);
                 _dbContext.SaveChanges();
             }
@@ -143,6 +146,10 @@ namespace DAO
             var eLot = GetLotById(lot.LotId);
             if (eLot != null)
             {
+                LotDetail lotDetail = new LotDetail();
+                lotDetail.PartnerId = lot.PartnerId;
+                UpdateLotDetail(lotDetail);
+
                 lot.Status = 0;
                 _dbContext.Lots.Update(lot);
                 _dbContext.SaveChanges();
