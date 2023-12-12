@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using BusinessObject.Models;
 using Service;
+using System.Drawing.Printing;
 
 namespace BL3w_GroupProject.Pages.Manager.ProductPage
 {
@@ -28,9 +29,10 @@ namespace BL3w_GroupProject.Pages.Manager.ProductPage
         public int curentPage { get; set; } = 1;
         public int pageSize { get; set; } = 5;
         public int count { get; set; }
-        public int totalPages => (int)Math.Ceiling(Decimal.Divide(count, pageSize));
+        public int TotalPages { get; set; }
+        public int TotalRecords { get; set; }
 
-        public IActionResult OnGetAsync()
+        public IActionResult OnGetAsync(string searchText, int currentPage = 1)
         {
             if (HttpContext.Session.GetString("account") is null)
             {
@@ -43,25 +45,25 @@ namespace BL3w_GroupProject.Pages.Manager.ProductPage
             {
                 return RedirectToPage("/Login");
             }
+            SearchText = searchText;
+            var products = _productService.GetProducts();
 
-            if (SearchText != null)
+            if (!string.IsNullOrEmpty(searchText))
             {
-                count = _productService.GetProducts()
-                    .Where(P => P.Name.Contains(SearchText) || P.ProductCode.Contains(SearchText))
-                    .Count();
+                products = products.Where(p =>
+                    p.Name.Contains(searchText, StringComparison.OrdinalIgnoreCase) ||
+                    p.ProductCode.Contains(searchText, StringComparison.OrdinalIgnoreCase)
+                ).ToList();
+            }
 
-                Product = _productService.GetProducts()
-                    .Where(P => P.Name.ToLower().Contains(SearchText) || P.ProductCode.ToLower().Contains(SearchText))
-                    .Skip((curentPage - 1) * pageSize).Take(pageSize)
-                    .ToList();
-            }
-            else
-            {
-                count = _productService.GetProducts().Count();
-                Product = _productService.GetProducts()
-                    .Skip((curentPage - 1) * pageSize).Take(pageSize)
-                    .ToList();
-            }
+            TotalRecords = products.Count();
+
+            Product = products.Skip((currentPage - 1) * pageSize)
+                              .Take(pageSize)
+            .ToList();
+
+            TotalPages = (int)System.Math.Ceiling((double)TotalRecords / pageSize);
+            curentPage = currentPage;
             return Page();
         }
     }

@@ -3,6 +3,8 @@
 
 @{
     ViewData["Title"] = "Index";
+    Layout = "_LayoutManager";
+    int x = 0;
 }
 <head>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
@@ -31,7 +33,7 @@
 </div>
 
 <table class="table">
-    <thead style="background-color: #f37021; color: #fff;">
+        <thead style="background-color: #51B848; color: #fff;">
         <tr>
             <th>
                 No
@@ -52,9 +54,7 @@
         @foreach (var item in Model.Partner)
         {
             <tr>
-                <td>
-                   @(Model.Partner.IndexOf(item) + (Model.CurrentPage - 1) * Model.PageSize + 1)
-                </td>
+                <td class="text-center">@(++x)</td>
                 <td>
                     <a asp-page="./Edit" asp-route-id="@item.PartnerId" style="text-decoration: none;">
                     @Html.DisplayFor(modelItem => item.PartnerCode)

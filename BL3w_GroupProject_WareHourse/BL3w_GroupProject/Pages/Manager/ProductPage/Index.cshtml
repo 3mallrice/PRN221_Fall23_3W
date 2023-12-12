@@ -3,6 +3,8 @@
 
 @{
     ViewData["Title"] = "Index";
+    Layout = "_LayoutManager";
+    int x = 0;
 }
 <head>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
@@ -33,7 +35,7 @@
 </div>
 
 <table class="table table-hover">
-    <thead style="background-color: #f37021; text-align: center" class="text-white">
+    <thead style="background-color: #51B848; text-align: center" class="text-white">
         <tr>
             <th>
                 No
@@ -62,9 +64,7 @@
         @foreach (var item in Model.Product)
         {
             <tr>
-                <td>
-                    @(Model.Product.IndexOf(item) + (Model.curentPage - 1) * Model.pageSize + 1)
-                </td>
+                <td class="text-center">@(++x)</td>
                 <td class="text-center">
                     <a asp-page="./Edit" asp-route-id="@item.ProductId" style="text-decoration: none;">
                     @Html.DisplayFor(modelItem => item.ProductCode)
@@ -104,7 +104,7 @@
 
 <div>
     <ul class="pagination">
-        @for (int b = 1; b <= Model.totalPages; b++)
+        @for (int b = 1; b <= Model.TotalPages; b++)
         {
             <li class="page-item @(b == Model.curentPage ? "active" : "")">
                 <a asp-page="./Index" asp-route-curentPage="@b" class="page-link">@b</a>
