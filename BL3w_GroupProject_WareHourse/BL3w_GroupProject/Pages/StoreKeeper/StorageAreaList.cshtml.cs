@@ -47,11 +47,11 @@ namespace BL3w_GroupProject.Pages.StoreKeeper
             if (SearchText != null)
             {
                 count = _storageService.GetStorageAreas()
-                    .Where(P => P.AreaName.Contains(SearchText) || P.AreaCode.Contains(SearchText))
+                    .Where(P => P.AreaName.ToLower().Contains(SearchText.ToLower()) || P.AreaCode.ToLower().Contains(SearchText.ToLower()))
                     .Count();
 
                 StorageArea = _storageService.GetStorageAreas()
-                    .Where(P => P.AreaName.Contains(SearchText) || P.AreaCode.Contains(SearchText))
+                    .Where(P => P.AreaName.ToLower().Contains(SearchText.ToLower()) || P.AreaCode.ToLower().Contains(SearchText.ToLower()))
                     .Skip((curentPage - 1) * pageSize).Take(pageSize)
                     .ToList();
             }
