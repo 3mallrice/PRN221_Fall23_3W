@@ -106,5 +106,65 @@ namespace DAO
                 return false;
             }
         }
+
+        public List<StockOutDetail> GetStockOutDetailById(int id)
+        {
+            List<StockOutDetail> stockOutDetail = null;
+
+            try
+            {
+                stockOutDetail = dbContext.StockOutDetails
+                    .Include(x => x.StockOut)
+                    .Include(x => x.Product)
+                    .Where(x => x.StockOutId == id).ToList();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+
+            return stockOutDetail;
+        }
+
+        public void UpdateStockOuts(StockOut stockOut)
+        {
+            var _dbContext = new PRN221_Fall23_3W_WareHouseManagementContext();
+            try
+            {
+                     stockOut.DateOut = DateTime.Now;
+                     stockOut.Status = 1;
+                    _dbContext.StockOuts.Update(stockOut);
+                    _dbContext.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public void UpdateStockOutsDetail(List<StockOutDetail> stockOutDetails, int stockOutId)
+        {
+            var _dbContext = new PRN221_Fall23_3W_WareHouseManagementContext();
+            try
+            {
+                List<StockOutDetail> stockOutDetailsList = GetStockOutDetailById(stockOutId);
+
+                foreach (var detail in stockOutDetailsList)
+                {
+                    var existingDetail = stockOutDetails.FirstOrDefault(d => d.StockOutDetailId == detail.StockOutDetailId);
+
+                    if (existingDetail != null)
+                    {
+                        _dbContext.Entry(detail).CurrentValues.SetValues(existingDetail);
+                    }
+                }
+                _dbContext.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
     }
 }

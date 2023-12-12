@@ -1,0 +1,63 @@
+﻿@page
+@model BL3w_GroupProject.Pages.StoreKeeper.StockOutEditModel
+
+@{
+    ViewData["Title"] = "StockOutEdit";
+    Layout = "_StoreKeeper";
+}
+
+<h1>Stock Out Edit</h1>
+
+<hr/>
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="StockOut.StockOutId" />
+            <div class="form-group">
+                <label asp-for="StockOut.Account.Email" class="control-label"></label>
+                <select asp-for="StockOut.AccountId" class="form-control" asp-items="ViewBag.AccountId"></select>
+                <span asp-validation-for="StockOut.AccountId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="StockOut.Partner.Name" class="control-label"></label>
+                <select asp-for="StockOut.PartnerId" class="form-control" asp-items="ViewBag.PartnerId"></select>
+                <span asp-validation-for="StockOut.PartnerId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="StockOut.Note" class="control-label"></label>
+                <input asp-for="StockOut.Note" class="form-control" />
+                <span asp-validation-for="StockOut.Note" class="text-danger"></span>
+            </div>
+            <tbody>
+                @for (var i = 0; i < Model.StockOutDetails.Count; i++)
+                {
+                    <tr>
+                        <td>
+                            <div style="display: flex; align-items: center;">
+                                <div class="text-center" style="margin-right: 10px;">
+                                    @Html.DisplayFor(modelItem => Model.StockOutDetails[i].Product.Name)
+                                </div>
+                                <div class="form-group">
+                                    <input asp-for="@Model.StockOutDetails[i].Quantity" name="StockOutDetails[@i].Quantity" class="form-control" />
+                                    <span asp-validation-for="@Model.StockOutDetails[i].Quantity" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-page="./Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
