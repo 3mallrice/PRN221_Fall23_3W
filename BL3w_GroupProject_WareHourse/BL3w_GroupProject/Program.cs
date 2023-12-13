@@ -1,3 +1,4 @@
+using BL3w_GroupProject.Hubs;
 using DAO;
 using Repositories;
 using Service;
@@ -19,7 +20,7 @@ builder.Services.AddScoped<IPartnerService, PartnerService>();
 // Add services to the container.
 builder.Services.AddRazorPages();
 builder.Services.AddSession();
-
+builder.Services.AddSignalR();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -34,7 +35,7 @@ app.UseRouting();
 app.UseAuthorization();
 
 app.MapRazorPages();
-
+app.MapHub<ChatHub>("/chatHub");
 app.UseSession();
 
 app.Run();

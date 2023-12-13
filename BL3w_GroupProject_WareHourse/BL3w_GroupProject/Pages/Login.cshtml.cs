@@ -46,18 +46,21 @@ namespace BL3w_GroupProject.Pages
             {
                 HttpContext.Session.SetString("account", "admin");
                 HttpContext.Session.SetInt32("accountId", account.AccountId);
+                HttpContext.Session.SetString("accountName", account.Name);
                 return RedirectToPage("/Admin/Dashboard");
             }
             else if (account.Role == 2 && account.Status == 1)
             {
                 HttpContext.Session.SetString("account", "manager");
                 HttpContext.Session.SetInt32("accountId", account.AccountId);
+                HttpContext.Session.SetString("accountName", account.Name);
                 return RedirectToPage("/Manager/ProductPage/Index");
             }
             else if (account.Role == 1 && account.Status == 1)
             {
                 HttpContext.Session.SetString("account", "storekeeper");
                 HttpContext.Session.SetInt32("accountId", account.AccountId);
+                HttpContext.Session.SetString("accountName", account.Name);
                 return RedirectToPage("/StoreKeeper/ProductList");
             }
                 return Page();

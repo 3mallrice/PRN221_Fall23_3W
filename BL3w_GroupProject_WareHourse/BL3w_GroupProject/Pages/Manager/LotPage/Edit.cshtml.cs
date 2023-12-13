@@ -26,7 +26,7 @@ namespace BL3w_GroupProject.Pages.Manager.LotPage
         [BindProperty]
         public Lot Lot { get; set; } = default!;       
         [BindProperty]
-        public LotDetail LotDetail { get; set; } = default!;
+        public List<LotDetail> LotDetail { get; set; } = new List<LotDetail>();
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
@@ -48,13 +48,13 @@ namespace BL3w_GroupProject.Pages.Manager.LotPage
             }
 
             var lot =  lotService.GetLotById((int)id);
-            var lotDetail = lotService.GetLotDetailById((int)id);
+            List<LotDetail> lotdetails = lotService.GetListLotDetailById((int)id);
             if (lot == null)
             {
                 return NotFound();
             }
             Lot = lot;
-            LotDetail = lotDetail;
+            LotDetail = lotdetails;
             ViewData["AccountId"] = new SelectList(accountService.GetAccounts(), "AccountId", "Email");
             ViewData["PartnerId"] = new SelectList(partnerService.GetPartners(), "PartnerId", "Name");
             return Page();
@@ -66,10 +66,14 @@ namespace BL3w_GroupProject.Pages.Manager.LotPage
         {
             try
             {
-                LotDetail.LotDetailId = Lot.LotId;
-                LotDetail.PartnerId = Lot.PartnerId;
                 lotService.UpdateLot(Lot);
-                lotService.UpdateLotDetail(LotDetail);
+                for (int i = 0; i < LotDetail.Count; i++)
+                {
+                    LotDetail[i].LotDetailId = Convert.ToInt32(Request.Form[$"LotDetail[{i}].LotDetailId"]);
+                    LotDetail[i].Quantity = Convert.ToInt32(Request.Form[$"LotDetail[{i}].Quantity"]);
+                    LotDetail[i].PartnerId = Lot.PartnerId;
+                    lotService.UpdateLotDetail(LotDetail[i]);
+                }
             }
             catch (DbUpdateConcurrencyException)
             {

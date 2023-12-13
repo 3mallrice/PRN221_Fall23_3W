@@ -35,5 +35,6 @@ namespace Repositories
         void UpdateLotDetail(LotDetail detail);
         void DeleteLotDetailPermanently(LotDetail detail);
         void DeleteLotDetailStatus(LotDetail detail);
+        List<LotDetail> GetListLotDetailById(int id);
     }
 }

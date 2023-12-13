@@ -11,6 +11,8 @@
 
 <h4>Edit Lot</h4>
 
+<h4>Lot</h4>
+<hr />
 <div class="row">
     <div class="col-md-4">
         <form method="post">
@@ -31,12 +33,23 @@
                 <input asp-for="Lot.Note" class="form-control" />
                 <span asp-validation-for="Lot.Note" class="text-danger"></span>
             </div>   
-            <div class="form-group">
-                <label asp-for="LotDetail.Quantity" class="control-label"></label>
-                <input asp-for="LotDetail.Quantity" class="form-control" />
-                <span asp-validation-for="LotDetail.Quantity" class="text-danger"></span>
-            </div> 
-            <br />
+            <tbody>
+                @for (var i = 0; i < Model.LotDetail.Count; i++)
+                {
+                    <input asp-for="@Model.LotDetail[i].LotDetailId" name="LotDetail[@i].LotDetailId" class="form-control" type="hidden" />
+                    <tr>
+                        <td>
+                            <div style="display: flex; align-items: center;">
+                                <div class="form-group">
+                                    <label asp-for="LotDetail" class="control-label">@Html.DisplayFor(modelItem => Model.LotDetail[i].Product.Name)</label>
+                                    <input asp-for="@Model.LotDetail[i].Quantity" name="LotDetail[@i].Quantity" class="form-control" />
+                                    <span asp-validation-for="@Model.LotDetail[i].Quantity" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
             <div class="form-group">
                 <a asp-page="./Index" class="btn text-white" style="background-color: #F37021"><i class="fa-solid fa-right-from-bracket"></i></a>
                 <input type="submit" value="Save" class="btn btn-primary" />

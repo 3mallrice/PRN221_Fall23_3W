@@ -65,7 +65,7 @@ namespace Service
         public IEnumerable<Lot> GetListLotByPartnerID(int acID)
         {
             return _lotRepo.GetListLotByPartnerID(acID);
-        }   
+        }
 
         public IEnumerable<LotDetail> GetListLotDetailByLotID(int lotID)
         {
@@ -131,5 +131,11 @@ namespace Service
         {
             _lotRepo.UpdateLotDetail(detail);
         }
+
+        public List<LotDetail> GetListLotDetailById(int id)
+        {
+            return _lotRepo.GetListLotDetailById(id);
+        }
+
     }
 }
