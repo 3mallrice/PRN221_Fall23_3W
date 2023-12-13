@@ -131,6 +131,11 @@
                 letter-spacing: 5px;
                 box-shadow: 0 0 10px rgba(0,0,0,0.3) inset;
             }
+
+        .form-horizontal .form-control::placeholder {
+            color: gray;
+            font-weight: normal;
+        }
     </style>
 </head>
 
@@ -146,11 +151,11 @@
                                 <i class="fa fa-user-circle"></i>
                             </div>
                             <div class="form-group">
-                                <span class="input-icon"><i class="fa-regular fa-envelope"></i></span>
+                                <span class="input-icon" style="color:#034ea2"><i class="fa-regular fa-envelope"></i></span>
                                 <input type="text" name="email" class="form-control" placeholder="Email">
                             </div>
                             <div class="form-group">
-                                <span class="input-icon"><i class="fa fa-lock"></i></span>
+                                <span class="input-icon" style="color:#034ea2"><i class="fa fa-lock"></i></span>
                                 <input type="password" name="password" class="form-control" placeholder="Password">
                                 <span class="forgot"><a href="">Forgot Password?</a></span>
                             </div>

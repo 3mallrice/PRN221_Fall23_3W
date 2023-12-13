@@ -14,44 +14,68 @@
         Layout = "/Pages/Shared/_StoreKeeper.cshtml";
     }
 }
+<style>
+    .fixed-height-container {
+        height: 400px;
+    }
 
-<div class="container">
-    <div class="row p-1">
-        <div class="col-1">User</div>
-        <div class="col-5">
-            @if (HttpContext.Session.GetString("account") == "admin")
-            {
-                <input type="text" id="userInput" value='@($"{name} (Admin)")' class="w-50" />
-            }
-            else if (HttpContext.Session.GetString("account") == "manager")
-            {
-                <input type="text" id="userInput" value='@($"{name} (Manager)")' class="w-50" />
-            }
-            else if (HttpContext.Session.GetString("account") == "storekeeper")
-            {
-                <input type="text" id="userInput" value='@($"{name} (Storekeeper)")' class="w-50" />
-            }
+    #messagesList {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        max-height: 300px;
+        overflow-y: auto;
+    }
+</style>
+
+<div class="container" style="border-radius: 8px; border: 2px solid #034ea2; padding: 20px">
+
+    <div class="fixed-height-container">
+        <div class="row">
+            <div class="col-12">
+                <ul id="messagesList" class="list-unstyled"></ul>
+            </div>
+        </div>
+        <div class="row mb-3">
+            <div class="col-12">
+                <hr />
+            </div>
         </div>
     </div>
-    <div class="row p-1">
-        <div class="col-1">Message</div>
-        <div class="col-5"> <input type="text" class="w-100" id="messageInput" style="width: 300px; height: 50px;"/></div>
-    </div>
-    <div class="row p-1">
-        <div class="col-6 text-end">
-            <input type="button" id="sendButton" value="Send Message" />
+
+    <div>
+        <div class="row mb-3">
+            <div class="col-2 fw-bold">User</div>
+            <div class="col-4">
+                @if (HttpContext.Session.GetString("account") == "admin")
+                {
+                    <input type="text" id="userInput" value='@($"{name} (Admin)")' class="form-control" readonly style="background-color: lightgray" />
+                }
+                else if (HttpContext.Session.GetString("account") == "manager")
+                {
+                    <input type="text" id="userInput" value='@($"{name} (Manager)")' class="form-control" readonly style="background-color: lightgray" />
+                }
+                else if (HttpContext.Session.GetString("account") == "storekeeper")
+                {
+                    <input type="text" id="userInput" value='@($"{name} (Storekeeper)")' class="form-control" readonly style="background-color: lightgray" />
+                }
+            </div>
+        </div>
+        <div class="justify-content-center">
+            <div class="row mb-3">
+                <div class="col-2 fw-bold">Message</div>
+                <div class="col-4">
+                    <input type="text" class="form-control" id="messageInput" style="width: 300px; height: 50px" />
+                </div>
+            </div>
+            <div class="row mb-3">
+                <div class="col-6 text-end">
+                    <button type="button" id="sendButton" class="btn btn-primary">Send Message</button>
+                </div>
+            </div>
         </div>
     </div>
-    <div class="row p-1">
-        <div class="col-6">
-            <hr />
-        </div>
-    </div>
-    <div class="row p-1">
-        <div class="col-6">
-            <ul id="messagesList"></ul>
-        </div>
-    </div>
+</div>
 </div>
 <script src="~/js/signalr/dist/browser/signalr.js"></script>
 <script src="~/js/chat.js"></script>
