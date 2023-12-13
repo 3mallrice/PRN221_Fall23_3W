@@ -34,6 +34,7 @@
             <tbody>
                 @for (var i = 0; i < Model.StockOutDetails.Count; i++)
                 {
+                    <input asp-for="@Model.StockOutDetails[i].StockOutDetailId" name="StockOutDetails[@i].StockOutDetailId" class="form-control" type="hidden" />
                     <tr>
                         <td>
                             <div style="display: flex; align-items: center;">
