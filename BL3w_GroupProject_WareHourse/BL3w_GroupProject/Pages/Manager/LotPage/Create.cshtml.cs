@@ -131,7 +131,7 @@ namespace BL3w_GroupProject.Pages.Manager.LotPage
         private void InitializeSelectLists()
         {
             var accountId = HttpContext.Session.GetInt32("accountId");
-            ViewData["AccountId"] = new SelectList(_accService.GetAccounts().Where(x => x.Status != 0 && x.AccountId == accountId), "AccountId", "Email");
+            ViewData["AccountId"] = _accService.GetAccountByID((int)accountId).Email;
             ViewData["PartnerId"] = new SelectList(_partnerService.GetPartners().Where(x => x.Status != 0), "PartnerId", "Name");
             ViewData["ProductId"] = new SelectList(_productService.GetProducts(), "ProductId", "Name");
         }
