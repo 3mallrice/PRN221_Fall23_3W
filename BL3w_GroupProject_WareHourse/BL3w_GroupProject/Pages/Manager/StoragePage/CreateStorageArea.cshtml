@@ -11,18 +11,20 @@
 </head>
 
 <h4>Create StorageArea</h4>
-<hr />
 <div class="row">
     <div class="col-md-4">
+        <div class="text-danger">
+            @ViewData["Notification"]
+        </div>
         <form method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                StorageArea Code
+                Code
                 <input asp-for="StorageArea.AreaCode" class="form-control" />
                 <span asp-validation-for="StorageArea.AreaCode" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="StorageArea.AreaName" class="control-label"></label>
+                Name
                 <input asp-for="StorageArea.AreaName" class="form-control" />
                 <span asp-validation-for="StorageArea.AreaName" class="text-danger"></span>
             </div>

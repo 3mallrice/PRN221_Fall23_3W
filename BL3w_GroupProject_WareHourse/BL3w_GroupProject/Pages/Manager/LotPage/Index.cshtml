@@ -30,58 +30,57 @@
             </div>
         </div>
     </div>
-</div>
-<table class="table">
-    <thead style="background-color: #51B848; color: #fff;">
-        <tr>
-            <th>No.</th>
-            <th>Lot Code</th>
-            <th>Date In</th>
-            <th>Note</th>
-            <th>Status</th>
-            <th>Account Name</th>
-            <th>Partner Name</th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model.Lot)
-        {
+    <table class="table">
+        <thead style="background-color: #51B848; color: #fff; text-align: center">
             <tr>
-                <td class="text-center">@(++x)</td>
-                <td>
-                    <a asp-page="./Details" asp-route-id="@item.LotId" style="text-decoration: none;">
-                        @Html.DisplayFor(modelItem => item.LotCode)
-                    </a>
-                </td>
-                <td>@item.DateIn.ToString("d")</td>
-                <td>@Html.DisplayFor(modelItem => item.Note)</td>
-                <td>
-                    @if (item.Status == 1)
-                    {
-                        <span class="text-success">Active</span>
-                    }
-                    else
-                    {
-                        <span class="text-danger">Inactive</span>
-                    }
-                </td>
-                <td>@Html.DisplayFor(modelItem => item.Account.Name)</td>
-                <td>@Html.DisplayFor(modelItem => item.Partner.Name)</td>
-                <td>
-                    <a asp-page="./Edit" asp-route-id="@item.LotId"><i class="fa-solid fa-pen"></i></a>
-                </td>
+                <th>No.</th>
+                <th>Lot Code</th>
+                <th>Date In</th>
+                <th>Note</th>
+                <th>Status</th>
+                <th>Account Name</th>
+                <th>Partner Name</th>
+                <th></th>
             </tr>
-        }
-    </tbody>
-</table>
-<div>
-    <ul class="pagination">
-        @for (int b = 1; b <= Model.TotalPages; b++)
-        {
-            <li class="page-item @(b == Model.CurrentPage ? "active" : "")">
-                <a asp-page="./Index" asp-route-currentPage="@b" class="page-link">@b</a>
-            </li>
-        }
-    </ul>
-</div>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Lot)
+            {
+                <tr>
+                    <td class="text-center"s>@(++x)</td>
+                    <td class="text-center">
+                        <a asp-page="./Details" asp-route-id="@item.LotId" style="text-decoration: none;">
+                            @Html.DisplayFor(modelItem => item.LotCode)
+                        </a>
+                    </td>
+                    <td class="text-center">@item.DateIn.ToString("d")</td>
+                    <td>@Html.DisplayFor(modelItem => item.Note)</td>
+                    <td class="text-center">
+                        @if (item.Status == 1)
+                        {
+                            <span class="text-success">Active</span>
+                        }
+                        else
+                        {
+                            <span class="text-danger">Inactive</span>
+                        }
+                    </td>
+                    <td>@Html.DisplayFor(modelItem => item.Account.Name)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Partner.Name)</td>
+                    <td>
+                        <a asp-page="./Edit" asp-route-id="@item.LotId"><i class="fa-solid fa-pen"></i></a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <div>
+        <ul class="pagination">
+            @for (int b = 1; b <= Model.TotalPages; b++)
+            {
+                <li class="page-item @(b == Model.CurrentPage ? "active" : "")">
+                    <a asp-page="./Index" asp-route-currentPage="@b" class="page-link">@b</a>
+                </li>
+            }
+        </ul>
+    </div>

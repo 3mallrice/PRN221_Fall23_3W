@@ -16,21 +16,21 @@
         <form method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="Product.ProductCode" class="control-label"></label>
+                Code
                 <input asp-for="Product.ProductCode" class="form-control" />
                 <span asp-validation-for="Product.ProductCode" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Product.Name" class="control-label"></label>
+                Name
                 <input asp-for="Product.Name" class="form-control" />
                 <span asp-validation-for="Product.Name" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Product.AreaId" class="control-label"></label>
+                Area Name
                 <select asp-for="Product.AreaId" class="form-control" asp-items="ViewBag.AreaId"></select>
             </div>
             <div class="form-group">
-                <label asp-for="Product.CategoryId" class="control-label"></label>
+                Category Name
                 <select asp-for="Product.CategoryId" class="form-control" asp-items="ViewBag.CategoryId"></select>
             </div>
             <br />
@@ -43,5 +43,37 @@
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script>
+        var duplicateError = '@ViewData["Error"]';
+        if (duplicateError) {
+            showErrorPopup(duplicateError);
+        }
+
+        function showErrorPopup(errorMessage) {
+            alert(errorMessage);
+        }
+
+        function validateProductCode() {
+            var productCodeInput = document.getElementById("Product_ProductCode");
+            var productCodeValue = productCodeInput.value.trim();
+            var regex = /^prod\d{3}$/i;
+
+            if (!regex.test(productCodeValue)) {
+                alert("ProductCode must start with 'prod' or 'PROD' followed by 3 digits.");
+                productCodeInput.focus();
+                return false;
+            }
+
+            return true;
+        }
+
+        document.querySelector('form').addEventListener('submit', function (event) {
+            if (!validateProductCode()) {
+                event.preventDefault();
+            }
+        });
+    </script>
 }

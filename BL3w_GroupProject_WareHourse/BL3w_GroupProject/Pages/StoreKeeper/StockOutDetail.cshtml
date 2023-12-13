@@ -81,7 +81,8 @@
             </tr>
         </thead>
         <tbody>
-            @foreach (var detail in Model.StockOut.StockOutDetails)
+            @ViewData["Notification"]
+            @foreach (var detail in Model.StockOutDetails)
             {
                 <tr class="text-center">
                     <td>@(++y)</td>

@@ -30,60 +30,60 @@
                 </div>
             </div>
         </div>
-</div>
+    </div>
 
-<table class="table">
-        <thead style="background-color: #51B848; color: #fff;">
-        <tr>
-            <th>
-                No
-            </th>
-            <th>
-                Partner Code
-            </th>
-            <th>
-                Name
-            </th>
-            <th>
-                Status
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model.Partner)
-        {
+    <table class="table table-hover">
+        <thead style="background-color: #51B848; color: #fff; text-align: center">
             <tr>
-                <td class="text-center">@(++x)</td>
-                <td>
-                    <a asp-page="./Edit" asp-route-id="@item.PartnerId" style="text-decoration: none;">
-                    @Html.DisplayFor(modelItem => item.PartnerCode)
-                    </a>
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Name)
-                </td>
-                <td>
-                    @if (item.Status == 1)
-                    {
-                        <span style="color: #28a745;">Active</span>
-                    }
-                    else if (item.Status == 0)
-                    {
-                        <span style="color: #dc3545;">Inactive</span>
-                    }
-                </td>
+                <th>
+                    No
+                </th>
+                <th>
+                    Partner Code
+                </th>
+                <th>
+                    Name
+                </th>
+                <th>
+                    Status
+                </th>
+                <th></th>
             </tr>
-        }
-    </tbody>
-</table>
-<div>
-    <ul class="pagination">
-        @for (int b = 1; b <= Model.TotalPages; b++)
-        {
-            <li class="page-item @(b == Model.CurrentPage ? "active" : "")">
-                <a asp-page="./Index" asp-route-currentPage="@b" class="page-link">@b</a>
-            </li>
-        }
-    </ul>
-</div>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Partner)
+            {
+                <tr>
+                    <td class="text-center">@(++x)</td>
+                    <td class="text-center">
+                        <a asp-page="./Edit" asp-route-id="@item.PartnerId" style="text-decoration: none;">
+                            @Html.DisplayFor(modelItem => item.PartnerCode)
+                        </a>
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Name)
+                    </td>
+                    <td class="text-center">
+                        @if (item.Status == 1)
+                        {
+                            <span style="color: #28a745;">Active</span>
+                        }
+                        else if (item.Status == 0)
+                        {
+                            <span style="color: #dc3545;">Inactive</span>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <div>
+        <ul class="pagination">
+            @for (int b = 1; b <= Model.TotalPages; b++)
+            {
+                <li class="page-item @(b == Model.CurrentPage ? "active" : "")">
+                    <a asp-page="./Index" asp-route-currentPage="@b" class="page-link">@b</a>
+                </li>
+            }
+        </ul>
+    </div>

@@ -45,7 +45,12 @@ namespace BL3w_GroupProject.Pages.Manager.CategoryPage
         {
 
 
-            _categoryService.AddCategory(Category);
+            bool cate = _categoryService.AddCategory(Category);
+            if (!cate)
+            {
+                ViewData["Notification"] = "Create not successfully!";
+                return Page();
+            }
 
             return RedirectToPage("./ListCategory");
         }
