@@ -18,6 +18,7 @@ namespace Repositories
         }
 
         public bool AddStockOut(StockOut stockOut) => stockOutDAO.AddStockOut(stockOut);
+        public bool AddOneStockOutDetail(StockOutDetail detail) => stockOutDAO.AddOneStockOutDetail(detail);
 
         public StockOut GetStockOutById(int id) => stockOutDAO.GetStockOutById(id);
 
@@ -31,5 +32,9 @@ namespace Repositories
         public void UpdateStockOutsDetail(int stockOutDetailsId, int Quantity) => stockOutDAO.UpdateStockOutsDetail(stockOutDetailsId, Quantity);
 
         public bool AddStockOutDetail(int stockOutId, List<StockOutDetail> stockOutDetails) => stockOutDAO.AddStockOutDetail(stockOutId, stockOutDetails);
+
+        public void DeleteStockOutPermanently(StockOut stockOut) => stockOutDAO.DeleteStockOutPermanently(stockOut);
+
+        public void DeleteStockOutDetailsPermanently(StockOutDetail stockOutDetail) => stockOutDAO.DeleteStockOutDetailsPermanently(stockOutDetail);
     }
 }

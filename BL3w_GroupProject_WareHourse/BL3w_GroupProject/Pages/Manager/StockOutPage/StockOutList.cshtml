@@ -1,13 +1,12 @@
 ﻿@page
-@model BL3w_GroupProject.Pages.StoreKeeper.LotListModel
+@model BL3w_GroupProject.Pages.Manager.StockOutListModel
 
 @{
-    ViewData["Title"] = "LotList";
-    Layout = "_StoreKeeper";
+    ViewData["Title"] = "StockOutList";
+    Layout = "_LayoutManager";
 
     int x = 0;
 }
-
 <head>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
@@ -17,8 +16,8 @@
     <div class="row">
         <div class="col-lg-12">
             <div class="row justify-content-lg-start">
-                <div class="col-3">
-                    <h3>Lots management</h3>
+                <div class="col-4">
+                    <h3>StockOuts management</h3>
                 </div>
                 <div class="col-3">
                     <form class="d-md-inline-flex" role="search" method="get">
@@ -28,7 +27,7 @@
                 </div>
                 <div class="col-2">
                     <p>
-                        <a asp-page="./LotCreate" class="btn btn-primary"><i class="fa-solid fa-download"></i></i></a>
+                        <a asp-page="./StockOutCreate" class="btn btn-primary"><i class="fa-solid fa-truck"></i></a>
                     </p>
                 </div>
             </div>
@@ -41,36 +40,31 @@
         <tr>
             <th>No.</th>
             <th>
-                @Html.DisplayNameFor(model => model.Lot[0].LotCode)
+                @Html.DisplayNameFor(model => model.StockOut[0].DateOut)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Lot[0].DateIn)
+                @Html.DisplayNameFor(model => model.StockOut[0].Note)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Lot[0].Note)
+                @Html.DisplayNameFor(model => model.StockOut[0].Status)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Lot[0].Status)
+                @Html.DisplayNameFor(model => model.StockOut[0].Account)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Lot[0].Account)
+                @Html.DisplayNameFor(model => model.StockOut[0].Partner)
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Lot[0].Partner)
-            </th>
+            <th></th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model.Lot)
+        @foreach (var item in Model.StockOut)
         {
             <tr>
                 <td class="text-center">@(++x)</td>
                 <td class="text-center">
-                    @Html.DisplayFor(modelItem => item.LotCode)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.DateIn)
+                    @Html.DisplayFor(modelItem => item.DateOut)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Note)
@@ -97,7 +91,10 @@
                     @Html.DisplayFor(modelItem => item.Partner.Name)
                 </td>
                 <td>
-                    <a asp-page="./LotDetail" asp-route-id="@item.LotId"><i class="fa-solid fa-circle-info"></i></a>
+                    <a asp-page="./StockOutDetail" asp-route-id="@item.StockOutId"><i class="fa-solid fa-circle-info"></i></a>
+                </td> 
+                <td>
+                    <a asp-page="./StockOutEdit" asp-route-id="@item.StockOutId"><i class="fa-solid fa-pen"></i></a>
                 </td>
             </tr>
         }
@@ -109,7 +106,7 @@
         @for (int b = 1; b <= Model.totalPages; b++)
         {
             <li class="page-item @(b == Model.curentPage ? "active" : "")">
-                <a asp-page="./LotList" asp-route-curentPage="@b" class="page-link">@b</a>
+                <a asp-page="./StockOutList" asp-route-curentPage="@b" class="page-link">@b</a>
             </li>
         }
     </ul>

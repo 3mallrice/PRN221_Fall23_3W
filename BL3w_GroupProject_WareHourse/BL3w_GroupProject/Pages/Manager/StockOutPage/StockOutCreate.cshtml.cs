@@ -7,19 +7,18 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using BusinessObject.Models;
 using Service;
-using Microsoft.Identity.Client.Extensions.Msal;
 
-namespace BL3w_GroupProject.Pages.Manager.LotPage
+namespace BL3w_GroupProject.Pages.Manager
 {
-    public class CreateModel : PageModel
+    public class StockOutCreateModel : PageModel
     {
-        private readonly ILotService _lotService;
+        private readonly IStockOutService _stockoutService;
         private readonly IAccountService _accService;
         private readonly IProductService _productService;
         private readonly IPartnerService _partnerService;
-        public CreateModel()
+        public StockOutCreateModel()
         {
-            _lotService = new LotService();
+            _stockoutService = new StockOutService();
             _productService = new ProductService();
             _partnerService = new PartnerService();
             _accService = new AccountService();
@@ -32,7 +31,7 @@ namespace BL3w_GroupProject.Pages.Manager.LotPage
                 return RedirectToPage("/Login");
             }
 
-            var role = HttpContext.Session.GetString("account");        
+            var role = HttpContext.Session.GetString("account");
             var accountId = HttpContext.Session.GetInt32("accountId");
             if (role != "manager")
             {
@@ -45,9 +44,9 @@ namespace BL3w_GroupProject.Pages.Manager.LotPage
         }
 
         [BindProperty]
-        public Lot Lot { get; set; } = default!;
+        public StockOut StockOut { get; set; } = default!;
         [BindProperty]
-        public LotDetail LotDetail { get; set; } = default!;
+        public StockOutDetail StockOutDetail { get; set; } = default!;
         [BindProperty]
         public Product Product { get; set; } = default!;
         [BindProperty]
@@ -55,10 +54,13 @@ namespace BL3w_GroupProject.Pages.Manager.LotPage
         [BindProperty]
         public Account Account { get; set; } = default!;
         [BindProperty]
-        public List<LotDetail> LotDetails { get; set; } = new List<LotDetail>();
+        public List<StockOutDetail> StockDetails { get; set; } = new List<StockOutDetail>();
 
         [BindProperty]
         public List<Product> Products { get; set; } = new List<Product>();
+
+
+        // To protect from overposting attacks, see https://aka.ms/RazorPagesCRUD
         public async Task<IActionResult> OnPostAsync()
         {
             bool anySelection = false;
@@ -67,33 +69,43 @@ namespace BL3w_GroupProject.Pages.Manager.LotPage
                 return RedirectToPage("/Login");
             }
             var accountId = HttpContext.Session.GetInt32("accountId");
-            Lot.Status = 1;
-            Lot.AccountId = (int)accountId;
-            Lot.PartnerId = Partner.PartnerId;
-            Lot.LotCode = Lot.LotCode.ToUpper();
-            _lotService.AddLot(Lot);
+            StockOut.AccountId = (int)accountId;
+            StockOut.PartnerId = Partner.PartnerId;
+            _stockoutService.AddStockOut(StockOut);
 
             HashSet<int> selectedProductIds = new HashSet<int>(); // Keep track of selected product IDs
             Dictionary<int, int> originalQuantities = new Dictionary<int, int>(); // Keep track of original quantities
             for (int i = 0; i < 5; i++)
             {
                 string productIdString = Request.Form[$"Products[{i}].ProductId"];
-                string quantityString = Request.Form[$"LotDetails[{i}].Quantity"];
+                string quantityString = Request.Form[$"StockOutDetails[{i}].Quantity"];
                 if (!string.IsNullOrEmpty(productIdString) && int.TryParse(productIdString, out int productId) &&
                     !string.IsNullOrEmpty(quantityString) && int.TryParse(quantityString, out int quantity) && quantity > 0)
                 {
                     anySelection = true;
+                    var productCheck = _productService.GetProductByID(productId);
+
+                    // Check if the quantity is greater than the available quantity in the product
+                    if (quantity > productCheck.Quantity)
+                    {
+                        ViewData["Error"] = $"Quantity for Product ID: {productId} exceeds available quantity:{productCheck.Quantity}.";
+                        // Delete the newly created stock (if any)
+                        _stockoutService.DeleteStockOutPermanently(StockOut);
+                        InitializeSelectLists();
+                        return Page();
+                    }
+
                     // Check if the product ID has already been selected
                     if (selectedProductIds.Contains(productId))
                     {
                         ViewData["Error"] = $"Duplicate selection of Product ID: {productId}.";
-                        var lotDetailsToDelete = _lotService.GetListLotDetailByLotID(Lot.LotId);
+                        var stockoutDetailsToDelete = _stockoutService.GetStockOutDetailById(StockOut.StockOutId);
 
-                        foreach (var detailToDelete in lotDetailsToDelete)
+                        foreach (var detailToDelete in stockoutDetailsToDelete)
                         {
-                            _lotService.DeleteLotDetailPermanently(detailToDelete);
+                            _stockoutService.DeleteStockOutDetailsPermanently(detailToDelete);
                         }
-                        _lotService.DeleteLotPermanently(Lot);
+                        _stockoutService.DeleteStockOutPermanently(StockOut);
                         // Revert product quantities to the original state
                         foreach (var kvp in originalQuantities)
                         {
@@ -110,30 +122,28 @@ namespace BL3w_GroupProject.Pages.Manager.LotPage
                     var product = _productService.GetProductByID(productId);
                     originalQuantities[productId] = product.Quantity; // Save the original quantity before the update
 
-                    var lotDetail = new LotDetail
+                    var stockDetail = new StockOutDetail
                     {
-                        LotId = Lot.LotId,
+                        StockOutId = StockOut.StockOutId,
                         ProductId = productId,
-                        PartnerId = Partner.PartnerId,
-                        Status = 1,
                         Quantity = quantity,
                     };
 
-                    _lotService.AddLotDetail(lotDetail);
-                    product.Quantity += quantity;
+                    _stockoutService.AddOneStockOutDetail(stockDetail);
+                    product.Quantity = product.Quantity-quantity;
                     _productService.UpdateProduct(product);
                 }
             }
             if (!anySelection)
             {
-                ViewData["Error"] = "No valid product selection and input was made {quantity needs to be greater than 0 }.";
-                _lotService.DeleteLotPermanently(Lot);
+                ViewData["Error"] = "No valid product selection and input was made {quantity needs to be greater than 0}.";
+                // Delete the newly created stock (if any)
+                _stockoutService.DeleteStockOutPermanently(StockOut);
                 InitializeSelectLists();
                 return Page();
             }
-            return RedirectToPage("./Index");
+            return RedirectToPage("./StockOutList");
         }
-
         private void InitializeSelectLists()
         {
             var accountId = HttpContext.Session.GetInt32("accountId");
