@@ -92,23 +92,64 @@ namespace DAO
         {
             try
             {
-                stockOut.DateOut = new DateTime();
-                dbContext.StockOuts.Add(stockOut);
-                dbContext.SaveChanges();
-
-                foreach (var stockOutDetail in stockOut.StockOutDetails)
+                using (var dbContext = new PRN221_Fall23_3W_WareHouseManagementContext())
                 {
-                    stockOutDetail.StockOutId = stockOut.StockOutId;
-                    dbContext.StockOutDetails.Add(stockOutDetail);
+                    stockOut.DateOut = DateTime.Now;
+                    stockOut.Status = 1;
+                    dbContext.StockOuts.Add(stockOut);
+                    dbContext.SaveChanges();
+                    return true;
                 }
-
-                dbContext.SaveChanges();
-
-                return true;
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Error adding StockOut: {ex.Message}");
+                Console.WriteLine($"Error: {ex.Message}");
+                return false;
+            }
+        }
+
+        public bool AddStockOutDetail(int stockOutId, List<StockOutDetail> stockOutDetails)
+        {
+            using var transaction = dbContext.Database.BeginTransaction();
+
+            try
+            {
+                using (var dbContext = new PRN221_Fall23_3W_WareHouseManagementContext())
+                {
+                    var stockOut = dbContext.StockOuts.Find(stockOutId);
+
+                    if (stockOut == null)
+                    {
+                        transaction.Rollback();
+                        throw new Exception($"StockOut with ID {stockOutId} not found.");
+                    }
+
+                    foreach (var detail in stockOutDetails)
+                    {
+                        var product = dbContext.Products.Find(detail.ProductId);
+
+                        if (product == null || product.Quantity < detail.Quantity)
+                        {
+                            transaction.Rollback();
+                            throw new Exception("Invalid product or insufficient quantity.");
+                        }
+
+                        product.Quantity -= detail.Quantity;
+
+                        detail.StockOutId = stockOutId;
+                        dbContext.StockOutDetails.Add(detail);
+                    }
+
+                    dbContext.SaveChanges();
+
+                    transaction.Commit();
+                    return true;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error: {ex.Message}");
+                transaction.Rollback();
                 return false;
             }
         }
@@ -171,6 +212,5 @@ namespace DAO
                 throw new Exception(ex.Message);
             }
         }
-
     }
 }

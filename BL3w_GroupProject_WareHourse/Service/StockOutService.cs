@@ -29,5 +29,7 @@ namespace Service
         public void UpdateStockOuts(StockOut stockOut) => stockOutRepo.UpdateStockOuts(stockOut);
 
         public void UpdateStockOutsDetail(List<StockOutDetail> stockOutDetails, int stockOutId) => stockOutRepo.UpdateStockOutsDetail(stockOutDetails, stockOutId);
+
+        public bool AddStockOutDetail(int stockOutId, List<StockOutDetail> stockOutDetails) => stockOutRepo.AddStockOutDetail(stockOutId, stockOutDetails);
     }
 }

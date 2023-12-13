@@ -12,6 +12,7 @@ namespace Repositories
         List<StockOut> GetStockOuts();
         StockOut GetStockOutById(int id);
         bool AddStockOut(StockOut stockOut);
+        bool AddStockOutDetail(int stockOutId, List<StockOutDetail> stockOutDetails);
         List<StockOutDetail> GetStockOutsDetail();
         List<StockOutDetail> GetStockOutDetailById(int id);
         void UpdateStockOuts(StockOut stockOut);
