@@ -28,6 +28,6 @@ namespace Service
 
         public void UpdateStockOuts(StockOut stockOut) => stockOutRepo.UpdateStockOuts(stockOut);
 
-        public void UpdateStockOutsDetail(List<StockOutDetail> stockOutDetails, int stockOutId) => stockOutRepo.UpdateStockOutsDetail(stockOutDetails, stockOutId);
+        public void UpdateStockOutsDetail(int stockOutDetailsId, int Quantity) => stockOutRepo.UpdateStockOutsDetail(stockOutDetailsId, Quantity);
     }
 }

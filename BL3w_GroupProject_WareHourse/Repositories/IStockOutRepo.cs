@@ -15,6 +15,6 @@ namespace Repositories
         List<StockOutDetail> GetStockOutsDetail();
         List<StockOutDetail> GetStockOutDetailById(int id);
         void UpdateStockOuts(StockOut stockOut);
-        void UpdateStockOutsDetail(List<StockOutDetail> stockOutDetails, int stockOutId);
+        void UpdateStockOutsDetail(int stockOutDetailsId, int Quantity);
     }
 }

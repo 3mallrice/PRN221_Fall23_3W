@@ -1,5 +1,6 @@
 ﻿using BusinessObject.Models;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -126,15 +127,48 @@ namespace DAO
             return stockOutDetail;
         }
 
-        public void UpdateStockOuts(StockOut stockOut)
+        public void UpdateStockOuts(StockOut NewstockOut)
         {
             var _dbContext = new PRN221_Fall23_3W_WareHouseManagementContext();
             try
             {
-                     stockOut.DateOut = DateTime.Now;
-                     stockOut.Status = 1;
-                    _dbContext.StockOuts.Update(stockOut);
-                    _dbContext.SaveChanges();
+                StockOut OldStockOut = GetStockOutById(NewstockOut.StockOutId);
+
+                // Export Json StockOut 
+                var jsonFormatContent = JsonConvert.SerializeObject(OldStockOut, Formatting.None, new JsonSerializerSettings()
+                {
+                    ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+                });
+                string fileName = @"D:\StockOuts.txt";
+                if (System.IO.File.Exists(fileName) == false)
+                {
+                    System.IO.File.WriteAllText(fileName, DateTime.Now + "\n" + jsonFormatContent + "\n");
+                }
+                else
+                {
+                    System.IO.File.AppendAllText(fileName, jsonFormatContent);
+                }
+
+                NewstockOut.DateOut = DateTime.Now;
+                NewstockOut.Status = 1;
+                _dbContext.StockOuts.Update(NewstockOut);
+                _dbContext.SaveChanges();
+
+                // Export Json StockOut Update
+                var jsonFormatContent2 = JsonConvert.SerializeObject(NewstockOut, Formatting.None, new JsonSerializerSettings()
+                {
+                    ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+                });
+                string fileName2 = @"D:\StockOutsUpdate.txt";
+
+                if (System.IO.File.Exists(fileName2) == false)
+                {
+                    System.IO.File.WriteAllText(fileName2, DateTime.Now + "\n" + jsonFormatContent2 + "\n");
+                }
+                else
+                {
+                    System.IO.File.AppendAllText(fileName2, DateTime.Now + "\n" + jsonFormatContent2 + "\n");
+                }
             }
             catch (Exception ex)
             {
@@ -142,29 +176,68 @@ namespace DAO
             }
         }
 
-        public void UpdateStockOutsDetail(List<StockOutDetail> stockOutDetails, int stockOutId)
+        public void UpdateStockOutsDetail(int stockOutDetailsId, int Quantity)
         {
-            var _dbContext = new PRN221_Fall23_3W_WareHouseManagementContext();
-            try
-            {
-                List<StockOutDetail> stockOutDetailsList = GetStockOutDetailById(stockOutId);
-
-                foreach (var detail in stockOutDetailsList)
+                var _dbContext = new PRN221_Fall23_3W_WareHouseManagementContext();
+                try
                 {
-                    var existingDetail = stockOutDetails.FirstOrDefault(d => d.StockOutDetailId == detail.StockOutDetailId);
+                    StockOutDetail stockOutDetailsList = _dbContext.StockOutDetails
+                        .FirstOrDefault(s => s.StockOutDetailId == stockOutDetailsId);
 
-                    if (existingDetail != null)
+                    if (stockOutDetailsList != null)
                     {
-                        _dbContext.Entry(detail).CurrentValues.SetValues(existingDetail);
+                        // Export Json StockOutDetail
+                        var jsonFormatContent = JsonConvert.SerializeObject(stockOutDetailsList, Formatting.None, new JsonSerializerSettings()
+                        {
+                            ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+                        });
+                        string fileName = @"D:\StockOutsDetail.txt";
+                        using (StreamWriter streamWriter = new StreamWriter(fileName, true))
+                        {
+                            streamWriter.WriteLine(DateTime.Now);
+                            streamWriter.WriteLine(jsonFormatContent);
+                        }
+
+                        stockOutDetailsList.Quantity = Quantity;
+                        _dbContext.Entry(stockOutDetailsList).State = EntityState.Modified;
+                        _dbContext.SaveChanges();
+
+                        // Export Json StockOutDetail After Update
+                        var jsonFormatContent2 = JsonConvert.SerializeObject(stockOutDetailsList, Formatting.None, new JsonSerializerSettings()
+                        {
+                            ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+                        });
+                        string fileName2 = @"D:\StockOutsDetailUpdate.txt";
+                        using (StreamWriter streamWriter2 = new StreamWriter(fileName2, true))
+                        {
+                            streamWriter2.WriteLine(DateTime.Now);
+                            streamWriter2.WriteLine(jsonFormatContent2);
+                        }
                     }
                 }
-                _dbContext.SaveChanges();
-            }
             catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }
         }
 
+        public StockOutDetail GetStockOutsDetailById(int id)
+        {
+            StockOutDetail stockOutDetail = null;
+
+            try
+            {
+                stockOutDetail = dbContext.StockOutDetails
+                    .Include(x => x.StockOut)
+                    .Include(x => x.Product)
+                    .SingleOrDefault(x => x.StockOutId == id);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+
+            return stockOutDetail;
+        }
     }
 }

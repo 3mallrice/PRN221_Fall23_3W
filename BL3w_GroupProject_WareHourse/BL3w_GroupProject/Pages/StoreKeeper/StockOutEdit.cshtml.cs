@@ -71,12 +71,13 @@ namespace BL3w_GroupProject.Pages.StoreKeeper
         {
             try
             {
+                stockOutService.UpdateStockOuts(StockOut);
                 for (int i = 0; i < StockOutDetails.Count; i++)
                 {
                     StockOutDetails[i].Quantity = Convert.ToInt32(Request.Form[$"StockOutDetails[{i}].Quantity"]);
+                    StockOutDetails[i].StockOutDetailId = Convert.ToInt32(Request.Form[$"StockOutDetails[{i}].StockOutDetailId"]);
+                    stockOutService.UpdateStockOutsDetail(StockOutDetails[i].StockOutDetailId, StockOutDetails[i].Quantity);
                 }
-                stockOutService.UpdateStockOuts(StockOut);
-                stockOutService.UpdateStockOutsDetail(StockOutDetails, StockOut.StockOutId);
             }
             catch (DbUpdateConcurrencyException)
             {
