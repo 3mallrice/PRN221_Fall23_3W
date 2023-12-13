@@ -32,13 +32,13 @@ namespace BL3w_GroupProject.Pages.Manager.LotPage
                 return RedirectToPage("/Login");
             }
 
-            var role = HttpContext.Session.GetString("account");
+            var role = HttpContext.Session.GetString("account");        
             var accountId = HttpContext.Session.GetInt32("accountId");
             if (role != "manager")
             {
                 return RedirectToPage("/Login");
             }
-            ViewData["AccountId"] = new SelectList(_accService.GetAccounts().Where(x => x.Status != 0 && x.AccountId== accountId).ToList(), "AccountId", "Email");
+            ViewData["AccountId"] = _accService.GetAccountByID((int)accountId).Email;
             ViewData["PartnerId"] = new SelectList(_partnerService.GetPartners().Where(x => x.Status != 0), "PartnerId", "Name");
             ViewData["ProductId"] = new SelectList(_productService.GetProducts(), "ProductId", "Name");
             return Page();
@@ -65,9 +65,9 @@ namespace BL3w_GroupProject.Pages.Manager.LotPage
             {
                 return RedirectToPage("/Login");
             }
-
+            var accountId = HttpContext.Session.GetInt32("accountId");
             Lot.Status = 1;
-            Lot.AccountId = Account.AccountId;
+            Lot.AccountId = (int)accountId;
             Lot.PartnerId = Partner.PartnerId;
             Lot.LotCode = Lot.LotCode.ToUpper();
             _lotService.AddLot(Lot);
@@ -131,7 +131,7 @@ namespace BL3w_GroupProject.Pages.Manager.LotPage
         private void InitializeSelectLists()
         {
             var accountId = HttpContext.Session.GetInt32("accountId");
-            ViewData["AccountId"] = new SelectList(_accService.GetAccounts().Where(x => x.Status != 0 && x.AccountId == accountId).ToList(), "AccountId", "Email");
+            ViewData["AccountId"] = _accService.GetAccountByID((int)accountId).Email;
             ViewData["PartnerId"] = new SelectList(_partnerService.GetPartners().Where(x => x.Status != 0), "PartnerId", "Name");
             ViewData["ProductId"] = new SelectList(_productService.GetProducts(), "ProductId", "Name");
         }
