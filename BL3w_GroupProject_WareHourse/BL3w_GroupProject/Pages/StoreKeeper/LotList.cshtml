@@ -109,7 +109,7 @@
         @for (int b = 1; b <= Model.totalPages; b++)
         {
             <li class="page-item @(b == Model.curentPage ? "active" : "")">
-                <a asp-page="./ProductList" asp-route-curentPage="@b" class="page-link">@b</a>
+                <a asp-page="./LotList" asp-route-curentPage="@b" class="page-link">@b</a>
             </li>
         }
     </ul>

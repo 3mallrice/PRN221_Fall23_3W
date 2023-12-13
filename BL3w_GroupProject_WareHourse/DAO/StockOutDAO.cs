@@ -30,12 +30,15 @@ namespace DAO
             List<StockOut> stockOuts = null;
             try
             {
-                stockOuts = dbContext.StockOuts
+                using (var db = new PRN221_Fall23_3W_WareHouseManagementContext())
+                {
+                    stockOuts = db.StockOuts
                     .Include(x => x.StockOutDetails)
                     .Include(x => x.Account)
                     .Include(x => x.Partner)
                     .OrderByDescending(x => x.Status)
                     .ToList();
+                }
             }
             catch (Exception ex)
             {
@@ -43,16 +46,19 @@ namespace DAO
             }
 
             return stockOuts;
-        } 
+        }
         public List<StockOutDetail> GetStockOutsDetail()
         {
             List<StockOutDetail> stockOutsDetail = null;
             try
             {
-                stockOutsDetail = dbContext.StockOutDetails
-                    .Include(x => x.Product)
-                    .Include(x => x.StockOut)
-                    .ToList();
+                using (var dbContext = new PRN221_Fall23_3W_WareHouseManagementContext())
+                {
+                    stockOutsDetail = dbContext.StockOutDetails
+                        .Include(x => x.Product)
+                        .Include(x => x.StockOut)
+                        .ToList();
+                }
             }
             catch (Exception ex)
             {
@@ -131,10 +137,10 @@ namespace DAO
             var _dbContext = new PRN221_Fall23_3W_WareHouseManagementContext();
             try
             {
-                     stockOut.DateOut = DateTime.Now;
-                     stockOut.Status = 1;
-                    _dbContext.StockOuts.Update(stockOut);
-                    _dbContext.SaveChanges();
+                stockOut.DateOut = DateTime.Now;
+                stockOut.Status = 1;
+                _dbContext.StockOuts.Update(stockOut);
+                _dbContext.SaveChanges();
             }
             catch (Exception ex)
             {

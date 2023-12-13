@@ -19,8 +19,8 @@ namespace BL3w_GroupProject.Pages.StoreKeeper
             _stockOutService = stockOutService;
         }
 
-        public IList<StockOut> StockOut { get;set; } = default!;
-[BindProperty(SupportsGet = true)]
+        public IList<StockOut> StockOut { get; set; } = default!;
+        [BindProperty(SupportsGet = true)]
         public string SearchText { get; set; }
 
         [BindProperty(SupportsGet = true)]
@@ -29,7 +29,7 @@ namespace BL3w_GroupProject.Pages.StoreKeeper
         public int count { get; set; }
         public int totalPages => (int)Math.Ceiling(Decimal.Divide(count, pageSize));
 
-        public IActionResult OnGetAsync()
+        public IActionResult OnGet()
         {
             if (HttpContext.Session.GetString("account") is null)
             {
@@ -43,7 +43,12 @@ namespace BL3w_GroupProject.Pages.StoreKeeper
                 return RedirectToPage("/Login");
             }
 
-            if (SearchText != null)
+            count = _stockOutService.GetStockOuts().Count();
+            StockOut = _stockOutService.GetStockOuts()
+                .Skip((curentPage - 1) * pageSize).Take(pageSize)
+                .ToList();
+
+            if (!string.IsNullOrWhiteSpace(SearchText))
             {
                 count = _stockOutService.GetStockOuts()
                     .Where(P => P.Partner.Name.ToLower().Contains(SearchText.ToLower()) || P.Account.Name.ToLower().Contains(SearchText.ToLower()))
@@ -53,7 +58,8 @@ namespace BL3w_GroupProject.Pages.StoreKeeper
                     .Where(P => P.Partner.Name.ToLower().Contains(SearchText.ToLower()) || P.Account.Name.ToLower().Contains(SearchText.ToLower()))
                     .Skip((curentPage - 1) * pageSize).Take(pageSize)
                     .ToList();
-            } else
+            }
+            else
             {
                 count = _stockOutService.GetStockOuts().Count();
                 StockOut = _stockOutService.GetStockOuts()
