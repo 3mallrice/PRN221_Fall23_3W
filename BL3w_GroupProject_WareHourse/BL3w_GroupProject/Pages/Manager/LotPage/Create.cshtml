@@ -73,12 +73,12 @@
         }
 
         function validateProductCode() {
-            var productCodeInput = document.getElementById("Product_ProductCode");
+            var productCodeInput = document.getElementById("Lot_LotCode");
             var productCodeValue = productCodeInput.value.trim();
             var regex = /^lot\d{3}$/i;
 
             if (!regex.test(productCodeValue)) {
-                alert("ProductCode must start with 'lot' or 'LOT' followed by 3 digits.");
+                alert("LotCode must start with 'lot' or 'LOT' followed by 3 digits.");
                 productCodeInput.focus();
                 return false;
             }

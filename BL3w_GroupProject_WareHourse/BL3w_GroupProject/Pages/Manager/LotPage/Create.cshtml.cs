@@ -62,83 +62,41 @@ namespace BL3w_GroupProject.Pages.Manager.LotPage
         public List<Product> Products { get; set; } = new List<Product>();
         public async Task<IActionResult> OnPostAsync()
         {
-            if (HttpContext.Session.GetString("account") is null)
+            if (HttpContext.Session.GetString("account") is null || HttpContext.Session.GetString("account") != "manager")
             {
                 return RedirectToPage("/Login");
             }
 
-            var role = HttpContext.Session.GetString("account");
-
-            if (role != "manager")
-            {
-                return RedirectToPage("/Login");
-            }
-
-            var existingProduct = _lotService.GetAllLots()
-                .SelectMany(lot => lot.LotDetails)
-                .Any(detail => detail.Product != null &&
-                       (detail.Product.ProductId == Product.ProductId || detail.Product.Name == Product.Name) &&
-                       detail.Quantity > 0);
-
-            if (existingProduct)
-            {
-                ViewData["Error"] = "Product name or ID already selected with a quantity greater than 0.";
-                InitializeSelectLists();
-                return Page();
-            }
-
-            /*            if (LotDetail.Quantity <= 0)
-                        {
-                            ViewData["Error"] = "Quantity must be greater than 0.";
-                            InitializeSelectLists();
-                            return Page();
-                        }
-
-                        if (LotDetail.Quantity > 0)
-                        {
-                            Lot.Status = 1;
-                            Lot.AccountId = Account.AccountId;
-                            Lot.PartnerId = Partner.PartnerId;
-                            Lot.LotCode = Lot.LotCode.ToUpper();
-                            _lotService.AddLot(Lot);
-
-                            if (Product.ProductId != 0)
-                            {
-                                LotDetail.LotId = Lot.LotId;
-                                LotDetail.ProductId = Product.ProductId;
-                                LotDetail.PartnerId = Partner.PartnerId;
-                                LotDetail.Status = 1;
-                                _lotService.AddLotDetail(LotDetail);
-
-                                var product = _productService.GetProductByID(Product.ProductId);
-                                product.Quantity = LotDetail.Quantity;
-                                _productService.UpdateProduct(product);
-                            }
-                            return RedirectToPage("./Index");
-                        }
-                        else
-                        {
-                            ViewData["Error"] = "Quantity must be greater than 0.";
-                            InitializeSelectLists();
-                            return Page();
-                        }*/
             Lot.Status = 1;
             Lot.AccountId = Account.AccountId;
             Lot.PartnerId = Partner.PartnerId;
             Lot.LotCode = Lot.LotCode.ToUpper();
             _lotService.AddLot(Lot);
+
+            HashSet<int> selectedProductIds = new HashSet<int>(); // Keep track of selected product IDs
+
             for (int i = 0; i < 5; i++)
             {
-/*                int productId = Convert.ToInt32(Request.Form[$"Products[{i}].ProductId"]);
-                int quantity = Convert.ToInt32(Request.Form[$"LotDetails[{i}].Quantity"]);*/
-
                 string productIdString = Request.Form[$"Products[{i}].ProductId"];
                 string quantityString = Request.Form[$"LotDetails[{i}].Quantity"];
-                // Check if quantity is greater than 0
+
                 if (!string.IsNullOrEmpty(productIdString) && int.TryParse(productIdString, out int productId) &&
                     !string.IsNullOrEmpty(quantityString) && int.TryParse(quantityString, out int quantity) && quantity > 0)
                 {
-                    // Your logic here...
+                    // Check if the product ID has already been selected
+                    if (selectedProductIds.Contains(productId))
+                    {
+                        ViewData["Error"] = $"Duplicate selection of Product ID: {productId}.";
+                        _lotService.DeleteLotPermanently(Lot);
+                        var product1 = _productService.GetProductByID(productId);
+                        product1.Quantity = 0;
+                        _productService.UpdateProduct(product1);
+                        InitializeSelectLists();
+                        return Page();
+                    }
+
+                    selectedProductIds.Add(productId); // Add the product ID to the set
+
                     var lotDetail = new LotDetail
                     {
                         LotId = Lot.LotId,
@@ -148,17 +106,19 @@ namespace BL3w_GroupProject.Pages.Manager.LotPage
                         Quantity = quantity,
                     };
 
-                    // Add LotDetail entry to the database or your data store
-                    _lotService.AddLotDetail(lotDetail);
+                    LotDetails.Add(lotDetail); // Add to the collection
 
-                    // Update Product quantity if needed
                     var product = _productService.GetProductByID(productId);
                     product.Quantity = quantity;
                     _productService.UpdateProduct(product);
                 }
             }
+
             return RedirectToPage("./Index");
         }
+
+
+
         private void InitializeSelectLists()
         {
             ViewData["AccountId"] = new SelectList(_lotService.GetAllLots().Select(x => x.Account).ToList(), "AccountId", "Email");
