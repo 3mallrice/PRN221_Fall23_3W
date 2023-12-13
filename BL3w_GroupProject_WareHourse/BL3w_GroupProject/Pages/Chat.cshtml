@@ -21,15 +21,15 @@
         <div class="col-5">
             @if (HttpContext.Session.GetString("account") == "admin")
             {
-                <input type="text" id="userInput" value='@($"{name} (Admin)")' />
+                <input type="text" id="userInput" value='@($"{name} (Admin)")'/>
             }
             else if (HttpContext.Session.GetString("account") == "manager")
             {
-                <input type="text" id="userInput" value='@($"{name} (Manager)")' />
+                <input type="text" id="userInput" value='@($"{name} (Manager)")'/>
             }
             else if (HttpContext.Session.GetString("account") == "storekeeper")
             {
-                <input type="text" id="userInput" value='@($"{name} (Storekeeper)")' />
+                <input type="text" id="userInput" value='@($"{name} (Storekeeper)")'/>
             }
         </div>
     </div>
