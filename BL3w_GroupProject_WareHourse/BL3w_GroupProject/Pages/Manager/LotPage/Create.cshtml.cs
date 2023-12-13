@@ -33,15 +33,14 @@ namespace BL3w_GroupProject.Pages.Manager.LotPage
             }
 
             var role = HttpContext.Session.GetString("account");
-
+            var accountId = HttpContext.Session.GetInt32("accountId");
             if (role != "manager")
             {
                 return RedirectToPage("/Login");
             }
-
-            ViewData["AccountId"] = new SelectList(_accService.GetAccounts().Where(x => x.Status != 0).ToList(), "AccountId", "Email");
+            ViewData["AccountId"] = new SelectList(_accService.GetAccounts().Where(x => x.Status != 0 && x.AccountId== accountId).ToList(), "AccountId", "Email");
             ViewData["PartnerId"] = new SelectList(_partnerService.GetPartners().Where(x => x.Status != 0), "PartnerId", "Name");
-            ViewData["ProductId"] = new SelectList(_productService.GetProducts().Where(x => x.Quantity == 0), "ProductId", "Name");
+            ViewData["ProductId"] = new SelectList(_productService.GetProducts(), "ProductId", "Name");
             return Page();
         }
 
@@ -74,12 +73,11 @@ namespace BL3w_GroupProject.Pages.Manager.LotPage
             _lotService.AddLot(Lot);
 
             HashSet<int> selectedProductIds = new HashSet<int>(); // Keep track of selected product IDs
-
+            Dictionary<int, int> originalQuantities = new Dictionary<int, int>(); // Keep track of original quantities
             for (int i = 0; i < 5; i++)
             {
                 string productIdString = Request.Form[$"Products[{i}].ProductId"];
                 string quantityString = Request.Form[$"LotDetails[{i}].Quantity"];
-
                 if (!string.IsNullOrEmpty(productIdString) && int.TryParse(productIdString, out int productId) &&
                     !string.IsNullOrEmpty(quantityString) && int.TryParse(quantityString, out int quantity) && quantity > 0)
                 {
@@ -94,14 +92,21 @@ namespace BL3w_GroupProject.Pages.Manager.LotPage
                             _lotService.DeleteLotDetailPermanently(detailToDelete);
                         }
                         _lotService.DeleteLotPermanently(Lot);
-                        var product1 = _productService.GetProductByID(productId);
-                        product1.Quantity = 0;
-                        _productService.UpdateProduct(product1);
+                        // Revert product quantities to the original state
+                        foreach (var kvp in originalQuantities)
+                        {
+                            var productToUpdate = _productService.GetProductByID(kvp.Key);
+                            productToUpdate.Quantity = kvp.Value;
+                            _productService.UpdateProduct(productToUpdate);
+                        }
+
                         InitializeSelectLists();
                         return Page();
                     }
 
                     selectedProductIds.Add(productId);
+                    var product = _productService.GetProductByID(productId);
+                    originalQuantities[productId] = product.Quantity; // Save the original quantity before the update
 
                     var lotDetail = new LotDetail
                     {
@@ -113,8 +118,7 @@ namespace BL3w_GroupProject.Pages.Manager.LotPage
                     };
 
                     _lotService.AddLotDetail(lotDetail);
-                    var product = _productService.GetProductByID(productId);
-                    product.Quantity = quantity;
+                    product.Quantity += quantity;
                     _productService.UpdateProduct(product);
                 }
             }
@@ -126,9 +130,10 @@ namespace BL3w_GroupProject.Pages.Manager.LotPage
 
         private void InitializeSelectLists()
         {
-            ViewData["AccountId"] = new SelectList(_lotService.GetAllLots().Select(x => x.Account).ToList(), "AccountId", "Email");
-            ViewData["PartnerId"] = new SelectList(_lotService.GetAllLots().Select(x => x.Partner).ToList(), "PartnerId", "Name");
-            ViewData["ProductId"] = new SelectList(_productService.GetProducts().Where(x => x.Quantity == 0), "ProductId", "Name");
+            var accountId = HttpContext.Session.GetInt32("accountId");
+            ViewData["AccountId"] = new SelectList(_accService.GetAccounts().Where(x => x.Status != 0 && x.AccountId == accountId).ToList(), "AccountId", "Email");
+            ViewData["PartnerId"] = new SelectList(_partnerService.GetPartners().Where(x => x.Status != 0), "PartnerId", "Name");
+            ViewData["ProductId"] = new SelectList(_productService.GetProducts(), "ProductId", "Name");
         }
     }
 }
