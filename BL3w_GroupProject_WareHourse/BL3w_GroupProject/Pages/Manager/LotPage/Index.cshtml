@@ -6,6 +6,7 @@
 @{
     ViewData["Title"] = "Lot Index";
     Layout = "_LayoutManager";
+    int x = 0;
 }
 
 <div class="container">
@@ -29,9 +30,11 @@
             </div>
         </div>
     </div>
+</div>
 <table class="table">
     <thead style="background-color: #51B848; color: #fff;">
         <tr>
+            <th>No.</th>
             <th>Lot Code</th>
             <th>Date In</th>
             <th>Note</th>
@@ -45,10 +48,10 @@
         @foreach (var item in Model.Lot)
         {
             <tr>
-                
+                <td class="text-center">@(++x)</td>
                 <td>
                     <a asp-page="./Details" asp-route-id="@item.LotId" style="text-decoration: none;">
-                    @Html.DisplayFor(modelItem => item.LotCode)
+                        @Html.DisplayFor(modelItem => item.LotCode)
                     </a>
                 </td>
                 <td>@item.DateIn.ToString("d")</td>
@@ -66,19 +69,19 @@
                 <td>@Html.DisplayFor(modelItem => item.Account.Name)</td>
                 <td>@Html.DisplayFor(modelItem => item.Partner.Name)</td>
                 <td>
-                        <a asp-page="./Edit" asp-route-id="@item.LotId"><i class="fa-solid fa-pen"></i></a>
+                    <a asp-page="./Edit" asp-route-id="@item.LotId"><i class="fa-solid fa-pen"></i></a>
                 </td>
             </tr>
         }
     </tbody>
 </table>
-    <div>
-        <ul class="pagination">
-            @for (int b = 1; b <= Model.TotalPages; b++)
-            {
-                <li class="page-item @(b == Model.CurrentPage ? "active" : "")">
-                    <a asp-page="./Index" asp-route-currentPage="@b" class="page-link">@b</a>
-                </li>
-            }
-        </ul>
-    </div>
+<div>
+    <ul class="pagination">
+        @for (int b = 1; b <= Model.TotalPages; b++)
+        {
+            <li class="page-item @(b == Model.CurrentPage ? "active" : "")">
+                <a asp-page="./Index" asp-route-currentPage="@b" class="page-link">@b</a>
+            </li>
+        }
+    </ul>
+</div>
