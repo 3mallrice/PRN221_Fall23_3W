@@ -23,7 +23,7 @@ namespace BL3w_GroupProject.Pages.Manager.CategoryPage
         [BindProperty]
         public Category Category { get; set; } = default!;
 
-        public async Task<IActionResult> OnGetAsync(int id)
+        public IActionResult OnGet(int id)
         {
             if (HttpContext.Session.GetString("account") is null)
             {
@@ -41,12 +41,14 @@ namespace BL3w_GroupProject.Pages.Manager.CategoryPage
                 return NotFound();
             }
 
-            var category = _categoryService.GetCategoryById(id);
+            Category category = _categoryService.GetCategoryById(id);
+
             if (category == null)
             {
                 return NotFound();
             }
             Category = category;
+
             return Page();
         }
 

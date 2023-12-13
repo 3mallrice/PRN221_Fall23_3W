@@ -152,3 +152,15 @@
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
+
+<script>
+    $(document).ready(function () {
+        $('#logoutButton').on('click', function () {
+            var confirmLogout = confirm("Are you sure you want to logout?");
+
+            if (confirmLogout) {
+                window.location.href = '/Logout';
+            }
+        });
+    });
+</script>

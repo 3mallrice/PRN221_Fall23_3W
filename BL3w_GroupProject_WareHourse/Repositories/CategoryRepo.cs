@@ -27,9 +27,9 @@ namespace Repositories
             return categoryDAO.GetCategoryAreaByID(id);
         }
 
-        public void AddCategory(Category category)
+        public bool AddCategory(Category category)
         {
-            categoryDAO.AddCategory(category);
+            return categoryDAO.AddCategory(category);
         }
 
         public bool UpdateCategory(Category category)

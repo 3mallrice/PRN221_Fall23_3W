@@ -52,8 +52,11 @@ namespace BL3w_GroupProject.Pages.StoreKeeper
         {
           
 
-            _product.AddProduct(Product);
-
+            var product = _product.AddProduct(Product);
+            if(product == null)
+            {
+                ViewData["Error"] = "Product code already exists!";
+            }
             return RedirectToPage("./ProductList");
         }
     }

@@ -11,7 +11,7 @@ namespace Repositories
     {
         List<Category> GetCategories();
         Category GetCategoryById(int id);
-        void AddCategory(Category category);
+        bool AddCategory(Category category);
         bool UpdateCategory(Category category);
         bool ToggleCategoryStatus(int categoryId);
         List<Category> LoadCategories();
