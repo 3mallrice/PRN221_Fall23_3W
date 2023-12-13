@@ -179,7 +179,6 @@ namespace DAO
             var _dbContext = new PRN221_Fall23_3W_WareHouseManagementContext();
             try
             {
-<<<<<<< HEAD
                 StockOut OldStockOut = GetStockOutById(NewstockOut.StockOutId);
 
                 // Export Json StockOut 
@@ -217,12 +216,6 @@ namespace DAO
                 {
                     System.IO.File.AppendAllText(fileName2, DateTime.Now + "\n" + jsonFormatContent2 + "\n");
                 }
-=======
-                stockOut.DateOut = DateTime.Now;
-                stockOut.Status = 1;
-                _dbContext.StockOuts.Update(stockOut);
-                _dbContext.SaveChanges();
->>>>>>> 8ef67e13d9899f5aee60d9750f1bbaf6dc2633fc
             }
             catch (Exception ex)
             {
@@ -274,7 +267,6 @@ namespace DAO
                 throw new Exception(ex.Message);
             }
         }
-<<<<<<< HEAD
 
         public StockOutDetail GetStockOutsDetailById(int id)
         {
@@ -294,7 +286,5 @@ namespace DAO
 
             return stockOutDetail;
         }
-=======
->>>>>>> 8ef67e13d9899f5aee60d9750f1bbaf6dc2633fc
     }
 }
