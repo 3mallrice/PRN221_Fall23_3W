@@ -31,12 +31,15 @@ namespace DAO
             List<StockOut> stockOuts = null;
             try
             {
-                stockOuts = dbContext.StockOuts
+                using (var db = new PRN221_Fall23_3W_WareHouseManagementContext())
+                {
+                    stockOuts = db.StockOuts
                     .Include(x => x.StockOutDetails)
                     .Include(x => x.Account)
                     .Include(x => x.Partner)
                     .OrderByDescending(x => x.Status)
                     .ToList();
+                }
             }
             catch (Exception ex)
             {
@@ -44,16 +47,19 @@ namespace DAO
             }
 
             return stockOuts;
-        } 
+        }
         public List<StockOutDetail> GetStockOutsDetail()
         {
             List<StockOutDetail> stockOutsDetail = null;
             try
             {
-                stockOutsDetail = dbContext.StockOutDetails
-                    .Include(x => x.Product)
-                    .Include(x => x.StockOut)
-                    .ToList();
+                using (var dbContext = new PRN221_Fall23_3W_WareHouseManagementContext())
+                {
+                    stockOutsDetail = dbContext.StockOutDetails
+                        .Include(x => x.Product)
+                        .Include(x => x.StockOut)
+                        .ToList();
+                }
             }
             catch (Exception ex)
             {
@@ -87,23 +93,64 @@ namespace DAO
         {
             try
             {
-                stockOut.DateOut = new DateTime();
-                dbContext.StockOuts.Add(stockOut);
-                dbContext.SaveChanges();
-
-                foreach (var stockOutDetail in stockOut.StockOutDetails)
+                using (var dbContext = new PRN221_Fall23_3W_WareHouseManagementContext())
                 {
-                    stockOutDetail.StockOutId = stockOut.StockOutId;
-                    dbContext.StockOutDetails.Add(stockOutDetail);
+                    stockOut.DateOut = DateTime.Now;
+                    stockOut.Status = 1;
+                    dbContext.StockOuts.Add(stockOut);
+                    dbContext.SaveChanges();
+                    return true;
                 }
-
-                dbContext.SaveChanges();
-
-                return true;
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Error adding StockOut: {ex.Message}");
+                Console.WriteLine($"Error: {ex.Message}");
+                return false;
+            }
+        }
+
+        public bool AddStockOutDetail(int stockOutId, List<StockOutDetail> stockOutDetails)
+        {
+            using var transaction = dbContext.Database.BeginTransaction();
+
+            try
+            {
+                using (var dbContext = new PRN221_Fall23_3W_WareHouseManagementContext())
+                {
+                    var stockOut = dbContext.StockOuts.Find(stockOutId);
+
+                    if (stockOut == null)
+                    {
+                        transaction.Rollback();
+                        throw new Exception($"StockOut with ID {stockOutId} not found.");
+                    }
+
+                    foreach (var detail in stockOutDetails)
+                    {
+                        var product = dbContext.Products.Find(detail.ProductId);
+
+                        if (product == null || product.Quantity < detail.Quantity)
+                        {
+                            transaction.Rollback();
+                            throw new Exception("Invalid product or insufficient quantity.");
+                        }
+
+                        product.Quantity -= detail.Quantity;
+
+                        detail.StockOutId = stockOutId;
+                        dbContext.StockOutDetails.Add(detail);
+                    }
+
+                    dbContext.SaveChanges();
+
+                    transaction.Commit();
+                    return true;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error: {ex.Message}");
+                transaction.Rollback();
                 return false;
             }
         }
@@ -132,6 +179,7 @@ namespace DAO
             var _dbContext = new PRN221_Fall23_3W_WareHouseManagementContext();
             try
             {
+<<<<<<< HEAD
                 StockOut OldStockOut = GetStockOutById(NewstockOut.StockOutId);
 
                 // Export Json StockOut 
@@ -169,6 +217,12 @@ namespace DAO
                 {
                     System.IO.File.AppendAllText(fileName2, DateTime.Now + "\n" + jsonFormatContent2 + "\n");
                 }
+=======
+                stockOut.DateOut = DateTime.Now;
+                stockOut.Status = 1;
+                _dbContext.StockOuts.Update(stockOut);
+                _dbContext.SaveChanges();
+>>>>>>> 8ef67e13d9899f5aee60d9750f1bbaf6dc2633fc
             }
             catch (Exception ex)
             {
@@ -220,6 +274,7 @@ namespace DAO
                 throw new Exception(ex.Message);
             }
         }
+<<<<<<< HEAD
 
         public StockOutDetail GetStockOutsDetailById(int id)
         {
@@ -239,5 +294,7 @@ namespace DAO
 
             return stockOutDetail;
         }
+=======
+>>>>>>> 8ef67e13d9899f5aee60d9750f1bbaf6dc2633fc
     }
 }

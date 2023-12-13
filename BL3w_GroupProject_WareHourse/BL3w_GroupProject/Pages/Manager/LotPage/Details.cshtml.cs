@@ -24,6 +24,21 @@ namespace BL3w_GroupProject.Pages.Manager.LotPage
 
         public IActionResult OnGet(int id)
         {
+            if (HttpContext.Session.GetString("account") is null)
+            {
+                return RedirectToPage("/Login");
+            }
+
+            var role = HttpContext.Session.GetString("account");
+
+            if (role != "manager")
+            {
+                return RedirectToPage("/Login");
+            }
+            if (id == null)
+            {
+                return NotFound();
+            }
             if (id <= 0)
             {
                 return NotFound();
@@ -36,10 +51,11 @@ namespace BL3w_GroupProject.Pages.Manager.LotPage
             }
             else
             {
-                var lotDetail = _context.GetLotDetailByLotId(id);
-                if (lotDetail != null)
+                var lotDetails = _context.GetListLotDetailByLotID(id);
+
+                if (lotDetails != null)
                 {
-                    LotDetails.Add(lotDetail);
+                    LotDetails.AddRange(lotDetails);
                 }
             }
             return Page();

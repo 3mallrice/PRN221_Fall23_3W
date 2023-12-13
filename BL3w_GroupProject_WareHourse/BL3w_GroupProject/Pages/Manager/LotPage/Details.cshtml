@@ -1,16 +1,20 @@
 ﻿@page
-@model BL3w_GroupProject.Pages.Manager.LotPage.DetailsModel
+@model BL3w_GroupProject.Pages.StoreKeeper.LotDetailModel
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "LotDetail";
     Layout = "_LayoutManager";
+
 }
 
+<head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+
 <div>
-    <h4>Lot</h4>
-    <hr />
-    <table class="table">
-        <thead>
+    <h4>Lot: @Model.Lot.LotCode</h4>
+    <table class="table table-hover">
+        <thead style="background-color: #51B848; text-align: center" class="text-white">
             <tr>
                 <th>
                     Lot Code
@@ -33,7 +37,7 @@
             </tr>
         </thead>
         <tbody>
-            <tr>
+            <tr class="text-center">
                 <td>
                     @Html.DisplayFor(model => model.Lot.LotCode)
                 </td>
@@ -66,9 +70,8 @@
 
 <div>
     <h4>Details</h4>
-    <hr />
-    <table class="table">
-        <thead>
+    <table class="table table-hover">
+        <thead style="background-color: #034ea2; text-align: center" class="text-white">
             <tr>
                 <th>
                     Product Name
@@ -87,7 +90,7 @@
         <tbody>
             @foreach (var detail in Model.LotDetails)
             {
-                <tr>
+                <tr class="text-center">
                     <td>
                         @Html.DisplayFor(modelItem => detail.Product.Name)
                     </td>
@@ -115,6 +118,5 @@
 
 
 <div>
-    <a asp-page="./Edit" asp-route-id="@Model.Lot?.LotId">Edit</a> |
-    <a asp-page="./Index">Back to List</a>
+    <a asp-page="Index" class="btn text-white" style="background-color: #F37021"><i class="fa-solid fa-right-from-bracket"></i></a>
 </div>

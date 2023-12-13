@@ -27,7 +27,7 @@
                 </div>
                 <div class="col-2">
                     <p>
-                        <a asp-page="./#" class="btn btn-primary"><i class="fa-solid fa-truck"></i></a>
+                        <a asp-page="./StockOutCreate" class="btn btn-primary"><i class="fa-solid fa-truck"></i></a>
                     </p>
                 </div>
             </div>
@@ -106,7 +106,7 @@
         @for (int b = 1; b <= Model.totalPages; b++)
         {
             <li class="page-item @(b == Model.curentPage ? "active" : "")">
-                <a asp-page="./ProductList" asp-route-curentPage="@b" class="page-link">@b</a>
+                <a asp-page="./StockOutList" asp-route-curentPage="@b" class="page-link">@b</a>
             </li>
         }
     </ul>
