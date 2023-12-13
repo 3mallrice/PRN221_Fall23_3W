@@ -1,4 +1,5 @@
 ﻿using BusinessObject.Models;
+using DAO;
 using Repositories;
 using System;
 using System.Collections.Generic;
@@ -17,6 +18,7 @@ namespace Service
             stockOutRepo = new StockOutRepo();
         }
         public bool AddStockOut(StockOut stockOut) => stockOutRepo.AddStockOut(stockOut);
+        public bool AddOneStockOutDetail(StockOutDetail detail) => stockOutRepo.AddOneStockOutDetail(detail);
 
         public StockOut GetStockOutById(int id) => stockOutRepo.GetStockOutById(id);
 
@@ -31,5 +33,8 @@ namespace Service
         public void UpdateStockOutsDetail(int stockOutDetailsId, int Quantity) => stockOutRepo.UpdateStockOutsDetail(stockOutDetailsId, Quantity);
 
         public bool AddStockOutDetail(int stockOutId, List<StockOutDetail> stockOutDetails) => stockOutRepo.AddStockOutDetail(stockOutId, stockOutDetails);
+        public void DeleteStockOutPermanently(StockOut stockOut) => stockOutRepo.DeleteStockOutPermanently(stockOut);
+
+        public void DeleteStockOutDetailsPermanently(StockOutDetail stockOutDetail) => stockOutRepo.DeleteStockOutDetailsPermanently(stockOutDetail);
     }
 }

@@ -108,7 +108,23 @@ namespace DAO
                 return false;
             }
         }
-
+        public bool AddOneStockOutDetail(StockOutDetail stockoutDetail)
+        {
+            try
+            {
+                using (var dbContext = new PRN221_Fall23_3W_WareHouseManagementContext())
+                {
+                    dbContext.StockOutDetails.Add(stockoutDetail);
+                    dbContext.SaveChanges();
+                    return true;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error: {ex.Message}");
+                return false;
+            }
+        }
         public bool AddStockOutDetail(int stockOutId, List<StockOutDetail> stockOutDetails)
         {
             using var transaction = dbContext.Database.BeginTransaction();
@@ -285,6 +301,34 @@ namespace DAO
             }
 
             return stockOutDetail;
+        }
+        public void DeleteStockOutPermanently(StockOut stock)
+        {
+            var _dbContext = new PRN221_Fall23_3W_WareHouseManagementContext();
+            var eStock = GetStockOutById(stock.StockOutId);
+            if (eStock != null)
+            {
+                _dbContext.StockOuts.Remove(stock);
+                _dbContext.SaveChanges();
+            }
+            else
+            {
+                throw new Exception("stockout is not exist.");
+            }
+        }
+        public void DeleteStockOutDetailsPermanently(StockOutDetail detail)
+        {
+            var _dbContext = new PRN221_Fall23_3W_WareHouseManagementContext();
+            var eStockDetail = GetStockOutsDetailById(detail.StockOutId);
+            if (eStockDetail != null)
+            {
+                _dbContext.StockOutDetails.Remove(detail);
+                _dbContext.SaveChanges();
+            }
+            else
+            {
+                throw new Exception("stockout is not exist.");
+            }
         }
     }
 }

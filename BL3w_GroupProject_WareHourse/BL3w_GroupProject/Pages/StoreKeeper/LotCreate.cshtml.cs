@@ -7,17 +7,16 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using BusinessObject.Models;
 using Service;
-using Microsoft.Identity.Client.Extensions.Msal;
 
-namespace BL3w_GroupProject.Pages.Manager.LotPage
+namespace BL3w_GroupProject.Pages.StoreKeeper
 {
-    public class CreateModel : PageModel
+    public class LotCreateModel : PageModel
     {
         private readonly ILotService _lotService;
         private readonly IAccountService _accService;
         private readonly IProductService _productService;
         private readonly IPartnerService _partnerService;
-        public CreateModel()
+        public LotCreateModel()
         {
             _lotService = new LotService();
             _productService = new ProductService();
@@ -32,9 +31,9 @@ namespace BL3w_GroupProject.Pages.Manager.LotPage
                 return RedirectToPage("/Login");
             }
 
-            var role = HttpContext.Session.GetString("account");        
+            var role = HttpContext.Session.GetString("account");
             var accountId = HttpContext.Session.GetInt32("accountId");
-            if (role != "manager")
+            if (role != "storekeeper")
             {
                 return RedirectToPage("/Login");
             }
@@ -59,10 +58,12 @@ namespace BL3w_GroupProject.Pages.Manager.LotPage
 
         [BindProperty]
         public List<Product> Products { get; set; } = new List<Product>();
+
+        // To protect from overposting attacks, see https://aka.ms/RazorPagesCRUD
         public async Task<IActionResult> OnPostAsync()
         {
             bool anySelection = false;
-            if (HttpContext.Session.GetString("account") is null || HttpContext.Session.GetString("account") != "manager")
+            if (HttpContext.Session.GetString("account") is null || HttpContext.Session.GetString("account") != "storekeeper")
             {
                 return RedirectToPage("/Login");
             }
@@ -126,14 +127,13 @@ namespace BL3w_GroupProject.Pages.Manager.LotPage
             }
             if (!anySelection)
             {
-                ViewData["Error"] = "No valid product selection and input was made {quantity needs to be greater than 0 }.";
+                ViewData["Error"] = "No valid product selection and input was made {quantity needs to be greater than 0}.";
                 _lotService.DeleteLotPermanently(Lot);
                 InitializeSelectLists();
                 return Page();
             }
-            return RedirectToPage("./Index");
+            return RedirectToPage("./LotList");
         }
-
         private void InitializeSelectLists()
         {
             var accountId = HttpContext.Session.GetInt32("accountId");
