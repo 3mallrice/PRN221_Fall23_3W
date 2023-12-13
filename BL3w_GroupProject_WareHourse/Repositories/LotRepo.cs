@@ -55,5 +55,7 @@ namespace Repositories
         public void UpdateLot(Lot lot) => LotDAO.Instance.UpdateLot(lot);
 
         public void UpdateLotDetail(LotDetail detail) => LotDAO.Instance.UpdateLotDetail(detail);
+
+        public List<LotDetail> GetListLotDetailById(int id) => LotDAO.Instance.GetListLotDetailById(id);
     }
 }

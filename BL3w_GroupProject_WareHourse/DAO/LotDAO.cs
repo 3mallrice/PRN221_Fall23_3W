@@ -1,5 +1,6 @@
 ﻿using BusinessObject.Models;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -116,11 +117,34 @@ namespace DAO
             var eLot = GetLotById(lot.LotId);
             if (eLot != null)
             {
-                 lot.LotCode = eLot.LotCode;
-                 lot.DateIn = DateTime.Now;
-                 lot.Status = 1;
+                //Export Json Lot
+                var jsonFormatContent = JsonConvert.SerializeObject(eLot, Formatting.None, new JsonSerializerSettings()
+                {
+                    ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+                });
+                string fileName = @"D:\Lot.txt";
+                using (StreamWriter streamWriter = new StreamWriter(fileName, true))
+                {
+                    streamWriter.WriteLine(DateTime.Now);
+                    streamWriter.WriteLine(jsonFormatContent);
+                }
+
+                lot.LotCode = eLot.LotCode;
+                lot.DateIn = DateTime.Now;
+                lot.Status = 1;
                 _dbContext.Lots.Update(lot);
                 _dbContext.SaveChanges();
+                //Export Json Lot
+                var jsonFormatContent2 = JsonConvert.SerializeObject(lot, Formatting.None, new JsonSerializerSettings()
+                {
+                    ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+                });
+                string fileName2 = @"D:\LotUpdate.txt";
+                using (StreamWriter streamWriter = new StreamWriter(fileName2, true))
+                {
+                    streamWriter.WriteLine(DateTime.Now);
+                    streamWriter.WriteLine(jsonFormatContent2);
+                }
             }
             else
             {
@@ -258,10 +282,32 @@ namespace DAO
             var edetailLot = GetLotDetailById(detail.LotDetailId);
             if (edetailLot != null)
             {
-                 edetailLot.Quantity = detail.Quantity;
-                 edetailLot.PartnerId = detail.PartnerId;
+                // Export Json StockOutDetail
+                var jsonFormatContent = JsonConvert.SerializeObject(edetailLot, Formatting.None, new JsonSerializerSettings()
+                {
+                    ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+                });
+                string fileName = @"D:\LotDetail.txt";
+                using (StreamWriter streamWriter = new StreamWriter(fileName, true))
+                {
+                    streamWriter.WriteLine(DateTime.Now);
+                    streamWriter.WriteLine(jsonFormatContent);
+                }
+                edetailLot.Quantity = detail.Quantity;
+                edetailLot.PartnerId = detail.PartnerId;
                 _dbContext.Entry(edetailLot).State = EntityState.Modified;
                 _dbContext.SaveChanges();
+                // Export Json StockOutDetail Update
+                var jsonFormatContent2 = JsonConvert.SerializeObject(edetailLot, Formatting.None, new JsonSerializerSettings()
+                {
+                    ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+                });
+                string fileName2 = @"D:\LotDetailUpdate.txt";
+                using (StreamWriter streamWriter = new StreamWriter(fileName2, true))
+                {
+                    streamWriter.WriteLine(DateTime.Now);
+                    streamWriter.WriteLine(jsonFormatContent2);
+                }
             }
             else
             {
@@ -296,6 +342,16 @@ namespace DAO
             {
                 throw new Exception("LotDeail is not exist.");
             }
+        }
+        public List<LotDetail> GetListLotDetailById(int id)
+        {
+            var _dbContext = new PRN221_Fall23_3W_WareHouseManagementContext();
+            List<LotDetail> lotDetails = _dbContext.LotDetails
+                .Include(c => c.Product)
+                .Include(c => c.Partner)
+                .Include(c => c.Lot)
+                .Where(c => c.LotId == id).ToList();
+            return lotDetails;
         }
     }
 }
