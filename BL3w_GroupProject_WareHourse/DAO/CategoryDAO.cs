@@ -56,7 +56,7 @@ namespace DAO
             return category;
         }
 
-        public void AddCategory(Category category)
+        public bool AddCategory(Category category)
         {
             try
             {
@@ -72,6 +72,7 @@ namespace DAO
                         db.Categories.Add(category);
                         db.SaveChanges();
                     }
+                    return true;
                 }
                 else
                 {
@@ -80,7 +81,8 @@ namespace DAO
             }
             catch (Exception ex)
             {
-                throw new Exception($"Error in Add Category: {ex.Message}", ex);
+                Console.WriteLine($"Error in Add Category: {ex.Message}", ex);
+                return false;
             }
         }
 
@@ -93,9 +95,7 @@ namespace DAO
                     var existing = db.Categories.SingleOrDefault(x => x.CategoryId == category.CategoryId);
                     if (existing != null)
                     {
-                        existing.CategoryCode = category.CategoryCode;
                         existing.Name = category.Name;
-                        existing.Status = category.Status;
 
                         db.SaveChanges();
                         return true;

@@ -8,22 +8,23 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using BusinessObject.Models;
 using Service;
+using Microsoft.Identity.Client.Extensions.Msal;
 
-namespace BL3w_GroupProject.Pages.Manager.CategoryPage
+namespace BL3w_GroupProject.Pages.Manager.StoragePage
 {
-    public class EditCategoryModel : PageModel
+    public class EditStorageAreaModel : PageModel
     {
-        private readonly ICategoryService _categoryService;
+        private readonly IStorageService _storageService;
 
-        public EditCategoryModel(ICategoryService categoryService)
+        public EditStorageAreaModel(IStorageService storageService)
         {
-            _categoryService = categoryService;
+            _storageService = storageService;
         }
 
         [BindProperty]
-        public Category Category { get; set; } = default!;
+        public StorageArea StorageArea { get; set; } = default!;
 
-        public IActionResult OnGet(int id)
+        public async Task<IActionResult> OnGetAsync(int id)
         {
             if (HttpContext.Session.GetString("account") is null)
             {
@@ -41,14 +42,12 @@ namespace BL3w_GroupProject.Pages.Manager.CategoryPage
                 return NotFound();
             }
 
-            Category category = _categoryService.GetCategoryById(id);
-
-            if (category == null)
+            var storageArea = _storageService.GetStorageAreaByID(id);
+            if (storageArea == null)
             {
                 return NotFound();
             }
-            Category = category;
-
+            StorageArea = storageArea;
             return Page();
         }
 
@@ -67,13 +66,13 @@ namespace BL3w_GroupProject.Pages.Manager.CategoryPage
             }
             try
             {
-                Category.Status = 1;
-                Category.CategoryCode = Category.CategoryCode.ToUpper();
-                _categoryService.UpdateCategory(Category);
+                StorageArea.Status = 1;
+                StorageArea.AreaCode = StorageArea.AreaCode.ToUpper();
+                _storageService.UpdateStorageArea(StorageArea);
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!CategoryExists(Category.CategoryId))
+                if (!StorageAreaExists(StorageArea.AreaId))
                 {
                     return NotFound();
                 }
@@ -87,12 +86,12 @@ namespace BL3w_GroupProject.Pages.Manager.CategoryPage
                 ViewData["Error"] = "Category code already exists!";
                 return Page();
             }
-            return RedirectToPage("./ListCategory");
+            return RedirectToPage("./ListStorage");
         }
 
-        private bool CategoryExists(int id)
+        private bool StorageAreaExists(int id)
         {
-            return (_categoryService.GetCategoryById(id)) != null;
+            return (_storageService.GetStorageAreaByID(id)) != null;
         }
     }
 }

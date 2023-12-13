@@ -43,9 +43,13 @@ namespace BL3w_GroupProject.Pages.Manager.StoragePage
 
         public async Task<IActionResult> OnPostAsync()
         {
+            bool storage = _storageService.AddStorageArea(StorageArea);
 
-
-            _storageService.AddStorageArea(StorageArea);
+            if (!storage)
+            {
+                ViewData["Notification"] = "Create not successfully!";
+                return Page();
+            }
 
             return RedirectToPage("./ListStorage");
         }

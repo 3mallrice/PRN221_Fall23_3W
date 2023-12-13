@@ -62,7 +62,7 @@ namespace DAO
                     myStoreDB.SaveChanges();
                 } else
                 {
-                    throw new Exception();
+                    Console.WriteLine("Can not create new Product");    
                 }
             }
             catch (Exception ex)

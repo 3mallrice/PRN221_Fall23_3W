@@ -4,6 +4,8 @@
 @{
     ViewData["Title"] = "ListStorage";
     Layout = "_LayoutManager";
+
+    int x = 0;
 }
 
 <head>
@@ -34,13 +36,14 @@
 </div>
 
 <table class="table table-hover">
-    <thead style="background-color: #51B848; vertical-align:middle" class="text-white">
+    <thead style="background-color: #51B848; vertical-align:middle" class="text-white text-center">
         <tr>
+            <th>No.</th>
             <th>
-                @Html.DisplayNameFor(model => model.StorageArea[0].AreaCode)
+                Code
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.StorageArea[0].AreaName)
+                Name
             </th>
             <th style="text-align:center">
                 @Html.DisplayNameFor(model => model.StorageArea[0].Status)
@@ -51,10 +54,11 @@
     <tbody>
 @foreach (var item in Model.StorageArea) {
         <tr>
-            <td>
+                <td class="text-center">@(++x)</td>
+                <td class="text-center">
                 @Html.DisplayFor(modelItem => item.AreaCode)
             </td>
-            <td>
+                <td class="text-center">
                 @Html.DisplayFor(modelItem => item.AreaName)
             </td>
                 <td style="text-align: center">
@@ -73,7 +77,7 @@
                     }
                 </td>
                 <td>
-                    <a asp-page="./StockOutDetail" asp-route-id="@item.AreaId" class="btn btn-primary"><i class="fa-solid fa-pen"></i></a>
+                    <a asp-page="./EditStorageArea" asp-route-id="@item.AreaId" class="btn btn-primary"><i class="fa-solid fa-pen"></i></a>
                 </td>
         </tr>
 }

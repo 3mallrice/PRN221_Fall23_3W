@@ -4,6 +4,7 @@
 @{
     ViewData["Title"] = "ListCategory";
     Layout = "_LayoutManager";
+    int x = 0;
 }
 
 <head>
@@ -35,8 +36,9 @@
 </div>
 
 <table class="table table-hover">
-    <thead style="background-color: #51B848; vertical-align:middle" class="text-white">
+    <thead style="background-color: #51B848; vertical-align:middle" class="text-white text-center">
         <tr>
+            <td>No.</td>
             <th>
                 @Html.DisplayNameFor(model => model.Category[0].CategoryCode)
             </th>
@@ -50,14 +52,16 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model.Category) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.CategoryCode)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
+        @foreach (var item in Model.Category)
+        {
+            <tr>
+                <td class="text-center">@(++x)</td>
+                <td class="text-center">
+                    @Html.DisplayFor(modelItem => item.CategoryCode)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
                 <td style="text-align: center">
                     @switch (item.Status)
                     {
@@ -76,8 +80,8 @@
                 <td>
                     <a asp-page="./EditCategory" asp-route-id="@item.CategoryId" class="btn btn-primary"><i class="fa-solid fa-pen"></i></a>
                 </td>
-        </tr>
-}
+            </tr>
+        }
     </tbody>
 </table>
 

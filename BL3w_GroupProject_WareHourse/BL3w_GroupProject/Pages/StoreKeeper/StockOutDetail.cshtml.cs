@@ -49,7 +49,15 @@ namespace BL3w_GroupProject.Pages.StoreKeeper
             }
             else
             {
-                var stockOutDetail = _stockOutService.GetStockOutsDetail().Where(s => s.StockOutDetailId == id);
+                var stockOutDetails = _stockOutService.GetStockOutsDetail().Where(s => s.StockOutId == id).ToList();
+                if (stockOutDetails == null)
+                {
+                    ViewData["Notification"] = "Empty List.";
+                } 
+                else
+                {
+                    StockOutDetails = stockOutDetails;
+                }
             }
             return Page();
         }

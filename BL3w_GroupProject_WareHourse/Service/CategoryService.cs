@@ -27,9 +27,9 @@ namespace Service
             return categoryRepository.GetCategoryById(id);
         }
 
-        public void AddCategory(Category category)
+        public bool AddCategory(Category category)
         {
-            categoryRepository.AddCategory(category);
+            return categoryRepository.AddCategory(category);
         }
 
         public bool UpdateCategory(Category category)
