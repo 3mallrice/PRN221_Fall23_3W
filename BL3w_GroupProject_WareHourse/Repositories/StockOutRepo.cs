@@ -28,12 +28,8 @@ namespace Repositories
         public List<StockOutDetail> GetStockOutDetailById(int id) => stockOutDAO.GetStockOutDetailById(id);
 
         public void UpdateStockOuts(StockOut stockOut) => stockOutDAO.UpdateStockOuts(stockOut);
-<<<<<<< HEAD
         public void UpdateStockOutsDetail(int stockOutDetailsId, int Quantity) => stockOutDAO.UpdateStockOutsDetail(stockOutDetailsId, Quantity);
-=======
-        public void UpdateStockOutsDetail(List<StockOutDetail> stockOutDetails, int stockOutId) => stockOutDAO.UpdateStockOutsDetail(stockOutDetails, stockOutId);
 
         public bool AddStockOutDetail(int stockOutId, List<StockOutDetail> stockOutDetails) => stockOutDAO.AddStockOutDetail(stockOutId, stockOutDetails);
->>>>>>> 8ef67e13d9899f5aee60d9750f1bbaf6dc2633fc
     }
 }
