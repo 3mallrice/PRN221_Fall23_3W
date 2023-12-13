@@ -25,6 +25,18 @@ namespace BL3w_GroupProject.Pages.StoreKeeper
 
         public IActionResult OnGet(int id)
         {
+            if (HttpContext.Session.GetString("account") is null)
+            {
+                return RedirectToPage("/Login");
+            }
+
+            var role = HttpContext.Session.GetString("account");
+
+            if (role != "storekeeper")
+            {
+                return RedirectToPage("/Login");
+            }
+
             if (id <= 0)
             {
                 return NotFound();

@@ -19,12 +19,24 @@ namespace BL3w_GroupProject.Pages.StoreKeeper
             _stockOutService = stockOutService;
         }
 
-        public StockOut StockOut { get; set; } = default!;
+        public StockOut StockOut { get; set; } = default!;  
 
         public List<StockOutDetail> StockOutDetails { get; set; } = new List<StockOutDetail>();
 
         public IActionResult OnGet(int id)
         {
+            if (HttpContext.Session.GetString("account") is null)
+            {
+                return RedirectToPage("/Login");
+            }
+
+            var role = HttpContext.Session.GetString("account");
+
+            if (role != "storekeeper")
+            {
+                return RedirectToPage("/Login");
+            }
+
             if (id <= 0)
             {
                 return NotFound();
