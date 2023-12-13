@@ -12,13 +12,15 @@ namespace BL3w_GroupProject.Pages.Admin
         private readonly ICategoryService _categoryService;
         private readonly IPartnerService _partnerService;
         private readonly IProductService _productService;
+        private readonly IStorageService _storageService;
 
         public DashboardModel(IProductService productService, 
             IPartnerService partnerService, 
             ILotService lotService, 
             IStockOutService stockOutService, 
             ICategoryService categoryService, 
-            IAccountService accountService)
+            IAccountService accountService,
+            IStorageService storageService)
         {
             _productService = productService;
             _lotService = lotService;
@@ -26,6 +28,7 @@ namespace BL3w_GroupProject.Pages.Admin
             _categoryService = categoryService;
             _accountService = accountService;
             _partnerService = partnerService;
+            _storageService = storageService;
         }
 
         public int ProductCount { get; private set; }
@@ -34,8 +37,9 @@ namespace BL3w_GroupProject.Pages.Admin
         public int PartnerCount { get; private set; }
         public int CategoryCount { get; private set; }
         public int StockOutCount { get; private set; }
-        public int StockOut1 {  get; private set; }
-        public int StockOut0 { get; private set; }
+        public int StorageCount {  get; private set; }
+        public int Account1 {  get; private set; }
+        public int Account0 { get; private set; }
 
         public IActionResult OnGet()
         {
@@ -57,9 +61,10 @@ namespace BL3w_GroupProject.Pages.Admin
             PartnerCount = _partnerService.GetPartners().Count();
             CategoryCount = _categoryService.GetCategories().Count();
             StockOutCount = _stockOutService.GetStockOuts().Count();
+            StorageCount = _storageService.GetStorageAreas().Count();
 
-            StockOut1 = _stockOutService.GetStockOuts().Where(s => s.Status == 1).ToList().Count();
-            StockOut0 = _stockOutService.GetStockOuts().Where(s => s.Status == 0).ToList().Count();
+            Account1 = _accountService.GetAccounts().Where(s => s.Status == 1).ToList().Count();
+            Account0 = _accountService.GetAccounts().Where(s => s.Status == 0).ToList().Count();
 
             return Page();
         }
