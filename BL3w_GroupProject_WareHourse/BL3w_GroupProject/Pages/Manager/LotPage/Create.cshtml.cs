@@ -87,6 +87,12 @@ namespace BL3w_GroupProject.Pages.Manager.LotPage
                     if (selectedProductIds.Contains(productId))
                     {
                         ViewData["Error"] = $"Duplicate selection of Product ID: {productId}.";
+                        var lotDetailsToDelete = _lotService.GetListLotDetailByLotID(Lot.LotId);
+
+                        foreach (var detailToDelete in lotDetailsToDelete)
+                        {
+                            _lotService.DeleteLotDetailPermanently(detailToDelete);
+                        }
                         _lotService.DeleteLotPermanently(Lot);
                         var product1 = _productService.GetProductByID(productId);
                         product1.Quantity = 0;
@@ -95,7 +101,7 @@ namespace BL3w_GroupProject.Pages.Manager.LotPage
                         return Page();
                     }
 
-                    selectedProductIds.Add(productId); // Add the product ID to the set
+                    selectedProductIds.Add(productId);
 
                     var lotDetail = new LotDetail
                     {
@@ -106,8 +112,7 @@ namespace BL3w_GroupProject.Pages.Manager.LotPage
                         Quantity = quantity,
                     };
 
-                    LotDetails.Add(lotDetail); // Add to the collection
-
+                    _lotService.AddLotDetail(lotDetail);
                     var product = _productService.GetProductByID(productId);
                     product.Quantity = quantity;
                     _productService.UpdateProduct(product);
