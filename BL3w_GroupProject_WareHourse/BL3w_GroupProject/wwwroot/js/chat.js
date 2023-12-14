@@ -2,7 +2,7 @@
 
 var connection = new signalR.HubConnectionBuilder().withUrl("/chatHub").build();
 
-//Disable the send button until connection is established.
+// Disable the send button until the connection is established.
 document.getElementById("sendButton").disabled = true;
 
 connection.on("ReceiveMessage", function (user, message) {
@@ -14,13 +14,16 @@ connection.on("ReceiveMessage", function (user, message) {
     // Assign a class based on the index of the list item
     var index = messagesList.children.length;
     if (index % 2 !== 0) {
-        li.classList.add("text-success");
+        li.classList.add("text-success", "font-weight-bold");
     } else {
-        li.classList.add("text-info");
+        li.classList.add("text-dark", "font-weight-bold");
     }
 
-    // Set the content of the list item
-    li.textContent = `${user}: ${message}`;
+    // Create a timestamp
+    var timestamp = new Date().toLocaleTimeString();
+
+    // Set the content of the list item with the timestamp
+    li.textContent = `[${timestamp}] ${user}: ${message}`;
 
     // Append the list item to the messagesList
     messagesList.appendChild(li);
@@ -28,8 +31,8 @@ connection.on("ReceiveMessage", function (user, message) {
     // Check if the messagesList is scrolled to the bottom
     var isScrolledToBottom = messagesList.scrollHeight - messagesList.clientHeight <= messagesList.scrollTop + 1;
 
-    // If scrolled to the bottom, auto-scroll to show the latest message
-    if (isScrolledToBottom) {
+    // If not scrolled to the bottom, auto-scroll to show the latest message
+    if (!isScrolledToBottom) {
         messagesList.scrollTop = messagesList.scrollHeight;
     }
 });
