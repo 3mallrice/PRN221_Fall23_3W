@@ -33,8 +33,7 @@ namespace BL3w_GroupProject.Pages
 
             var account = _accountService.GetAccounts()
                 .FirstOrDefault(u => u.Email.Equals(email)
-                && u.Password.Equals(password)
-                && u.Status == 1);
+                && u.Password.Equals(password));
 
             if (account == null)
             {
