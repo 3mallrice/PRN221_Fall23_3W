@@ -8,9 +8,7 @@
     Layout = "_LayoutManager";
 }
 
-<h1>Create</h1>
-<h4>Lot</h4>
-<hr />
+<h4>Lot Input</h4>
 <form method="post">
     <div class="row">
         <div class="col-md-4">
@@ -33,6 +31,7 @@
                 <input asp-for="Lot.Note" class="form-control" />
                 <span asp-validation-for="Lot.Note" class="text-danger"></span>
             </div>
+            <br />
             <div class="form-group mt-4">
                 <a asp-page="./Index" class="btn text-white" style="background-color: #F37021"><i class="fa-solid fa-right-from-bracket"></i></a>
                 <input type="submit" value="Create" class="btn btn-primary" />
