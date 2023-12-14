@@ -9,28 +9,28 @@ using Microsoft.EntityFrameworkCore;
 using BusinessObject.Models;
 using Service;
 
-namespace BL3w_GroupProject.Pages.StoreKeeper
+namespace BL3w_GroupProject.Pages.Admin.ManageLot
 {
-    public class StockOutEditModel : PageModel
+    public class LotEditModel : PageModel
     {
-        private readonly IStockOutService stockOutService;
+        private readonly ILotService lotService;
         private readonly IAccountService accountService;
         private readonly IPartnerService partnerService;
 
-        public StockOutEditModel()
+        public LotEditModel()
         {
-            stockOutService = new StockOutService();
+            lotService = new LotService();
             accountService = new AccountService();
             partnerService = new PartnerService();
         }
-
         [BindProperty]
-        public StockOut StockOut { get; set; } = default!;
+        public Lot Lot { get; set; } = default!;
         [BindProperty]
-        public List<StockOutDetail> StockOutDetails { get; set; } = default!;
+        public List<LotDetail> LotDetail { get; set; } = new List<LotDetail>();
 
-        public IActionResult OnGet(int? id)
+        public async Task<IActionResult> OnGetAsync(int? id)
         {
+
             if (HttpContext.Session.GetString("account") is null)
             {
                 return RedirectToPage("/Login");
@@ -38,7 +38,7 @@ namespace BL3w_GroupProject.Pages.StoreKeeper
 
             var role = HttpContext.Session.GetString("account");
 
-            if (role != "storekeeper")
+            if (role != "admin")
             {
                 return RedirectToPage("/Login");
             }
@@ -47,39 +47,37 @@ namespace BL3w_GroupProject.Pages.StoreKeeper
                 return NotFound();
             }
 
-            var stockout = stockOutService.GetStockOutById((int)id);
-            var stockoutId = stockOutService.GetStockOutDetailById((int)id);
-            if (stockout == null)
+            var lot = lotService.GetLotById((int)id);
+            List<LotDetail> lotdetails = lotService.GetListLotDetailById((int)id);
+            if (lot == null)
             {
                 return NotFound();
-            } 
-            if (stockoutId == null)
-            {
-                stockoutId = new List<StockOutDetail>();
             }
-
-            StockOut = stockout;
-            StockOutDetails = stockoutId;
+            Lot = lot;
+            LotDetail = lotdetails;
             ViewData["AccountId"] = new SelectList(accountService.GetAccounts(), "AccountId", "Email");
             ViewData["PartnerId"] = new SelectList(partnerService.GetPartners(), "PartnerId", "Name");
             return Page();
         }
 
+        // To protect from overposting attacks, enable the specific properties you want to bind to.
+        // For more details, see https://aka.ms/RazorPagesCRUD.
         public async Task<IActionResult> OnPostAsync()
         {
             try
             {
-                stockOutService.UpdateStockOuts(StockOut);
-                for (int i = 0; i < StockOutDetails.Count; i++)
+                lotService.UpdateLot(Lot);
+                for (int i = 0; i < LotDetail.Count; i++)
                 {
-                    StockOutDetails[i].Quantity = Convert.ToInt32(Request.Form[$"StockOutDetails[{i}].Quantity"]);
-                    StockOutDetails[i].StockOutDetailId = Convert.ToInt32(Request.Form[$"StockOutDetails[{i}].StockOutDetailId"]);
-                    stockOutService.UpdateStockOutsDetail(StockOutDetails[i].StockOutDetailId, StockOutDetails[i].Quantity);
+                    LotDetail[i].LotDetailId = Convert.ToInt32(Request.Form[$"LotDetail[{i}].LotDetailId"]);
+                    LotDetail[i].Quantity = Convert.ToInt32(Request.Form[$"LotDetail[{i}].Quantity"]);
+                    LotDetail[i].PartnerId = Lot.PartnerId;
+                    lotService.UpdateLotDetail(LotDetail[i]);
                 }
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!StockOutExists(StockOut.StockOutId))
+                if (!LotExists(Lot.LotId))
                 {
                     return NotFound();
                 }
@@ -88,12 +86,12 @@ namespace BL3w_GroupProject.Pages.StoreKeeper
                     throw;
                 }
             }
-            return RedirectToPage("./StockOutList");
+            return RedirectToPage("./ListLot");
         }
 
-        private bool StockOutExists(int id)
+        private bool LotExists(int id)
         {
-            return stockOutService.GetStockOutById(id) != null;
+            return lotService.GetLotByAccountId((int)id) != null;
         }
     }
 }

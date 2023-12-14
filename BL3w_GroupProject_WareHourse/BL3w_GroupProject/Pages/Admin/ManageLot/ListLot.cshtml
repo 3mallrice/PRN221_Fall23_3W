@@ -50,6 +50,7 @@
             <th>
                 @Html.DisplayNameFor(model => model.Lot[0].Status)
             </th>
+            <th></th>
         </tr>
     </thead>
     <tbody>
@@ -81,6 +82,9 @@
                     {
                         <span class="text-danger">Inactive</span>
                     }
+                </td>
+                <td>
+                    <a asp-page="./LotEdit" asp-route-id="@item.LotId"><i class="fa-solid fa-pen"></i></a>
                 </td>
             </tr>
         }
