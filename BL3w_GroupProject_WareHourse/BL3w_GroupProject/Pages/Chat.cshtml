@@ -16,14 +16,14 @@
 }
 <style>
     .fixed-height-container {
-        height: 400px;
+        height: 300px;
     }
 
     #messagesList {
         list-style: none;
         padding: 0;
         margin: 0;
-        max-height: 300px;
+        max-height: 250px;
         overflow-y: auto;
     }
 
@@ -89,7 +89,7 @@
     {
         <h1 style="text-align: center; color: red;">You must be logged in</h1>
         <div>
-            <a asp-page="/Login">Back to Login</a>
+            <a asp-page="/Login" class="btn btn-danger">Back to Login</a>
         </div>
     }
 }
