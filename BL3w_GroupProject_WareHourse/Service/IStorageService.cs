@@ -13,7 +13,7 @@ namespace Service
         StorageArea GetStorageAreaByID(int id);
         bool AddStorageArea(StorageArea storage);
         bool UpdateStorageArea(StorageArea storage);
-        bool ToggleStorageAreaStatus(int areaId);
+        bool BanStorageAreaStatus(int areaId);
         public List<StorageArea> LoadArea();
     }
 }
