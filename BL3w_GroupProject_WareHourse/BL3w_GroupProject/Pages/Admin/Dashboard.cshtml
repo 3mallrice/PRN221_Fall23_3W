@@ -27,6 +27,16 @@
         .group-box:hover {
             background-color: #034ea2;
         }
+
+    .chart-container {
+        width: 450px;
+        height: 500px;
+        background-color: #fff7ef;
+        padding: 20px;
+        border-radius: 4px;
+        margin: 20px;
+    }
+
 </style>
 
 <div class="container">
@@ -70,16 +80,16 @@
     </div>
     <div class="row">
         <div class="row justify-content-center">
-            <div class="col-md-5" style="background-color: #fff7ef; padding: 20px; border-radius: 4px; margin: 20px">
+            <div class="col-md-5 chart-container" style="background-color: #fff7ef; padding: 20px; border-radius: 4px; margin: 20px">
                 <div>
-                    <h4 class="text-center">Compare StockOut & Lot</h4>
-                    <canvas id="chart1"></canvas>
+                    <h4 class="text-center">Stock Out & Lot</h4>
+                    <canvas id="chart1" style="width: 150px; height: 150px;"></canvas>
                 </div>
             </div>
-            <div class="col-md-5" style="background-color: #fff7ef; padding: 20px; border-radius: 4px; margin: 20px">
+            <div class="col-md-5 chart-container" style="background-color: #fff7ef; padding: 20px; border-radius: 4px; margin: 20px">
                 <div>
-                    <h4 class="text-center">Account active & inactive</h4>
-                    <canvas id="chart2" style="height: 50px; width: 50px"></canvas>
+                    <h4 class="text-center">Account</h4>
+                    <canvas id="chart2" style="width: 150px; height: 150px;"></canvas>
                 </div>
             </div>
         </div>

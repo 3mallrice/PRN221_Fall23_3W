@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using BusinessObject.Models;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Identity.Client;
 using Service;
@@ -18,6 +19,9 @@ namespace BL3w_GroupProject.Pages
         {
 
         }
+
+        [BindProperty]
+        public Account Account { get; set; } = default!;
 
         public IActionResult OnPost(string email, string password)
         {

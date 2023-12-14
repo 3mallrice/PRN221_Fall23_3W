@@ -19,6 +19,7 @@ namespace BusinessObject.Models
         public string AccountCode { get; set; } = null!;
 
         [Required(ErrorMessage = "Email is required")]
+        [EmailAddress(ErrorMessage = "Invalid Email Address")]
         public string Email { get; set; } = null!;
 
         [Required(ErrorMessage = "Name is required")]
