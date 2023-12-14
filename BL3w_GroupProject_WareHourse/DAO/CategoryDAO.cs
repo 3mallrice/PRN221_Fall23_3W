@@ -1,4 +1,5 @@
 ﻿using BusinessObject.Models;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -114,30 +115,39 @@ namespace DAO
             }
         }
 
-        public bool ToggleCategoryStatus(int categoryId)
+        public bool BanCategoryStatus(int id)
         {
             try
             {
                 using (var db = new PRN221_Fall23_3W_WareHouseManagementContext())
                 {
-                    var existing = db.Products.SingleOrDefault(x => x.CategoryId == categoryId);
-                    if (existing != null)
-                    {
-                        existing.Status = (existing.Status == 1) ? 0 : 1;
+                    Category category1 = db.Categories.SingleOrDefault(c => c.CategoryId == id);
 
-                        db.SaveChanges();
-                        return true;
+                    if (category1 != null)
+                    {
+                        bool product = db.Products.Any(u => u.CategoryId == id);
+                        if (!product)
+                        {
+                            category1.Status = (category1.Status == 0) ? 1 : 0;
+
+                            db.Entry(category1).State = EntityState.Modified;
+                            db.SaveChanges();
+                            Console.WriteLine("Category status updated successfully!");
+                            return true;
+                        } else
+                        {
+                            throw new Exception("This category also have products, can not ban!");
+                        }
                     }
                     else
                     {
-                        Console.WriteLine("Category not found for status toggling.");
-                        return false;
+                        throw new Exception("Category does not exist!");
                     }
                 }
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Error in ToggleCategoryStatus: {ex.Message}", ex);
+                throw new Exception($"Error in BanCategory: {ex.Message}");
                 return false;
             }
         }

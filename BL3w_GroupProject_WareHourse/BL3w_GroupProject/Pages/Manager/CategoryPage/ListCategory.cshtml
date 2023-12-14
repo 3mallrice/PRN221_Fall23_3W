@@ -42,7 +42,7 @@
             <th>
                 @Html.DisplayNameFor(model => model.Category[0].CategoryCode)
             </th>
-            <th>
+            <th style="text-align:center">
                 @Html.DisplayNameFor(model => model.Category[0].Name)
             </th>
             <th style="text-align:center">
@@ -77,9 +77,11 @@
                             break;
                     }
                 </td>
-                <td>
+                <td class="text-end">
                     <a asp-page="./EditCategory" asp-route-id="@item.CategoryId" class="btn btn-primary"><i class="fa-solid fa-pen"></i></a>
+                    <a asp-page="./BanCategory" asp-route-id="@item.CategoryId" class="btn btn-primary"><i class="fa-solid fa-ban"></i></a>
                 </td>
+                
             </tr>
         }
     </tbody>

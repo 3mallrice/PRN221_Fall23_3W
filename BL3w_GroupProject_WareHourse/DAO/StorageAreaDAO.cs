@@ -64,7 +64,7 @@ namespace DAO
                 using (var db = new PRN221_Fall23_3W_WareHouseManagementContext())
                 {
                     bool existingStorageArea = db.StorageAreas
-                        .Any(a => a.AreaCode.ToLower() == storage.AreaCode.ToLower());
+                        .Any(a => a.AreaCode.ToLower().Equals(storage.AreaCode.ToLower()) || a.AreaName.ToLower().Equals(storage.AreaName.ToLower()));
 
                     if (!existingStorageArea)
                     {
@@ -117,32 +117,38 @@ namespace DAO
             }
         }
 
-        public bool ToggleStorageAreaStatus(int areaId)
+        public bool BanStorageAreaStatus(int areaId)
         {
             try
             {
                 using (var db = new PRN221_Fall23_3W_WareHouseManagementContext())
                 {
-                    var existing = db.Products.SingleOrDefault(x => x.AreaId == areaId);
+                    StorageArea storageArea = db.StorageAreas.SingleOrDefault(s => s.AreaId == areaId);
 
-                    if (existing != null)
+                    if (storageArea != null)
                     {
-                        existing.Status = (existing.Status == 1) ? 0 : 1;
+                        bool area = db.Products.Any(x => x.AreaId == areaId);
+                        if (!area)
+                        {
+                            storageArea.Status = (storageArea.Status == 0) ? 1 : 0;
 
-                        db.SaveChanges();
-                        return true;
+                            db.Entry(storageArea).State = EntityState.Modified;
+                            db.SaveChanges();
+                            return true;
+                        } else
+                        {
+                            throw new Exception("Can not ban!!");
+                        }
                     }
                     else
                     {
-                        Console.WriteLine("StorageArea not found for toggling status.");
-                        return false;
+                        throw new Exception("Storage does not exist!");
                     }
                 }
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Error in ToggleStorageAreaStatus: {ex.Message}", ex);
-                return false;
+                throw new Exception($"Error in BanStorage: {ex.Message}");
             }
         }
 
