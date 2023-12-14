@@ -59,6 +59,7 @@
                 @Html.DisplayNameFor(model => model.Lot[0].Partner)
             </th>
             <th></th>
+            <th></th>
         </tr>
     </thead>
     <tbody>
@@ -98,6 +99,9 @@
                 </td>
                 <td>
                     <a asp-page="./LotDetail" asp-route-id="@item.LotId"><i class="fa-solid fa-circle-info"></i></a>
+                </td>
+                <td>
+                    <a asp-page="./LotEdit" asp-route-id="@item.LotId"><i class="fa-solid fa-pen"></i></a>
                 </td>
             </tr>
         }
