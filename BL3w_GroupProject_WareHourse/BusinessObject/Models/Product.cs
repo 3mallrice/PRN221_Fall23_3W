@@ -15,6 +15,7 @@ namespace BusinessObject.Models
         public int ProductId { get; set; }
         public int CategoryId { get; set; }
         public int AreaId { get; set; }
+        [RegularExpression(@"^PROD\d{3,}$", ErrorMessage = "Product Code must be in the format PROD followed by at least three digits")]
         public string ProductCode { get; set; } = null!;
         [Required]
         public string? Name { get; set; }
