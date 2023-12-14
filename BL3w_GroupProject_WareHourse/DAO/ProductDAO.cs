@@ -99,7 +99,7 @@ namespace DAO
             {
                 var myStoreDB = new PRN221_Fall23_3W_WareHouseManagementContext();
                 bool existingPartner = GetProducts()
-                        .Where(p => p.ProductCode != product.ProductCode)
+                        .Where(p => p.ProductId != product.ProductId)
                         .Any(p => p.ProductCode.ToLower().Equals(product.ProductCode.ToLower()));
 
                 if (!existingPartner)
