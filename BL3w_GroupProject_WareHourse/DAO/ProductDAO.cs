@@ -99,7 +99,7 @@ namespace DAO
             {
                 var myStoreDB = new PRN221_Fall23_3W_WareHouseManagementContext();
                 bool existingPartner = GetProducts()
-                        .Where(p => p.ProductId != product.ProductId)
+                        .Where(p => p.ProductCode != product.ProductCode)
                         .Any(p => p.ProductCode.ToLower().Equals(product.ProductCode.ToLower()));
 
                 if (!existingPartner)
@@ -109,7 +109,7 @@ namespace DAO
                 }
                 else
                 {
-                    throw new Exception("Partner code already exists in another partner!");
+                    throw new Exception("Product code already exists!");
                 }
             }
             catch (Exception ex)
