@@ -45,9 +45,18 @@ connection.start().then(function () {
 
 document.getElementById("sendButton").addEventListener("click", function (event) {
     var user = document.getElementById("userInput").value;
-    var message = document.getElementById("messageInput").value;
-    connection.invoke("SendMessage", user, message).catch(function (err) {
-        return console.error(err.toString());
-    });
+    var messageInput = document.getElementById("messageInput");
+    var message = messageInput.value.trim(); // Trim removes leading and trailing whitespaces
+
+    // Check if the message is not empty before sending
+    if (message !== "") {
+        connection.invoke("SendMessage", user, message).catch(function (err) {
+            return console.error(err.toString());
+        });
+    }
+
+    // Clear the input field
+    messageInput.value = "";
+
     event.preventDefault();
 });
