@@ -4,7 +4,7 @@
 @{
     ViewData["Title"] = "LotDetail";
     Layout = "_StoreKeeper";
-
+    int x = 0;
 }
 
 <head>
@@ -73,11 +73,9 @@
     <table class="table table-hover">
         <thead style="background-color: #034ea2; text-align: center" class="text-white">
             <tr>
+                <th>No.</th>
                 <th>
                     Product Name
-                </th>
-                <th>
-                    Partner Name
                 </th>
                 <th>
                     Quantity
@@ -91,11 +89,9 @@
             @foreach (var detail in Model.LotDetails)
             {
                 <tr class="text-center">
+                    <td>@(++x)</td>
                     <td>
                         @Html.DisplayFor(modelItem => detail.Product.Name)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => detail.Partner.Name)
                     </td>
                     <td>
                         @Html.DisplayFor(modelItem => detail.Quantity)
