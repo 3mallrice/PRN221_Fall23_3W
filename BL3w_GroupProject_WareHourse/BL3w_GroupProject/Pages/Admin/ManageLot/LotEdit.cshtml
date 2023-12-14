@@ -1,9 +1,9 @@
 ﻿@page
-@model BL3w_GroupProject.Pages.StoreKeeper.LotEditModel
+@model BL3w_GroupProject.Pages.Admin.ManageLot.LotEditModel
 
 @{
     ViewData["Title"] = "LotEdit";
-    Layout = "_StoreKeeper";
+    Layout = "/Pages/Shared/_LayoutAdmin.cshtml";
     int x = 0;
 }
 
@@ -68,7 +68,7 @@
 
             <br />
             <div class="form-group">
-                <a asp-page="./LotList" class="btn text-white" style="background-color: #F37021"><i class="fa-solid fa-right-from-bracket"></i></a>
+                <a asp-page="./ListLot" class="btn text-white" style="background-color: #F37021"><i class="fa-solid fa-right-from-bracket"></i></a>
                 <input type="submit" value="Save" class="btn btn-primary" />
             </div>
         </form>
@@ -80,3 +80,4 @@
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
 }
+

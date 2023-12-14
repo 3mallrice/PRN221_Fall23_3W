@@ -49,6 +49,7 @@
             <th>
                 @Html.DisplayNameFor(model => model.StockOut[0].Partner.Name)
             </th>
+            <th></th>
         </tr>
     </thead>
     <tbody>
@@ -78,7 +79,9 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.Partner.Name)
                 </td>
-
+                <td>
+                    <a asp-page="./StockOutEdit" asp-route-id="@item.StockOutId"><i class="fa-solid fa-pen"></i></a>
+                </td>
             </tr>
         }
     </tbody>
