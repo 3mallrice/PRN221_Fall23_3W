@@ -25,8 +25,7 @@ namespace Service
 
         public bool UpdateStorageArea(StorageArea storage) => _storageRepository.UpdateStorageArea(storage);
 
-        public bool ToggleStorageAreaStatus(int areaId) => _storageRepository.ToggleStorageAreaStatus(areaId);
-
+        public bool BanStorageAreaStatus(int areaId) => _storageRepository.BanStorageAreaStatus(areaId);
         public List<StorageArea> LoadArea() => _storageRepository.LoadArea();
     }
 }

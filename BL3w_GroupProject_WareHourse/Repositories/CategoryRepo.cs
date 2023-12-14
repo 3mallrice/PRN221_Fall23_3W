@@ -37,14 +37,14 @@ namespace Repositories
             return categoryDAO.UpdateCategory(category);
         }
 
-        public bool ToggleCategoryStatus(int categoryId)
-        {
-            return categoryDAO.ToggleCategoryStatus(categoryId);
-        }
-
         public List<Category> LoadCategories()
         {
             return categoryDAO.LoadCategories();
+        }
+
+        public bool BanCategoryStatus(int id)
+        {
+            return categoryDAO.BanCategoryStatus(id);
         }
     }
 }

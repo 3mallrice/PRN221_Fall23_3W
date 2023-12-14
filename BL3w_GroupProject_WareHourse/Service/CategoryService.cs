@@ -37,14 +37,14 @@ namespace Service
             return categoryRepository.UpdateCategory(category);
         }
 
-        public bool ToggleCategoryStatus(int categoryId)
-        {
-            return categoryRepository.ToggleCategoryStatus(categoryId);
-        }
-
         public List<Category> LoadCategories()
         {
             return categoryRepository.LoadCategories();
+        }
+
+        public bool BanCategoryStatus(int id)
+        {
+            return categoryRepository.BanCategoryStatus(id);
         }
     }
 }

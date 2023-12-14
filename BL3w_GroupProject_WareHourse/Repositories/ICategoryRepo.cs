@@ -13,7 +13,7 @@ namespace Repositories
         Category GetCategoryById(int id);
         bool AddCategory(Category category);
         bool UpdateCategory(Category category);
-        bool ToggleCategoryStatus(int categoryId);
+        bool BanCategoryStatus(int id);
         List<Category> LoadCategories();
     }
 }
